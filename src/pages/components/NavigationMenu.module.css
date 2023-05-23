@@ -1,0 +1,27 @@
+
+.container{
+
+ 
+    border-radius: 5%;
+    width: 15vh;
+    height: 75vh;
+    margin-left: 2%;
+    padding: 10%;
+}
+
+.menuChoice {
+    width: 8vw;
+    height: 8vw;
+    border: mediumspringgreen 0.2vw solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-top: 5%;
+    box-shadow: inset 5px black;
+    font-size: 1.5vw;
+    transform: scale(1);
+  transform-origin: center center;
+  text-rendering: auto;
+  }

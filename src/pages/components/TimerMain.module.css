@@ -1,0 +1,12 @@
+
+.container{
+    padding: 10%;
+    border: mediumspringgreen 0.01vw solid;
+    border-radius: 2%;
+    width: 85vh;
+    height: 100vh;
+    margin-left: 2%;
+    float:left;
+
+}
+
