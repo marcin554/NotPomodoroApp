@@ -1,9 +1,5 @@
-.container {
-    display: grid;
-    grid-template-columns: 25% 50%; /* Two columns with equal width */
-    grid-gap: 10px; /* Adjust the spacing between components as needed */
-  }
-  
-  .container > * {
-    grid-column: span 1; /* Each component spans 1 column */
-  }
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+

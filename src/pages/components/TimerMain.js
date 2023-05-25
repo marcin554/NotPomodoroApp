@@ -4,6 +4,8 @@ import { updateTime, resetTimer } from "../../slices/timerSlice";
 import { current } from "@reduxjs/toolkit";
 import { addEntryToSessionList } from "../../slices/sessionStoreSlice";
 import styles from './TimerMain.module.css'
+import SessionTable from "./SessionTable";
+
 
 const timer = new Timer({ label: "Main-Timer" });
 let list = [];
@@ -91,21 +93,21 @@ const TimerMain = () => {
     <div className={styles.container}>
 
     
-      <button
+      <button className={`${styles.buttonTimer} `}
         onClick={() => {
           checkStatus();
         }}
       >
         Check Status
       </button>
-      <button
+      <button className={`${styles.buttonTimer} `}
         onClick={() => {
           startButton();
         }}
       >
         {timer.isRunning() !== true ? "Start" : "Stop"}
       </button>
-      <button
+      <button className={`${styles.buttonTimer} `}
         onClick={() => {
           pauseButton();
         }}
@@ -113,25 +115,22 @@ const TimerMain = () => {
         Pause
       </button>
       {stateTime != null ? (
-        <div>
+        <div className={styles.timerCircle}>
+           <div
+      className={`${styles.progressBar} ${
+        timer.isRunning() ? styles.progressBarAnimation : ''
+      }`}
+    ></div>
+          <div className={styles.timerText}>
           {stateTime.h} : {stateTime.m} : {stateTime.s}
+          </div>
         </div>
       ) : null}
 
 
 <div>
 
-  Sessions:
-  <br></br>
-  {sessionRecords != null && sessionRecords.map((element, index) => (
-<div >
-  {index} <br></br>
-    <span>Duration:{ element.timeDuration.h} : { element.timeDuration.m} : { element.timeDuration.s} ||||</span>
-    <span>Time Start: { element.timeStart} ||||</span>
-    <span>Time End: { element.timeEnd}|||| </span>
 
-</div>
-))}
 </div>
 
       </div>

@@ -1,0 +1,24 @@
+td{
+    padding: 1%;
+}
+
+.container{
+   width: 100%;
+
+}
+
+tr{
+    background-color: blue;
+   
+}
+
+table{
+    width: 100%;
+    border: solid 1px black;
+    border-radius: 50px;
+    font-size: 1vw;
+}
+
+th{
+    background-color: rgb(218, 128, 128);
+}
