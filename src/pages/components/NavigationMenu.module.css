@@ -1,40 +1,47 @@
+.container {
 
-.container{
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(1);
+  grid-template-rows: repeat(6, 1fr);
+  border-radius: 10px;
 
- 
-    border-radius: 10px;
-    width: 15vh;
-    height: 75vh;
-    margin-left: 2%;
-    padding: 10%;
 
-    background: rgb(2,0,36);
-    background: linear-gradient(180deg, rgba(2,0,36,1) 28%, rgba(34,182,133,1) 100%);
+  background: rgba(34, 182, 133, 1);
+  margin-left: 0%;
+
 }
 
 
 
 .menuChoice {
-    width: 8vw;
-    height: 8vw;
-    border: mediumspringgreen 0.2vw solid;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin-top: 6%;
-    box-shadow: inset 5px black;
-    font-size: 1.5vw;
-    transform: scale(1);
+  border-radius: 15px;
+
+  width: 8vw;
+  height: 6vw;
+  border: mediumspringgreen 0.2vw solid;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-top: 6%;
+  box-shadow: inset 5px black;
+  font-size: 1.5vw;
+  transform: scale(1);
   transform-origin: center center;
   text-rendering: auto;
-  background-color: rgba(34,182,133,1);
-  }
+  background-color: rgb(45, 204, 151);
+
+}
+
+.menuChoice {
+  transition: all 0.2s ease-in-out;
+}
 
 
+.menuChoice:hover {
 
-  .menuChoice:hover{
-    background-color: rgb(24, 150, 108);
-    transform: scale(1.05)
-  }
+  background-color: rgb(24, 150, 108);
+  transform: scale(0.9)
+}

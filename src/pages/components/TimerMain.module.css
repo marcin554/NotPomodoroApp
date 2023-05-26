@@ -3,48 +3,70 @@
 @import 'tailwindcss/utilities';
 
 
-.container{
-    padding: 10%;
-    border: mediumspringgreen 0.01vw solid;
-    border-radius: 2%;
-    width: 85vh;
-    height: 100vh;
-    margin-left: 2%;
-    float:left;
- background-color: rgba(34,182,133,1);
-}
 
 .buttonTimer {
-    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full;
+  
+  background-color: #0e1e4b;
+  opacity: 0.8;
   }
 
-
-  .timerContainer {
-    display: flex;
+  .container{
+    
+    display: grid;
+    max-height: 100vh;
+    grid-template-rows:  75% 25%;
+    grid-template-columns: 4fr ;
+    grid-gap: 5rem;
+    
+  }
+  .buttonsDiv{
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+    gap: 0.5rem;
+    
+    background-color: rgb(12, 80, 57);
     justify-content: center;
-    align-items: center;
-    height: 50vh;
+    font-size: 3em;
+    
+  }
+  .middleIcon{
+    margin: auto;
+    scale: 1.5;
+    color: mediumspringgreen;
+
+  }
+
+  .timerDiv { 
+   
+    margin: auto;
+
+  
   }
   
   .timerCircle {
+  
     position: relative;
-    width: 50vh;
-    height: 50vh;
+  
+ 
+    width: 60vh;
+    height: 60vh;
     border-radius: 50%;
-    background-color: green;
+    background-color: rgb(6, 54, 56);
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0.8;
   }
   
   .progressBar {
+    
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 20px solid blue;
+    border: 20px solid rgb(2, 255, 213);
     border-top-color: transparent;
     border-right-color: transparent;
    
@@ -63,7 +85,9 @@
   }
   
   .timerText {
-    font-size: 2rem;
+    font-size: 4rem;
+    
+    
     color: white;
   }
   @keyframes progress {

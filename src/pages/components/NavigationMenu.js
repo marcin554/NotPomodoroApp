@@ -20,6 +20,9 @@ const NavigationMenu = () => {
           <Link to="/sessions">Projects</Link>
         </div>
         <div className={styles.menuChoice}>
+          <Link to="/sessions">Options</Link>
+        </div>
+        <div className={styles.menuChoice}>
           <Link to="/sessions">Exit</Link>
         </div>
       </div>

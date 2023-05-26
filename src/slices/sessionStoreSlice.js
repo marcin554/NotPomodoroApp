@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = [];
+const initialState = {
+  sessionStore: []
+};
 
 export const sessionStoreSlice = createSlice({
   name: 'sessionStore',
@@ -12,11 +14,16 @@ export const sessionStoreSlice = createSlice({
     },
     resetSessionList: (state) => {
         state = initialState;
+    },
+    swapList: (state, action) => {
+      
+    state.sessionStore = action.payload;
+
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addEntryToSessionList, resetSessionList} = sessionStoreSlice.actions
+export const { addEntryToSessionList, resetSessionList, swapList} = sessionStoreSlice.actions
 
 export default sessionStoreSlice.reducer
