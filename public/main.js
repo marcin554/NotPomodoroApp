@@ -5,12 +5,14 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 
 
 
+// projectName: '',
+// timeSpendTotal: '',
+// timeSpendThisWeek: '',
 
 
 
 
-
-const schema = {
+const sessionsSchema = {
   sessions: {
     type: "array",
     default: [],
@@ -24,18 +26,130 @@ const schema = {
           type: "string",
         },
         timeDuration: {},
+        timerType: {
+          type: "string"
+        }
       },
     },
   },
 };
-const store = new Store({ schema });
+
+const projectsSchema = {
+  projects: {
+    type: "array",
+    default: [],
+    items: {
+      type: "object",
+      properties: {
+        projectName: {
+          type: "string",
+        },
+        timeSpendTotal: {},
+        timeSpendThisWeek: {},
+      },
+    },
+  },
+};
+
+const goalsSchema = {
+  goals: {
+    type: "array",
+    default: [],
+    items: {
+      type: "object",
+      properties: {
+        goalName: {
+          type: "string",
+        },
+        timeGoal: {},
+        timeSpendTotal: {},
+        timeSpendThisWeek: {},
+      },
+    },
+  },
+};
+
+
+const settingsSchema = {
+  settings: {
+    type: "array",
+    default: [],
+    items: {
+      type: "object",
+      properties: {
+        defaultTimerType: {
+          type: "string",
+        },
+        defaultPomodoroTimerDuration: {
+          type: "number",
+        },
+        defaultProject: {
+          type: "string",
+        },
+
+
+      },
+    },
+  },
+};
+
+const store = new Store({ sessionsSchema, projectsSchema, goalsSchema, settingsSchema });
+
 
 
 
 function handleStoreGet(event, { key }) {
 
-  const value = store.get('sessions');
-  event.returnValue = store.get(value);
+
+  const value = store.get(key);
+
+
+  event.returnValue = value ;
+
+}
+
+function setNewProject (event, project) {
+  const projects = store.get('projects') || []; 
+  projects.push(project); 
+
+  store.set('projects', projects);
+}
+
+function setNewGoal (event, goal) {
+  const goals = store.get('goals') || [];
+  goals.push(goal);
+}
+
+function updateSettings (event, settings, whichSetting) {
+
+  store.set('settings', settings);
+}
+
+
+
+
+
+function handleDeleteSession(event, sessionValues) {
+  
+  let session = sessionValues.sessionValues;
+  let sessions = store.get('sessions');
+
+  console.log(sessions);
+  
+  let newSessions = sessions.filter(item => 
+    item.timeDuration.ms != session.timeDuration.ms ||
+    item.timeStart != session.timeStart ||
+     item.timeEnd != session.timeEnd 
+    
+
+  );
+
+  console.log('theSession', session)
+
+  console.log("new Sessions", newSessions)
+  store.set('sessions', newSessions);
+  
+  
 
 
 }
@@ -87,7 +201,13 @@ function createWindow() {
 app.whenReady().then(( ) => {
   ipcMain.on('store-set', handleStoreSet)
   ipcMain.on('store-get', handleStoreGet);
-  ipcMain.on('set-title', handleSetTitle)
+  ipcMain.on('set-title', handleSetTitle);
+  ipcMain.on('delete-session', handleDeleteSession);
+  ipcMain.on('set-new-project', setNewProject);
+  ipcMain.on('set-new-goal', setNewGoal);
+  ipcMain.on('update-settings', updateSettings);
+
+
 createWindow();
 
 });

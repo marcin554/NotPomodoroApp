@@ -1,3 +1,28 @@
+.container{
+    display: grid;
+    max-height: 90vh;
+    width: 40vw;
+    overflow-y: scroll;
+    overflow-x: clip;
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+   ;
+}
+
+.container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, and Opera */
+}
+
+.deleteButton
+{
+    background-color: rgb(202, 49, 49);
+}
+
+.deleteButton:hover
+{
+    background-color: rgb(255, 34, 34);
+    cursor: pointer;
+}
 td{
     padding: 1%;
 }
@@ -8,7 +33,13 @@ tr{
    
 }
 
+
 table{
+    
+   
+   
+ 
+    gap: 0.5rem;
     color: white;
 
     
@@ -28,6 +59,3 @@ th{
     background-color: rgb(35, 37, 112);
 }
 
-.container{
-   
-}

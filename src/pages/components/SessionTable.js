@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./SessionTable.module.css";
 
+
 const SessionTable = (sessionObject) => {
+
+ 
+  
+
+  
+
+  
+  const originalArray = sessionObject.sessionObject.sessionStore; // Assuming sessionStore is an array
+  const reversedArray = [...originalArray].reverse();
+
+
+  const deleteSession = (timeStart) => {
+    window.electronAPI.store.delete(timeStart);
+    console.log('deleted')
+
+    
+
+      window.location.reload();
+
+    
+    
+    
+  }
   return (
     <div className={`${styles.container} shadow-md sm:rounded-lg`}>
-      <table className="rounded table-auto border border-4 border-indigo-500/100">
+      <table className="rounded table-auto ">
         <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
           <tr>
             <th scope="col" className="px-6 py-3 ">
@@ -26,15 +50,19 @@ const SessionTable = (sessionObject) => {
         </thead>
 
         <tbody>
-          {console.log(sessionObject)}
+        
+        
           {sessionObject.sessionObject.sessionStore &&
-            sessionObject.sessionObject.sessionStore.map((element, index) => (
+            reversedArray.map((element, index) => (
               <tr
                 className="border-b border-gray-200 dark:border-gray-700"
                 key={index}
               >
                 <td scope="row" className="px-6 py-4 whitespace-nowrap ">
-                  Timer{" "}
+                  {!element.timerType || element.timerType === "normalTimer" ? "Normal Timer" : "Pomodoro Timer"
+                  
+                  }
+                  {" "}
                 </td>
                 <td className={`${styles.tdColor} px-6 py-4 `}>
                   {element.timeDuration.h} H : {element.timeDuration.m}M :{" "}
@@ -44,7 +72,7 @@ const SessionTable = (sessionObject) => {
                 <td className={`${styles.tdColor} px-6 py-4 `}>
                   {element.timeEnd}
                 </td>
-                <td className="px-6 py-4 ">Delete</td>
+                <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteSession(element)}}>Delete</td>
               </tr>
             ))}
         </tbody>

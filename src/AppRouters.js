@@ -7,6 +7,8 @@ import SessionIndex from './pages/SessionIndex';
 import NavigationMenu from './pages/components/NavigationMenu';
 import  './AppRouters.css'
 
+import ProjectsIndex from './pages/ProjectsIndex';
+import SettingsPage from './pages/SettingsPage';
 
 
 
@@ -30,6 +32,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/sessions" element={<SessionIndex />} />
+            <Route path="/projects" element={<ProjectsIndex />} />
+            <Route path="/settings" element={<SettingsPage />} />
+
           </Routes>
         </div>
       </div>

@@ -5,6 +5,8 @@ import SessionTable from "./components/SessionTable";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./SessionIndex.module.css";
 import Container from "./components/Container";
+import {getSessions} from "../utils/utils.js";
+
 
 import { swapList } from "../slices/sessionStoreSlice.js";
 
@@ -14,8 +16,9 @@ const SessionIndex = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const value = await window.electronAPI.store.get('sessions');
-        dispatch(swapList(value.sessions));
+        let value = await getSessions();
+        console.log(value);
+        dispatch(swapList(value));
       } catch (error) {
         console.error(error);
       }
@@ -24,10 +27,10 @@ const SessionIndex = () => {
     fetchData();
   }, [dispatch]);
 
-
+  
   const sessionRecords = useSelector((state) => state.sessionStore);
-  // console.log('abc');
 
+  console.log(sessionRecords);
 
   return (
     <>

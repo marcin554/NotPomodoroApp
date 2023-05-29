@@ -17,6 +17,16 @@ export const timerSlice = createSlice({
   reducers: {
   
     updateTime: (state, action) => {
+   
+
+      
+      if(action.payload.m < 10){
+        action.payload.m = '0' + action.payload.m;
+      }
+      if(action.payload.s < 10){
+        action.payload.s = '0' + action.payload.s;
+      }
+
       state.value = action.payload;
     },
     resetTimer: (state) => {

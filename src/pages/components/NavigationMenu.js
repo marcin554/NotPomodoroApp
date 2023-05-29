@@ -17,10 +17,10 @@ const NavigationMenu = () => {
           <Link to="/sessions">Goals</Link>
         </div>
         <div className={styles.menuChoice}>
-          <Link to="/sessions">Projects</Link>
+          <Link to="/projects">Projects</Link>
         </div>
         <div className={styles.menuChoice}>
-          <Link to="/sessions">Options</Link>
+          <Link to="/settings">Options</Link>
         </div>
         <div className={styles.menuChoice}>
           <Link to="/sessions">Exit</Link>

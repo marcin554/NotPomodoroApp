@@ -4,7 +4,6 @@
   "private": true,
   "main": "public/main.js",
   "dependencies": {
-    "@bladeski/countdown-timer": "^2.3.1",
     "@electron/remote": "github:electron/remote",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
@@ -16,6 +15,7 @@
     "electron-store": "^8.1.0",
     "path": "^0.12.7",
     "react": "^18.2.0",
+    "react-countdown-hook": "^1.1.3",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",

@@ -17,8 +17,30 @@ contextBridge.exposeInMainWorld('electronAPI', {
     set: (key, value) => {
         
       window.ipcRenderer.send('store-set', { key, value });
+ 
       
     },
+    delete: (sessionValues) => {
+      window.ipcRenderer.send('delete-session', {sessionValues});
+   
+    },
+    setNewProject: (project) => {
+      window.ipcRenderer.send('set-new-project', {project});
+    },
+    setNewGoal: (goal) => {
+      window.ipcRenderer.send('set-new-goal', {goal});
+    },
+    updateSettings: (settings) => {
+      window.ipcRenderer.send('update-settings', {settings});
+    },
+
+
+
+
+
+
+
+
   },
 });
 

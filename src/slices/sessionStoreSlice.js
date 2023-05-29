@@ -18,6 +18,7 @@ export const sessionStoreSlice = createSlice({
     swapList: (state, action) => {
       
     state.sessionStore = action.payload;
+  
 
     }
   },
