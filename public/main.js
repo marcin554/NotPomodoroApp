@@ -105,6 +105,7 @@ function handleStoreGet(event, { key }) {
 
 
   event.returnValue = value ;
+  console.log(value);
 
 }
 
@@ -118,6 +119,9 @@ function setNewProject (event, project) {
 function setNewGoal (event, goal) {
   const goals = store.get('goals') || [];
   goals.push(goal);
+  
+  store.set('goals', goals);
+
 }
 
 function updateSettings (event, settings, whichSetting) {

@@ -39,7 +39,8 @@ export const _setNewProject = (project) => {
 
 }
 
-export const setNewGoal = () => {
+export const setNewGoal = (goal) => {
+  window.electronAPI.store.setNewGoal(goal);
 
 }
 
