@@ -9,6 +9,7 @@ import  './AppRouters.css'
 
 import ProjectsIndex from './pages/ProjectsIndex';
 import SettingsPage from './pages/SettingsPage';
+import GoalIndex from './pages/GoalIndex';
 
 
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/sessions" element={<SessionIndex />} />
             <Route path="/projects" element={<ProjectsIndex />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/goals" element={<GoalIndex />}></Route>
 
           </Routes>
         </div>

@@ -1,19 +1,22 @@
 import React from 'react'
 import styles from './Container.module.css'
+import { Container } from '@mui/material'
 
-const Container = ({ComponentPage}) => {
+const _Container = ({ComponentPage}) => {
 
 
 
   return (
+<Container maxWidth="xl">
 
-    <div className={styles.container}>
+
       <div className={styles.item}>
         {ComponentPage}
+        
         </div>        
-        </div>
-     
+      
+     </Container>
   )
 }
 
-export default Container
+export default _Container

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import TimerMain from './components/TimerMain'
-import Container from './components/Container'
-import MyComponent from './app'
+import _Container from './components/Container'
+
 import styles from './Index.module.css'
 import { _GetSettings } from '../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,9 +37,9 @@ const Index = () => {
 
     <div className={styles.container}>
   
-    <Container ComponentPage={settings ? <TimerMain settings={settings} /> : null}>
+    <_Container ComponentPage={settings ? <TimerMain settings={settings} /> : null}>
   
-</Container>
+</_Container>
 
     </div>
     </>

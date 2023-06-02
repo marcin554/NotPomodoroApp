@@ -3,6 +3,11 @@ import { Timer, Time, TimerOptions } from "timer-node";
 import { updateTime, resetTimer } from "../../slices/timerSlice";
 import { current } from "@reduxjs/toolkit";
 import useCountDown from "react-countdown-hook";
+import { FormControlLabel, Switch } from "@mui/material";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
+import PauseIcon from '@mui/icons-material/Pause';
+
 
 
 import styles from "./TimerMain.module.css";
@@ -14,8 +19,10 @@ import {
   TfiExchangeVertical,
 } from "react-icons/tfi";
 import { useEffect, useState } from "react";
-import { getSettings } from "../../utils/utils";
+import { _updateProject, _updateStatus, getSettings, _updateGoal } from "../../utils/utils";
 import {_GetSettings} from "../../utils/utils";
+import { SwapHoriz } from "@mui/icons-material";
+import { setSettings } from "../../slices/settingsSlice";
 
 const timer = new Timer({ label: "Main-Timer" });
 const timer2 = new Timer({ label: "Pomodoro-Timer" });
@@ -45,9 +52,15 @@ let finishDate;
 
 const TimerMain = (settings) => {
 
+  const dispatch = useDispatch();
+  dispatch(setSettings(settings.settings));
+  let rSettings = useSelector((state) => state.settingsStore.settings);
+
+
   let [isPaused, setPause] = useState(false);
   let [isStarted, setStarted] = useState(false);
-
+  let [workingProject, setWorkingProject] = useState(rSettings.defaultProject.workingOn);
+  let [workingGoal, setWorkingGoal] = useState(rSettings.defaultGoal.workingOn);
 
 
 let [currentType, setType] = useState(settings.settings.defaultTimerType);
@@ -60,6 +73,16 @@ const interval = 500;
 
 
 
+  function updateCheck (projectOrGoal) {
+    if(projectOrGoal === "project") {
+      setWorkingProject(!workingProject);
+    }
+    else if(projectOrGoal === "goal") {
+      setWorkingGoal(!workingGoal);
+    }
+
+    _updateStatus(projectOrGoal);
+  }
 
 
 
@@ -96,7 +119,7 @@ const interval = 500;
   const stateTime = useSelector((state) => state.timer.value);
   const sessionRecords = useSelector((state) => state.sessionStore);
 
-  const dispatch = useDispatch();
+  
 
   const handleStoreSet = (testSession) => {
     window.electronAPI.store.set("session", testSession);
@@ -132,6 +155,13 @@ const interval = 500;
       timerProjectName: projectName,
 
     };
+
+    if(typeTimer === typeTimerGoal.project) {
+      _updateProject(session);
+    }
+    else if(typeTimer === typeTimerGoal.goal) {
+      _updateGoal(session);
+    }
 
     handleStoreSet(session);
 
@@ -332,7 +362,7 @@ const interval = 500;
                   : styles.progressBarPomodoro
                   } ${isStarted && !isPaused
                     ? styles.progressBarAnimation
-                    : ""
+                    : null
                   }`}
               ></div>
               <div className={styles.timerText}>
@@ -358,8 +388,8 @@ const interval = 500;
             }}
           >
             {(!timer.isRunning() || timer.isPaused()) && timeLeft === 0
-              ? "Start " && <TfiControlPlay className={styles.middleIcon} />
-              : "Stop" && <TfiControlStop className={styles.middleIcon} />}
+              ? "Start " && <PlayArrowIcon fontSize="inherit"/> 
+              : "Stop" && <StopIcon fontSize="inherit"> </StopIcon>}
           </button>
           <button
             className={`${styles.buttonTimer} `}
@@ -367,7 +397,7 @@ const interval = 500;
               pauseButton();
             }}
           >
-            <TfiControlPause className={styles.middleIcon} />
+            <PauseIcon fontSize="inherit" />
           </button>
           <button
             onClick={() => {
@@ -375,12 +405,15 @@ const interval = 500;
             }}
             className={styles.buttonTimer}
           >
-            <TfiExchangeVertical className={styles.middleIcon} />
+            <SwapHoriz fontSize="inherit"/>
           </button>
 
-          <form className="styles.buttonTimer">
-a
-          </form>
+          <div  className={`${styles.buttonTimerSwitch} `} >
+            <FormControlLabel control ={<Switch checked={workingProject}color="warning" onClick={() => {updateCheck('project') }}/>} label={rSettings.defaultProject.projectName + "  Project"}> </FormControlLabel>
+            
+            <FormControlLabel control ={<Switch checked={workingGoal} onClick={() => {updateCheck('goal')}} />} label={rSettings.defaultGoal.goalName + "  Goal"} > </FormControlLabel>
+        
+          </div>
         </div>
       </div>
       

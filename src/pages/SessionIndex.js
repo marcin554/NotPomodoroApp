@@ -4,7 +4,7 @@ import TimerMain from "./components/TimerMain";
 import SessionTable from "./components/SessionTable";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./SessionIndex.module.css";
-import Container from "./components/Container";
+import _Container from "./components/Container";
 import {getSessions} from "../utils/utils.js";
 
 
@@ -34,7 +34,7 @@ const SessionIndex = () => {
 
   return (
     <>
-      <Container
+      <_Container
         ComponentPage={<SessionTable sessionObject={sessionRecords} />}
       />
     </>

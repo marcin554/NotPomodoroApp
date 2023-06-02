@@ -6,8 +6,15 @@
 
 .buttonTimer {
   
-  background-color: #0e1e4b;
-  opacity: 0.8;
+  background-color: #1B9C85;
+  color: white;
+  
+  }
+
+  .buttonTimerSwitch{
+    background-color: #1B9C85;
+    color: white;
+    padding: 5%;
   }
 
   .container{
@@ -17,28 +24,30 @@
     grid-template-rows:  75% 25%;
     grid-template-columns: 4fr ;
     grid-gap: 5rem;
+    width: 60vw;
     
   }
   .buttonsDiv{
     display: inline-grid;
-    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 1fr 0.1fr;
     gap: 0.5rem;
     
-    background-color: rgb(12, 80, 57);
+ 
     justify-content: center;
     font-size: 3em;
     
   }
 
   .buttonTimer:hover{
-    background-color: rgb(12, 80, 57);
-    opacity: 0.8;
+    background-color: #23bb9f;
+   
   }
   .middleIcon{
     margin: auto;
     scale: 1.5;
-    color: mediumspringgreen;
-
+    color: #E8F6EF;
+    font-weight: bold;
+    
   }
 
   .timerDiv { 
@@ -49,14 +58,15 @@
   }
   
   .timerCircle {
-  
+ 
     position: relative;
   
  
     width: 60vh;
     height: 60vh;
     border-radius: 50%;
-    background-color: rgb(6, 54, 56);
+    background-color: #23bb9f;
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,7 +74,7 @@
   }
 
   .timerCirclePomodoro{
-    background-color: rgb(211, 45, 45);
+    background-color: rgb(190, 175, 36);
   }
   
   .progressBar {
@@ -75,7 +85,7 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 20px solid rgb(2, 255, 213);
+    border: 20px solid #E8F6EF;
     border-top-color: transparent;
     border-right-color: transparent;
    
@@ -89,7 +99,7 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 20px solid rgb(255, 2, 57);
+    border: 20px solid #E8F6EF;
     border-top-color: transparent;
     border-right-color: transparent;
    
@@ -98,14 +108,20 @@
 
   
   .progressBarAnimation {
+    animation-play-state: running;
     animation: progress 5s linear infinite;
     animation-fill-mode: forwards;
-  }
-
-  .progressBarStopped {
-    animation: none;
+  
   }
   
+  .progressBarAnimationPause {
+    animation-play-state:paused;
+    -webkit-animation-play-state:paused;
+
+
+  }
+
+
   .timerText {
     font-size: 4rem;
     
@@ -115,6 +131,9 @@
   @keyframes progress {
     0% {
       transform: rotate(0deg);
+    }
+    50%{
+      transform: rotate(180deg);
     }
     100% {
       transform: rotate(360deg);

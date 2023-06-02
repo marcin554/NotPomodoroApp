@@ -12,8 +12,7 @@ import { BrowserRouter } from 'react-router-dom';
 import NavigationMenu from './pages/components/NavigationMenu';
 import { getSettings } from './utils/utils';
 import { useEffect, useState } from 'react';
-
-
+import { CssBaseline } from '@mui/material';
 
 
 

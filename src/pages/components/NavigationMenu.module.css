@@ -1,37 +1,31 @@
 .container {
+ 
+  padding: 25%;
 
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: repeat(1);
-  grid-template-rows: repeat(6, 1fr);
-  border-radius: 10px;
-
-
-  background: rgba(34, 182, 133, 1);
-  margin-left: 0%;
 
 }
 
 
 
 .menuChoice {
-  border-radius: 15px;
+ 
+  
+color: #E8F6EF;
+  width: 15vw;
+  height: 4vw;
 
-  width: 8vw;
-  height: 6vw;
-  border: mediumspringgreen 0.2vw solid;
 
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  margin-top: 6%;
-  box-shadow: inset 5px black;
+
+  
   font-size: 1.5vw;
   transform: scale(1);
   transform-origin: center center;
   text-rendering: auto;
-  background-color: rgb(45, 204, 151);
+ 
 
 }
 
@@ -42,6 +36,6 @@
 
 .menuChoice:hover {
 
-  background-color: rgb(24, 150, 108);
+  background-color: #1b9C85;
   transform: scale(0.9)
 }

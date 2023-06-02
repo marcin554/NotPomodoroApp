@@ -1,22 +1,51 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ProjectComponent from './components/ProjectComponent';
-import Container from './components/Container';
+import _Container from './components/Container';
+import { getProjects, getSettings } from '../utils/utils';
+
 
 
 
 const ProjectsIndex = () => {
 
-    const dispatch = useDispatch();
-    //useSelector
-    const projects = useSelector((state) => state.projectsStore);
+
+  const [projects, setProjectList] = useState();
     
+
+  useEffect(() => {
+      getProjects().then((tempSettings) => {
+      
+          setProjectList(tempSettings);
+         
+       
+      })
+  }, [])
+
+  const [settings, setSettings] = useState();
     
+
+  useEffect(() => {
+      getSettings().then((tempSettings) => {
+      
+          setSettings(tempSettings.settings);
+       
+       
+      })
+  }, [])
+ 
+
+
 
   return (
     <div>
    
-    <Container ComponentPage={<ProjectComponent projects={projects} />} />
+
+  {settings && projects ? 
+    <_Container ComponentPage={<ProjectComponent projects={projects} settings={settings} />} />
+    : null
+  } 
+    
 
       
 

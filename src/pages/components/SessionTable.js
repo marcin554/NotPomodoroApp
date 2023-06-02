@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styles from "./SessionTable.module.css";
+import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 
 const SessionTable = (sessionObject) => {
@@ -44,8 +46,15 @@ const SessionTable = (sessionObject) => {
               Time End
             </th>
             <th scope="col" className={styles.thColor + "px-6 py-3 "}>
-              Options
+              Timer Type
             </th>
+            <th scope="col" className={`${styles.thColor} px-6 py-3`}>
+              Timer Name
+            </th>
+            <th scope="col" className={styles.thColor + "px-6 py-3 "}>
+              Delete
+            </th>
+            
           </tr>
         </thead>
 
@@ -59,7 +68,7 @@ const SessionTable = (sessionObject) => {
                 key={index}
               >
                 <td scope="row" className="px-6 py-4 whitespace-nowrap ">
-                  {!element.timerType || element.timerType === "normalTimer" ? "Normal Timer" : "Pomodoro Timer"
+                  {!element.timerType || element.timerType === "normalTimer" ? <QueryBuilderIcon fontSize="large" /> : <HourglassBottomIcon fontSize="large"/>
                   
                   }
                   {" "}
@@ -72,6 +81,13 @@ const SessionTable = (sessionObject) => {
                 <td className={`${styles.tdColor} px-6 py-4 `}>
                   {element.timeEnd}
                 </td>
+                <td className="px-6 py-4 ">
+                  {!element.timerGoal ? "No Goal" : element.timerGoal}
+               
+                </td>
+                <td className={`${styles.tdColor} px-6 py-4 `}>
+                  {!element.timerProjectName ? "No Name" : element.timerProjectName}
+                  </td>
                 <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteSession(element)}}>Delete</td>
               </tr>
             ))}

@@ -122,7 +122,7 @@ function handleStoreGet(event, { key }) {
 
 
   event.returnValue = value ;
-  console.log(value);
+
 
 }
 
@@ -200,7 +200,73 @@ function handleSetTitle (event, title) {
   win.setTitle(title)
 }
 
+function hoursToMinutes (hours) {
+  return hours * 60;
 
+}
+function updateProject (event, project, session) {
+
+
+  const projects = store.get('projects') || [];
+  let find = projects.find(item => item.project.projectName === project.project.timerProjectName);
+  if(find) {
+    find.project.timeSpendTotal = find.project.timeSpendTotal + (hoursToMinutes(project.project.timeDuration.h)) + project.project.timeDuration.m;
+  
+  }
+
+  
+  store.set('projects', projects);
+
+  
+  
+
+
+}
+
+function updateGoal (event, goal, session) {
+
+  const goals = store.get('goals') || [];
+
+
+  let find = goals.find(item => item.goal.goalName === goal.goal.timerProjectName);
+  console.log('find', find)
+  if(find) {
+    find.goal.timeSpendTotal = find.goal.timeSpendTotal + (hoursToMinutes(goal.goal.timeDuration.h)) + goal.goal.timeDuration.m;
+    find.goal.timeGoal = find.goal.timeGoal - (hoursToMinutes(goal.goal.timeDuration.h)) - goal.goal.timeDuration.m;
+
+  
+  }
+  console.log('find2', find)
+
+  store.set('goals', goals);
+
+}
+
+
+function updateStatus(event, status) {
+  const settings = store.get('settings') || [];
+
+
+ 
+  if(status.goalOrProject === 'project'){
+    console.log('abc')
+    settings.settings.defaultProject.workingOn  = !settings.settings.defaultProject.workingOn;
+  }
+  else if (status.goalOrProject === 'goal'){
+    settings.settings.defaultGoal.workingOn = !settings.settings.defaultGoal.workingOn;
+  }
+
+  store.set('settings', settings);
+
+}
+
+
+// updateProject: (project, session) => {
+//   window.ipcRenderer.send('update-project', {project, session})
+// },
+// updateGoal: (goal, session) => {
+//   window.ipcRenderer.send('update-goal', {goal, session})
+// }
 
 function createWindow() {
   // Create the browser window.
@@ -240,6 +306,9 @@ app.whenReady().then(( ) => {
   ipcMain.on('update-settings', updateSettings);
   ipcMain.on('update-project', updateProject);
   ipcMain.on('update-goal', updateGoal);
+  ipcMain.on('update-status', updateStatus);
+
+
 
 
  

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getSettings } from '../utils/utils'
-import Container from './components/Container';
+import _Container from './components/Container';
 
 
 
@@ -25,7 +25,7 @@ const SettingsPage = () => {
  
 
     return (
-      <Container ComponentPage={  <div>
+      <_Container ComponentPage={  <div>
 
         {_settings && (
           <div>

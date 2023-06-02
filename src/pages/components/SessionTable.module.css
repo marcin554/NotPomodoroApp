@@ -1,7 +1,7 @@
 .container{
     display: grid;
     max-height: 90vh;
-    width: 40vw;
+    width: 60vw;
     overflow-y: scroll;
     overflow-x: clip;
     scrollbar-width: none;  /* Firefox */
@@ -15,12 +15,12 @@
 
 .deleteButton
 {
-    background-color: rgb(202, 49, 49);
+    background-color: #f0c467;
 }
 
 .deleteButton:hover
 {
-    background-color: rgb(255, 34, 34);
+    background-color: #f74a2b;
     cursor: pointer;
 }
 td{
@@ -29,7 +29,7 @@ td{
 
 
 tr{
-    background-color: rgb(49, 184, 132);
+    background-color: #1B9C85;
    
 }
 
@@ -47,15 +47,17 @@ table{
 }
 
 th{
-    background-color: rgb(35, 37, 112);
+    color: #4C4C6D;
+    background-color: #E8F6EF;
 }
 
 
 .thColor{
-    background-color: rgb(35, 37, 112);
+    color: #4C4C6D;
+    background-color: #E8F6EF;
 }
 .tdColor{
-  
-    background-color: rgb(35, 37, 112);
+  color: #4C4C6D;
+    background-color: #E8F6EF;
 }
 

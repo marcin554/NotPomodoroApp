@@ -104,4 +104,10 @@ export const _updateProject = (project, session) => {
   window.electronAPI.store.updateProject(project, session);
 }
 
+export const _updateStatus = (projectOrGoal) => {
+  
+  window.electronAPI.store.updateStatus(projectOrGoal);
+}
+
+
 

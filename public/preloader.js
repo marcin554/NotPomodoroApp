@@ -38,6 +38,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     updateGoal: (goal, session) => {
       window.ipcRenderer.send('update-goal', {goal, session})
+    },
+    updateStatus: (goalOrProject) => {
+      window.ipcRenderer.send('update-status', {goalOrProject})
     }
     
 
