@@ -4,6 +4,7 @@ import { updateTime, resetTimer } from "../../slices/timerSlice";
 import { current } from "@reduxjs/toolkit";
 import useCountDown from "react-countdown-hook";
 
+
 import styles from "./TimerMain.module.css";
 
 import {
@@ -13,27 +14,56 @@ import {
   TfiExchangeVertical,
 } from "react-icons/tfi";
 import { useEffect, useState } from "react";
+import { getSettings } from "../../utils/utils";
+import {_GetSettings} from "../../utils/utils";
 
 const timer = new Timer({ label: "Main-Timer" });
 const timer2 = new Timer({ label: "Pomodoro-Timer" });
 
-const initialTime = 60 * 1000; // initial time in milliseconds, defaults to 60000
-const interval = 1000;
+
 
 const typeArray = {
   pomodoro: "pomodoro",
   normalTimer: "normalTimer",
 };
 
+const getSettings_ = async () => {
+  const settings = await getSettings();
+  return settings.settings;
+};
+
+
+const typeTimerGoal = {
+  none: "none",
+  project: "project",
+  goal: "goal",
+}
 
 
 let currentDateTime;
 let finishDate;
 
-const TimerMain = () => {
-  let [currentType, setType] = useState(typeArray.normalTimer);
+const TimerMain = (settings) => {
+
   let [isPaused, setPause] = useState(false);
   let [isStarted, setStarted] = useState(false);
+
+
+
+let [currentType, setType] = useState(settings.settings.defaultTimerType);
+
+
+
+  // setType(settings_.defaultTimerType);
+const initialTime = settings.settings.defaultPomodoroTimerDuration * 60000;
+const interval = 500;
+
+
+
+
+
+
+
 
 
   const [timeLeft, { start, pause, resume, reset }] = useCountDown(
@@ -72,28 +102,44 @@ const TimerMain = () => {
     window.electronAPI.store.set("session", testSession);
   };
 
-  const handleStoreGet = async () => {
-    try {
-      const value = await window.electronAPI.store.get("sessions");
-      console.log(value);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
 
   function createSession(tStart, tEnd, duration) {
-    console.log(tStart)
+  
+
+    let typeTimer;
+    let projectName; 
+
+    if(settings.settings.defaultProject.workingOn === true) {
+     typeTimer = typeTimerGoal.project
+      projectName = settings.settings.defaultProject.projectName
+   }
+   else if(settings.settings.defaultGoal.workingOn === true) {
+     typeTimer = typeTimerGoal.goal
+      projectName = settings.settings.defaultGoal.goalName
+   }
+   else {
+    projectName = "none";
+     typeTimer = typeTimerGoal.none
+   }
+
     let session = {
       timerType: currentType,
       timeStart: tStart.toString(),
       timeEnd: tEnd.toString(),
       timeDuration: duration,
+      timerGoal: typeTimer,
+      timerProjectName: projectName,
+
     };
 
     handleStoreSet(session);
 
     return session;
   }
+
+
+
 
   useEffect(() => {
     updateTimerDisplay(timeLeft);
@@ -192,7 +238,8 @@ const TimerMain = () => {
       createSession(
         getCurrentFormatedDate(),
         getFinishedFormatedDate(),
-        timer.time()
+        timer.time(),
+
       );
 
       setStarted(false);
@@ -330,11 +377,18 @@ const TimerMain = () => {
           >
             <TfiExchangeVertical className={styles.middleIcon} />
           </button>
+
+          <form className="styles.buttonTimer">
+a
+          </form>
         </div>
       </div>
+      
     </>
+    
   );
 };
+
 
 
 export default TimerMain;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './PickGoalOrProject.module.css'
-import { getSettings, getGoals, getProjects, _setNewProject, setNewGoal } from '../../utils/utils';
+import { getSettings, getGoals, getProjects, _setNewProject, setNewGoal, createSettings } from '../../utils/utils';
 import { Button, InputLabel, TextField } from '@mui/material';
 
 
@@ -35,7 +35,7 @@ const PickGoalOrProject = () => {
     useEffect(() => {
         getProjects().then((tempProjects) => {
             setImportProjects(tempProjects);
-            console.log(tempProjects)
+            console.log('teemo', tempProjects)
         })
     }, [])
         
@@ -69,25 +69,38 @@ const PickGoalOrProject = () => {
         console.log('added goal to store')
     }
 
-    async function changeSettings(value, changeWhat){
-        let settings = importSettings;
 
-        if(changeWhat === 'Goal'){
-            settings.goalName = value;
-            settings.workingOn = true;
+    async function changeSettings(project, changeWhat){
+
+        // createSettings();
+        let tempSettings = await getSettings();
+        let settings = tempSettings.settings;
+   
+   
+      
+        
+
+       
+
+        if (changeWhat === 'project') {
+            settings.defaultProject.projectName = project;
+            settings.defaultProject.workingOn = true;
+            console.log(project);
+         
         }
-        else if(changeWhat === 'Project'){
-            settings.projectName = value;
-            settings.workingOn = true;
-        }
 
 
-        await window.electronAPI.store.set('settings', settings);
+
+ 
+
+     
+        await window.electronAPI.store.updateSettings( settings);
         console.log('changed settings')
 
 
     }
  
+    
 
 
     return (
@@ -120,17 +133,29 @@ const PickGoalOrProject = () => {
                             addGoal(document.getElementById('GoalName').value, document.getElementById('TimeGoal').value)
                         }}> test </Button>
                     </form>
-                <label for="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
-                <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+                    
+             
+                <form>
+                <select id="projects" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                 
+               
+               {!importProjects && <option value="No Projects">No Projects</option>}
+               {importProjects && importProjects.map((project) => {
+                     return <option value={project.project.projectName}>{project.project.projectName} </option> 
+                     
+                        
+                })}
+
+                 
                 
-                
-                    <option>Goal 1</option>
-                    <option>Goal 2</option>
-                    <option>Goal 3</option>
-                    <option>Goal 4</option>
-                    <option>Goal 5</option>
-                    <option>Goal 6</option>
                 </select>
+                <Button variant="contained" onClick={() => {
+                            changeSettings(document.getElementById('projects').value, 'project')
+                        }
+                }
+                >Change Project</Button>
+                </form>
                 </div>
             )  
             } 

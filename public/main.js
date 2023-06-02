@@ -28,7 +28,14 @@ const sessionsSchema = {
         timeDuration: {},
         timerType: {
           type: "string"
+        },
+        timerGoal: {
+          type: "string"
+        },
+        timerProjectName: {
+          type: "string"
         }
+
       },
     },
   },
@@ -85,9 +92,19 @@ const settingsSchema = {
         },
         defaultProject: {
           type: "string",
+          workingOn: {
+            type: "boolean",
+
+          }
         },
+        defaultGoal: {
+          type: "string",
+          workingOn: {
+            type: "boolean",
+          }
 
 
+        }
       },
     },
   },
@@ -99,7 +116,7 @@ const store = new Store({ sessionsSchema, projectsSchema, goalsSchema, settingsS
 
 
 function handleStoreGet(event, { key }) {
-
+ 
 
   const value = store.get(key);
 
@@ -111,6 +128,14 @@ function handleStoreGet(event, { key }) {
 
 function setNewProject (event, project) {
   const projects = store.get('projects') || []; 
+ 
+
+  let find = projects.find(item => item.project.projectName === project.project.projectName);
+  if(find) {
+    console.log('project already exists')
+    return;
+  }
+
   projects.push(project); 
 
   store.set('projects', projects);
@@ -162,6 +187,9 @@ function handleDeleteSession(event, sessionValues) {
 function handleStoreSet(event, { key, value }) {
   
   const sessions = store.get('sessions') || []; 
+
+
+  
   sessions.push(value); 
 
   store.set('sessions', sessions);
@@ -210,6 +238,11 @@ app.whenReady().then(( ) => {
   ipcMain.on('set-new-project', setNewProject);
   ipcMain.on('set-new-goal', setNewGoal);
   ipcMain.on('update-settings', updateSettings);
+  ipcMain.on('update-project', updateProject);
+  ipcMain.on('update-goal', updateGoal);
+
+
+ 
 
 
 createWindow();

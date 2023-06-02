@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import setSettings from "../slices/settingsSlice";
+import { current } from "@reduxjs/toolkit";
 
 
 
@@ -12,24 +14,49 @@ export const getSessions = async () => {
 };
 
 export const getProjects = async () => {
-    return window.electronAPI.store.get('projects').then(currentProjects => {
-      return currentProjects;
-    }
-    );
+  
+    let currentProjects = window.electronAPI.store.get('projects');
+      
+   
+     
+    
+    return currentProjects;
+   
+
 
 }
 
+
+
 export const getSettings = () => {
-    return window.electronAPI.store.get('settings').then(currentSettings => {
-      return currentSettings;
+  return window.electronAPI.store.get('settings')
+    .then(currentSettings => {
+      let mySettings = currentSettings;
+      return mySettings;
+    })
+    .catch(error => {
+      console.error(error);
+      throw error; // Optionally re-throw the error
     });
+};
+
+export const test = async () => {
+  try {
+    const currentSettings = await getSettings();
+    let mySettings = currentSettings;
+    return mySettings;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
+};
+
 
 export const getGoals = () => {
-   return window.electronAPI.store.get('goals').then(currentGoals => {
-      return currentGoals;
-    }
-    );
+   let goals = window.electronAPI.store.get('goals');
+    return goals;
+     
+   
 }
 
 export const _setNewProject = (project) => {
@@ -44,6 +71,37 @@ export const setNewGoal = (goal) => {
 
 }
 
+export const createSettings = () => {
 
+  const setting = {
+    defaultTimerType: 'normalTimer',
+    defaultPomodoroTimerDuration: 25,
+    defaultProject: {
+      projectName: '',
+      workingOn: false,
+      
+    },
+    defaultGoal: {
+      goalName: '',
+      workingOn: false,
+    }
+    
+
+
+
+ 
+    
+  }
+
+  window.electronAPI.store.updateSettings(setting);
+}
+
+export const _updateGoal = (goal,session) => {
+  window.electronAPI.store.updateGoal(goal, session);
+}
+
+export const _updateProject = (project, session) => {
+  window.electronAPI.store.updateProject(project, session);
+}
 
 

@@ -24,6 +24,9 @@ export const sessionStoreSlice = createSlice({
   },
 })
 
+
+
+
 // Action creators are generated for each case reducer function
 export const { addEntryToSessionList, resetSessionList, swapList} = sessionStoreSlice.actions
 

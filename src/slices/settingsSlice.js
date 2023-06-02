@@ -1,18 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getSettings, test } from "../utils/utils";
 
 const initialState = {
-    settings: {
-        defaultProject: {
-            projectName: "Project 1",
-            workingOn: false
-        },
-        defaultPomodoroTimerDuration: 25,
-        defaultTimerType: "normalTimer",
-    },
+ 
 }
      
     
-export const settingsSlice = createSlice({
+export const settingsSlice =  createSlice({
     name: "settings",
     initialState,
     reducers: {
@@ -24,14 +18,22 @@ export const settingsSlice = createSlice({
         },
         setSettings: (state, action) => {
             state.settings = action.payload;
-        }
+        },
+    
+            
+            
+        
+   
+
+    
         
     
 
     }
 })
 
-export const { setDefaultProject } = settingsSlice.actions
+
+export const { setDefaultProject, setSettings} = settingsSlice.actions
 
 export default settingsSlice.reducer
 

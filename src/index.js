@@ -10,6 +10,10 @@ import { Provider } from 'react-redux'
 import "./fonts/Poppins-Regular.ttf";
 import { BrowserRouter } from 'react-router-dom';
 import NavigationMenu from './pages/components/NavigationMenu';
+import { getSettings } from './utils/utils';
+import { useEffect, useState } from 'react';
+
+
 
 
 

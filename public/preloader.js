@@ -33,6 +33,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
     updateSettings: (settings) => {
       window.ipcRenderer.send('update-settings', {settings});
     },
+    updateProject: (project, session) => {
+      window.ipcRenderer.send('update-project', {project, session})
+    },
+    updateGoal: (goal, session) => {
+      window.ipcRenderer.send('update-goal', {goal, session})
+    }
+    
+
 
 
 

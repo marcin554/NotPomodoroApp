@@ -21,13 +21,18 @@
   }
   .buttonsDiv{
     display: inline-grid;
-    grid-template-columns: 1fr 1fr 1fr ;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr;
     gap: 0.5rem;
     
     background-color: rgb(12, 80, 57);
     justify-content: center;
     font-size: 3em;
     
+  }
+
+  .buttonTimer:hover{
+    background-color: rgb(12, 80, 57);
+    opacity: 0.8;
   }
   .middleIcon{
     margin: auto;

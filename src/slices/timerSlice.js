@@ -4,9 +4,9 @@ const initialState = {
 
   value:
    {
-    h: 0,
-    m: 0,
-    s: 0,
+    h: '00',
+    m: '00',
+    s: '00',
   }
   
 };
@@ -19,7 +19,9 @@ export const timerSlice = createSlice({
     updateTime: (state, action) => {
    
 
-      
+      if(action.payload.h < 10){
+        action.payload.h = '0' + action.payload.h;
+      }
       if(action.payload.m < 10){
         action.payload.m = '0' + action.payload.m;
       }

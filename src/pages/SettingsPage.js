@@ -11,8 +11,8 @@ const SettingsPage = () => {
 
     useEffect(() => {
         getSettings().then((tempSettings) => {
-          console.log(tempSettings.settings.settings)
-            setSettings(tempSettings.settings.settings);
+          console.log(tempSettings.settings)
+            setSettings(tempSettings.settings);
          
         })
     }, [])
