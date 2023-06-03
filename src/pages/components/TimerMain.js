@@ -75,9 +75,21 @@ const interval = 500;
 
   function updateCheck (projectOrGoal) {
     if(projectOrGoal === "project") {
+     
+      let bool = !workingProject;
+
+      if (bool === true) {
+        setWorkingGoal(false);
+      }
       setWorkingProject(!workingProject);
     }
     else if(projectOrGoal === "goal") {
+    
+      let bool = !workingGoal;
+      if (bool === true) {
+        setWorkingProject(false);
+      }
+
       setWorkingGoal(!workingGoal);
     }
 
