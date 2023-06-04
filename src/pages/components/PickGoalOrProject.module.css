@@ -3,5 +3,7 @@
 @import 'tailwindcss/utilities';
 
 .container{
-    
+    max-height: 90vh;
+    width: 60vw;
 }
+

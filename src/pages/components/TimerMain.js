@@ -76,23 +76,16 @@ const interval = 500;
   function updateCheck (projectOrGoal) {
     if(projectOrGoal === "project") {
      
-      let bool = !workingProject;
+  
 
-      if (bool === true) {
-        setWorkingGoal(false);
-      }
       setWorkingProject(!workingProject);
     }
     else if(projectOrGoal === "goal") {
-    
-      let bool = !workingGoal;
-      if (bool === true) {
-        setWorkingProject(false);
-      }
+
 
       setWorkingGoal(!workingGoal);
     }
-
+    
     _updateStatus(projectOrGoal);
   }
 
@@ -168,19 +161,44 @@ const interval = 500;
 
     };
 
+      // console.log(typeTimer) 
+      // console.time(typeTimerGoal.project)
     if(typeTimer === typeTimerGoal.project) {
       _updateProject(session);
+      
     }
     else if(typeTimer === typeTimerGoal.goal) {
+
+
+      
+      session.timeDuration = timeFromPomodoro(session.timeDuration);
       _updateGoal(session);
+      
+    }
+   
+    if(currentType === typeArray.normalTimer){
+      handleStoreSet(session);
+    }
+    else{
+   
+
+      session.timeDuration = timeFromPomodoro(session.timeDuration);
+      handleStoreSet(session);
     }
 
-    handleStoreSet(session);
+  
 
     return session;
   }
 
 
+  function timeFromPomodoro (time) {
+    time.m = settings.settings.defaultPomodoroTimerDuration - time.m -1;
+    time.s = 60 - time.s;
+    return time;
+
+
+  }
 
 
   useEffect(() => {

@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import styles from './PickGoalOrProject.module.css'
 import { getSettings, getGoals, getProjects, _setNewProject, setNewGoal, createSettings } from '../../utils/utils';
-import { Button, InputLabel, TextField } from '@mui/material';
+import { Avatar, Box, Button, Collapse, Divider, InputLabel, List, ListItem, ListItemAvatar, ListItemText, Menu, MenuItem, Select, TextField } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import FlagIcon from '@mui/icons-material/Flag';
+import FolderIcon from '@mui/icons-material/Folder';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import TuneIcon from '@mui/icons-material/Tune';
+
 
 
 
@@ -20,7 +27,7 @@ const PickGoalOrProject = () => {
 
     useEffect(() => {
         getSettings().then((tempSettings) => {
-            setImportSettings(tempSettings.settings.settings);
+            setImportSettings(tempSettings.settings);
             console.log(tempSettings)
         })
     }, [])
@@ -85,9 +92,21 @@ const PickGoalOrProject = () => {
         if (changeWhat === 'project') {
             settings.defaultProject.projectName = project;
             settings.defaultProject.workingOn = true;
-            console.log(project);
+
 
         }
+        else if (changeWhat === 'goal') {
+            settings.defaultGoal.goalName = project;
+            settings.defaultGoal.workingOn = true;
+
+        }
+        else if (changeWhat === 'timer') {
+            settings.defaultTimerType = project;
+        }
+        else if (changeWhat === 'pomodoroTimerDuration') {
+            settings.defaultPomodoroTimerDuration = project;
+        }
+
 
 
 
@@ -100,66 +119,181 @@ const PickGoalOrProject = () => {
 
     }
 
+    const style = {
+        width: '100%',
+        bgcolor: '#1B9C85',
 
+    };
 
 
     return (
-        <div>
-            <div className={styles.dropdownButton} onClick={() => { toggle() }}>
-                <span className='block mb-2 '>Pick a goal or project</span>
+        <>
+            {importSettings && importGoals && importProjects ?
+                <div className={styles.container}>
 
-                {/* <img  alt="Dropdown Icon" /> */}
-            </div>
+                    {/* import AccessTimeIcon from '@mui/icons-material/AccessTime';
+            import BarChartIcon from '@mui/icons-material/BarChart';
+            import FlagIcon from '@mui/icons-material/Flag';
+            import FolderIcon from '@mui/icons-material/Folder';
+            import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+            import TuneIcon from '@mui/icons-material/Tune'; */}
+
+                    <div>
+                        <List sx={style} component="nav" aria-label="mailbox folders" className="rounded table-auto ">
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <FolderIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Current Project: " secondary={importSettings.defaultProject.projectName}></ListItemText>
+                            </ListItem>
+                            <Divider />
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <FlagIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Current Goal: " secondary={importSettings.defaultGoal.goalName}></ListItemText>
+                            </ListItem>
+                            <Divider />
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <AccessTimeIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Default Timer Type: " secondary={importSettings.defaultTimerType}></ListItemText>
+                            </ListItem>
+                            <Divider />
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <TuneIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Default Pomodoro Time" secondary={importSettings.defaultPomodoroTimerDuration + " min"} ></ListItemText>
+
+                            </ListItem>
+                            <ListItem button={true}>
+                                <ListItemText primary="Change Settings" style={{ textAlign: "center" }} onClick={() => { toggle() }}></ListItemText>
+
+                            </ListItem>
+
+                            
+  <Collapse in={isToggled} >
+
+                                <Box>
+                                
+                                    <ListItem secondaryAction={<Button variant="contained" edge="end" onClick={() => {
+                                        addProject(document.getElementById('ProjectName').innerText)
+                                    }}> Create Project</Button>}>
+                                        <TextField variant="filled" label="Project name" id="ProjectName"></TextField>
+
+                                    </ListItem>
+                                    <Divider />
+
+                                    <ListItem secondaryAction={
+                                        <Button variant="contained" onClick={() => {
+                                            addGoal(document.getElementById('GoalName').innerText, document.getElementById('TimeGoal').innerText)
+                                        }}> test </Button>
+                                    }>
+                                        <TextField variant="filled" label="Goal name" id="GoalName"></TextField>
+                                        <TextField variant="filled" label="Time goal" id="TimeGoal"></TextField>
 
 
-            {isToggled && (
+                                    </ListItem>
+                                    <Divider />
+
+                                    <ListItem secondaryAction={<Button variant="contained" onClick={() => {
+                                        changeSettings(document.getElementById('projects').innerText, 'project')
+                                    }
+                                    }
+                                    >Change Project</Button>}>
+                                        <TextField select helperText="Pick the project you want to run." defaultValue={importProjects[0].project.projectName} id="projects" label="Select Project" >
+
+                                            {importProjects.map((project) => {
+                                                return <MenuItem key={project.project.projectName} value={project.project.projectName}>{project.project.projectName}</MenuItem>
+                                            })}
+                                        </TextField>
+
+                                    </ListItem>
+                                    <Divider />
+                                    <ListItem secondaryAction={
+                                        <Button variant="contained" onClick={() => {
+                                            changeSettings(document.getElementById('goals').innerText, 'goal')
+                                        }
+                                        }
+                                        >Change Goal</Button>
+                                    }>
+                                        <TextField select helperText="Pick the goal you want to run." id="goals" defaultValue={importGoals[0].goal.goalName} label="Select Goal" >
+
+                                            {importGoals.map((goals) => {
+                                                return <MenuItem key={goals.goal.goalName} value={goals.goal.goalName}>{goals.goal.goalName}</MenuItem>
+                                            })}
+                                        </TextField>
+
+                                    </ListItem>
+                                    <Divider />
+                                    <ListItem secondaryAction={
+                                        <Button variant="contained" onClick={() => {
+                                            changeSettings(document.getElementById('timers').innerText, 'timer')
+                                        }
+                                        }
+                                        >Change Timer</Button>
+                                    }>
+
+                                        <TextField id="timers" select helperText="Select new default timer." defaultValue="normalTimer" label="Select Timer" >
 
 
-                <div>
-
-                    <form >
-
-                        <TextField variant="filled" label="ProjectName" id="ProjectName"></TextField>
-                        <Button variant="contained" onClick={() => {
-                            addProject(document.getElementById('ProjectName').value)
-                        }}> test </Button>
-
-
-                    </form>
-                    <form>
-                        <TextField variant="filled" label="GoalName" id="GoalName"></TextField>
-                        <TextField variant="filled" label="TimeGoal" id="TimeGoal"></TextField>
-                        <Button variant="contained" onClick={() => {
-                            addGoal(document.getElementById('GoalName').value, document.getElementById('TimeGoal').value)
-                        }}> test </Button>
-                    </form>
+                                            <MenuItem value="pomodoro">pomodoro</MenuItem>
+                                            <MenuItem value="normalTimer">normalTimer</MenuItem>
+                                        </TextField>
 
 
 
-                    <form>
-                        <select id="projects" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
 
-                            {!importProjects && <option value="No Projects">No Projects</option>}
-                            {importProjects && importProjects.map((project) => {
-                                return <option value={project.project.projectName}>{project.project.projectName} </option>
+                                    </ListItem>
+                                    <Divider />
+                                    <ListItem secondaryAction={
+                                        <Button variant="contained" onClick={() => {
+                                            changeSettings(document.getElementById('pomodoroTimerDuration').value, 'pomodoroTimerDuration')
+
+                                        }
+                                        }
+                                        >Change Pomodoro Time</Button>
+                                    }>
+                                        <TextField id="pomodoroTimerDuration" type="number" helperText="Select new default timer." defaultValue="25" label="Pomodoro Time" >
 
 
-                            })}
+
+                                        </TextField>
 
 
 
-                        </select>
-                        <Button variant="contained" onClick={() => {
-                            changeSettings(document.getElementById('projects').value, 'project')
-                        }
-                        }
-                        >Change Project</Button>
-                    </form>
+
+                                    </ListItem>
+
+
+
+
+
+                                </Box>
+                                </Collapse>
+                            
+                            
+                        </List>
+                    </div>
+
+
                 </div>
-            )
+
+                : <div>loading</div>
             }
-        </div>
+
+        </>
     )
 
 }
