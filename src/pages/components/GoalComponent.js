@@ -24,6 +24,7 @@ const GoalComponent = (settingsAndGoals) => {
 
 
 
+
   }
 
   async function changeGoal(goalName) {
@@ -54,7 +55,7 @@ const GoalComponent = (settingsAndGoals) => {
 
     dispatch(setSettings(settings))
     await window.electronAPI.store.updateSettings(settings);
-    // window.location.reload();
+    window.location.reload();
 
 
 
