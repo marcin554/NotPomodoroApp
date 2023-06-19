@@ -136,20 +136,30 @@ const interval = 500;
   
 
     let typeTimer;
-    let projectName; 
+    let projectName;
+    let goalName; 
 
-    if(settings.settings.defaultProject.workingOn === true) {
-     typeTimer = typeTimerGoal.project
-      projectName = settings.settings.defaultProject.projectName
-   }
-   else if(settings.settings.defaultGoal.workingOn === true) {
-     typeTimer = typeTimerGoal.goal
-      projectName = settings.settings.defaultGoal.goalName
-   }
-   else {
-    projectName = "none";
-     typeTimer = typeTimerGoal.none
-   }
+    if (settings.settings.defaultProject.workingOn === true || settings.settings.defaultGoal.workingOn === true) {
+      if(settings.settings.defaultProject.workingOn === true) {
+        typeTimer = typeTimerGoal.project
+         projectName = settings.settings.defaultProject.projectName
+      }
+      else {
+        projectName = "none";
+         typeTimer = typeTimerGoal.none
+       }
+    
+      if(settings.settings.defaultGoal.workingOn === true) {
+        typeTimer = typeTimerGoal.goal
+         goalName = settings.settings.defaultGoal.goalName
+      }
+      else {
+        goalName = "none";
+         typeTimer = typeTimerGoal.none
+       }
+    
+
+    }
 
     let session = {
       timerType: currentType,
@@ -158,44 +168,54 @@ const interval = 500;
       timeDuration: duration,
       timerGoal: typeTimer,
       timerProjectName: projectName,
+      timerGoalName: goalName,
 
     };
 
-      // console.log(typeTimer) 
-      // console.time(typeTimerGoal.project)
-    if(typeTimer === typeTimerGoal.project) {
-      _updateProject(session);
-      
-    }
-    else if(typeTimer === typeTimerGoal.goal) {
+    (currentType);
+      if (currentType === typeArray.normalTimer) {
 
+        if (typeTimer === typeTimerGoal.project || typeTimer === typeTimerGoal.goal) {
+          if (typeTimer === typeTimerGoal.project) {
+            _updateProject(session);
+          }
+          if (typeTimer === typeTimerGoal.goal) {
+            _updateGoal(session);
+          }
+        }
+     
+        handleStoreSet(session);
 
-      
-      session.timeDuration = timeFromPomodoro(session.timeDuration);
-      _updateGoal(session);
-      
-    }
+      }
+      else if (currentType = typeArray.pomodoro) {
+        session.timeDuration = timeFromPomodoro(session.timeDuration);
+
+        if (typeTimer === typeTimerGoal.project || typeTimer === typeTimerGoal.goal) {
+          if (typeTimer === typeTimerGoal.project) {
+            _updateProject(session);
+          }
+          if (typeTimer === typeTimerGoal.goal) {
+            _updateGoal(session);
+          }
+        }
+        handleStoreSet(session);
+      }
+
    
-    if(currentType === typeArray.normalTimer){
-      handleStoreSet(session);
-    }
-    else{
-   
 
-      session.timeDuration = timeFromPomodoro(session.timeDuration);
-      handleStoreSet(session);
-    }
-
-  
 
     return session;
   }
 
 
   function timeFromPomodoro (time) {
-    time.m = settings.settings.defaultPomodoroTimerDuration - time.m -1;
-    time.s = 60 - time.s;
-    return time;
+    let newTime = time;
+
+    newTime.m = settings.settings.defaultPomodoroTimerDuration - time.m -1;
+    newTime.s = 60 - time.s;
+
+
+    return newTime;
 
 
   }
@@ -284,11 +304,11 @@ const interval = 500;
 
 
     if (!timer.isStarted() && !timer.isRunning()) {
-      console.log('started!')
+      ('started!')
       clearInterval();
       currentDateTime = new Date();
       timer.start();
-      console.log(timer.time())
+      (timer.time())
       setInterval(updateTimerDisplay, 200);
       setStarted(true);
     }
@@ -311,7 +331,7 @@ const interval = 500;
     }
     else if (timer.isPaused()) {
       setPause(false);
-      console.log('abc')
+      ('abc')
 
       timer.resume();
 
@@ -362,17 +382,17 @@ const interval = 500;
       dispatch(updateTime(changeToMinutes(atimeLeft)));
 
     } else if (!timer.isPaused() && timer.isRunning()) {
-      console.log(timer.time());
+      (timer.time());
       dispatch(updateTime(timer.time()));
     }
   }
 
   function checkStatus() {
-    console.log("Is paused?", timer.isPaused());
-    console.log("Is running?", timer.isRunning());
-    console.log("Is started?", timer.isStarted());
-    console.log("Current session list", sessionRecords);
-    console.log(stateTime);
+    ("Is paused?", timer.isPaused());
+    ("Is running?", timer.isRunning());
+    ("Is started?", timer.isStarted());
+    ("Current session list", sessionRecords);
+    (stateTime);
   }
 
   return (

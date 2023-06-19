@@ -12,7 +12,7 @@ const SettingsPage = () => {
 
     useEffect(() => {
         getSettings().then((tempSettings) => {
-          console.log(tempSettings.settings)
+      
             setSettings(tempSettings.settings);
          
         })

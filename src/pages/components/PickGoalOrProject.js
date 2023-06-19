@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './PickGoalOrProject.module.css'
-import { getSettings, getGoals, getProjects, _setNewProject, setNewGoal, createSettings } from '../../utils/utils';
+import { getSettings, getGoals, getProjects, _setNewProject, _setNewGoal, createSettings } from '../../utils/utils';
 import { Avatar, Box, Button, Collapse, Divider, InputLabel, List, ListItem, ListItemAvatar, ListItemText, Menu, MenuItem, Select, TextField } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -28,21 +28,24 @@ const PickGoalOrProject = () => {
     useEffect(() => {
         getSettings().then((tempSettings) => {
             setImportSettings(tempSettings.settings);
-            console.log(tempSettings)
+          
+
         })
     }, [])
 
     useEffect(() => {
         getGoals().then((tempGoals) => {
             setImportGoals(tempGoals);
-            console.log('goals', tempGoals)
+            
+           
         })
     }, [])
 
     useEffect(() => {
         getProjects().then((tempProjects) => {
             setImportProjects(tempProjects);
-            console.log('teemo', tempProjects)
+    
+     
         })
     }, [])
 
@@ -71,9 +74,9 @@ const PickGoalOrProject = () => {
             timeSpendThisWeek: 0,
         }
 
-
-        await setNewGoal(goal)
-        console.log('added goal to store')
+   
+        await _setNewGoal(goal)
+    
     }
 
 
@@ -114,7 +117,7 @@ const PickGoalOrProject = () => {
 
 
         await window.electronAPI.store.updateSettings(settings);
-        console.log('changed settings')
+ 
 
 
     }
@@ -125,10 +128,11 @@ const PickGoalOrProject = () => {
 
     };
 
-
+  
     return (
         <>
-            {importSettings && importGoals && importProjects ?
+        
+            {importSettings ?
                 <div className={styles.container}>
 
                     {/* import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -196,21 +200,22 @@ const PickGoalOrProject = () => {
 
                                     <ListItem secondaryAction={
                                         <Button variant="contained" onClick={() => {
-                                            addGoal(document.getElementById('GoalName').innerText, document.getElementById('TimeGoal').innerText)
-                                        }}> test </Button>
+                                            addGoal(document.getElementById('GoalName').value, document.getElementById('TimeGoal').value)
+                                        }}> Create Goal </Button>
                                     }>
-                                        <TextField variant="filled" label="Goal name" id="GoalName"></TextField>
-                                        <TextField variant="filled" label="Time goal" id="TimeGoal"></TextField>
+                                       <TextField variant="filled" label="Goal name" id="GoalName"></TextField>
+                                        <TextField variant="filled" label="Time Goal" id="TimeGoal"></TextField>
 
 
                                     </ListItem>
                                     <Divider />
-
+                                    {importProjects ?
                                     <ListItem secondaryAction={<Button variant="contained" onClick={() => {
                                         changeSettings(document.getElementById('projects').innerText, 'project')
                                     }
                                     }
                                     >Change Project</Button>}>
+                                      
                                         <TextField select helperText="Pick the project you want to run." defaultValue={importProjects[0].project.projectName} id="projects" label="Select Project" >
 
                                             {importProjects.map((project) => {
@@ -219,7 +224,9 @@ const PickGoalOrProject = () => {
                                         </TextField>
 
                                     </ListItem>
+                                    : null}
                                     <Divider />
+                                    {importGoals ?
                                     <ListItem secondaryAction={
                                         <Button variant="contained" onClick={() => {
                                             changeSettings(document.getElementById('goals').innerText, 'goal')
@@ -227,14 +234,17 @@ const PickGoalOrProject = () => {
                                         }
                                         >Change Goal</Button>
                                     }>
+                                        
                                         <TextField select helperText="Pick the goal you want to run." id="goals" defaultValue={importGoals[0].goal.goalName} label="Select Goal" >
 
                                             {importGoals.map((goals) => {
                                                 return <MenuItem key={goals.goal.goalName} value={goals.goal.goalName}>{goals.goal.goalName}</MenuItem>
                                             })}
                                         </TextField>
+                                     
 
                                     </ListItem>
+                                       : <></>}
                                     <Divider />
                                     <ListItem secondaryAction={
                                         <Button variant="contained" onClick={() => {

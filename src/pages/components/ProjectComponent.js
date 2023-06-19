@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PickGoalOrProject from './PickGoalOrProject'
 import { Switch } from '@mui/material'
 import { getSettings } from '../../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSettings } from '../../slices/settingsSlice'
 import styles from './SessionTable.module.css'
-
 
 
 
@@ -17,7 +16,7 @@ const ProjectComponent = (projects) => {
 
   let rSettings = useSelector((state) => state.settingsStore.settings);
 
-
+  const [nProjects, setNewProjects] = useState(projects);
 
   function checkedOrNot(project) {
 
@@ -32,9 +31,38 @@ const ProjectComponent = (projects) => {
 
   }
 
+  function setCheckedInOnLoad() {
+    let nProjectCopy = {...nProjects}
+    nProjectCopy.projects.map((project) => {
+      project.checked = checkedOrNot(project.project.projectName)
+    })
+    setNewProjects(nProjectCopy);
+  }
+
+  useEffect(() => {
+    setCheckedInOnLoad();
+  }, []);
+
   async function changeProject(projectName) {
     let tempSettings = await getSettings();
     let settings = tempSettings.settings;
+
+
+    let nProjectCopy = {...nProjects}
+    nProjectCopy.projects.map((project) => {
+
+      if (project.project.projectName === projectName) {
+        project.checked = !project.checked;
+ 
+      }
+      else {
+        project.checked = false;
+      }
+     
+    })
+
+    setNewProjects(nProjectCopy);
+
 
     if (settings.defaultProject.projectName === projectName) {
 
@@ -57,7 +85,7 @@ const ProjectComponent = (projects) => {
 
     dispatch(setSettings(settings))
     await window.electronAPI.store.updateSettings(settings);
-    window.location.reload();
+
 
 
 
@@ -80,13 +108,12 @@ const ProjectComponent = (projects) => {
         </thead>
         <tbody>
 
-          {projects.projects ?
+          {nProjects.projects ?
             <>
 
-              {projects.projects.length === 0 ? <li>No projects</li> : <>
-                {projects.projects.map((project) => (
-                  console.log('dsadsadadasdsad', project),
-
+              {nProjects.projects.length === 0 ? <li>No projects</li> : <>
+                {nProjects.projects.map((project) => (
+                 
                   <tr
                     className="border-b border-gray-200 dark:border-gray-700"
 
@@ -95,7 +122,7 @@ const ProjectComponent = (projects) => {
                     <td className={`${styles.tdColor} px-6 py-4 `}>{project.project.timeSpendTotal} min</td>
                     <td className="px-6 py-4 ">{project.project.timeSpendThisWeek} min</td>
                      <td className={`${styles.tdColor} px-6 py-4 `}></td>
-                     <td className="px-6 py-4 "><Switch checked={checkedOrNot(project.project.projectName)} label="Pick project" onClick={() => { changeProject(project.project.projectName) }} /> </td>
+                     <td className="px-6 py-4 "><Switch checked={project.checked} label="Pick project" onClick={() => { changeProject(project.project.projectName)  }} /> </td>
 
                   </tr>
 
@@ -104,7 +131,7 @@ const ProjectComponent = (projects) => {
 
 
               </>}
-
+          
             </>
 
             : null

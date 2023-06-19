@@ -3,13 +3,13 @@
 
 
 // function createSessionStorage(session) {
-//     console.log(session);
+//     (session);
   
 //     ipcRenderer.send('store-set', { key: 'sessions', value: { session } });
   
 //     ipcRenderer.once('store-get', (event, response) => {
 //       const sessionData = response.value;
-//       console.log(sessionData);
+//       (sessionData);
 //       // Use the sessionData as needed
 //     });
 //   }
@@ -34,8 +34,8 @@
 
 // // Use dot-notation to access nested properties
 // // store.set('foo.bar', true);
-// // console.log(store.get('foo'));
+// // (store.get('foo'));
 // // //=> {bar: true}
 
 // // store.delete('unicorn');
-// // console.log(store.get('unicorn'));
+// // (store.get('unicorn'));

@@ -13,9 +13,17 @@ const ProjectsIndex = () => {
   const [projects, setProjectList] = useState();
     
 
+
   useEffect(() => {
       getProjects().then((tempSettings) => {
       
+        if(tempSettings != null){
+          tempSettings.forEach(element => {
+          
+            element.checked = false;
+          });
+        }
+       
           setProjectList(tempSettings);
          
        

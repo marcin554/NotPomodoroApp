@@ -17,7 +17,7 @@ const SessionIndex = () => {
     const fetchData = async () => {
       try {
         let value = await getSessions();
-        console.log(value);
+      
         dispatch(swapList(value));
       } catch (error) {
         console.error(error);
@@ -30,7 +30,7 @@ const SessionIndex = () => {
   
   const sessionRecords = useSelector((state) => state.sessionStore);
 
-  console.log(sessionRecords);
+
 
   return (
     <>

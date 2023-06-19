@@ -18,7 +18,7 @@ const SessionTable = (sessionObject) => {
 
   const deleteSession = (timeStart) => {
     window.electronAPI.store.delete(timeStart);
-    console.log('deleted')
+    ('deleted')
 
     
 
@@ -46,10 +46,10 @@ const SessionTable = (sessionObject) => {
               Time End
             </th>
             <th scope="col" className={styles.thColor + "px-6 py-3 "}>
-              Timer Type
+              Goal Name
             </th>
             <th scope="col" className={`${styles.thColor} px-6 py-3`}>
-              Timer Name
+              Project Name
             </th>
             <th scope="col" className={styles.thColor + "px-6 py-3 "}>
               Delete
@@ -82,7 +82,7 @@ const SessionTable = (sessionObject) => {
                   {element.timeEnd}
                 </td>
                 <td className="px-6 py-4 ">
-                  {!element.timerGoal ? "No Goal" : element.timerGoal}
+                  {!element.timerGoalName ? "none" : element.timerGoal}
                
                 </td>
                 <td className={`${styles.tdColor} px-6 py-4 `}>

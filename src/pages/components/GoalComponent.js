@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSettings } from '../../slices/settingsSlice';
 import { Switch } from '@mui/material';
 import { getSettings } from '../../utils/utils';
-import styles from './SessionTable.module.css'
+import styles from './SessionTable.module.css';
+
 
 
 const GoalComponent = (settingsAndGoals) => {
-  console.log(settingsAndGoals);
+
   const dispatch = useDispatch();
   dispatch(setSettings(settingsAndGoals.settings))
 
   let rSettings = useSelector((state) => state.settingsStore.settings);
+
+  const [nGoals, setNewGoals] = useState(settingsAndGoals.goals);
 
   function checkedOrNot(project) {
 
@@ -27,15 +30,47 @@ const GoalComponent = (settingsAndGoals) => {
 
   }
 
+  function setCheckedInOnLoad() {
+  
+    let _nGoals = {...nGoals}
+
+
+    Object.values(nGoals).map((project) => {
+      project.checked = checkedOrNot(project.goal.goalName)
+    })
+
+    
+    setNewGoals(_nGoals);
+  }
+
+  useEffect(() => {
+    setCheckedInOnLoad();
+  }, []);
+
+
   async function changeGoal(goalName) {
     let tempSettings = await getSettings();
     let settings = tempSettings.settings;
-    console.log('sadsdasad', goalName)
-    console.log('dsadsadsadsa', settings.defaultGoal.goalName)
+
+    let nCopyGoals = {...nGoals}
+    Object.values(nCopyGoals).map((project) => {
+
+      if (project.goal.goalName=== goalName) {
+        project.checked = !project.checked;
+ 
+      }
+      else {
+        project.checked = false;
+      }
+     
+    })
+
+    setNewGoals(nCopyGoals);
+
     if (settings.defaultGoal.goalName === goalName) {
-     
+
       if (settings.defaultGoal.workingOn === true) {
-     
+
         settings.defaultGoal.workingOn = false;
       }
       else {
@@ -44,18 +79,13 @@ const GoalComponent = (settingsAndGoals) => {
       }
     }
     else {
-
-
-
       settings.defaultGoal.goalName = goalName
       settings.defaultGoal.workingOn = true;
-
-
     }
 
     dispatch(setSettings(settings))
     await window.electronAPI.store.updateSettings(settings);
-    window.location.reload();
+
 
 
 
@@ -65,46 +95,49 @@ const GoalComponent = (settingsAndGoals) => {
   return (
     <div className={`${styles.container} shadow-md sm:rounded-lg`}>
 
-<table className="rounded table-auto ">
-<thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
+      <table className="rounded table-auto ">
+        <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
           <tr>
-          <th scope="col" className="px-6 py-3 ">Goal Name</th>
-          <th scope="col" className="px-6 py-3 ">Time Goal</th>
-          <th scope="col" className="px-6 py-3 ">Time Spend This Week</th>
-          <th scope="col" className="px-6 py-3 ">Time Spend Total</th>
-          <th scope="col" className="px-6 py-3 ">Delete</th>
-          <th scope="col" className="px-6 py-3 ">Choose Goal</th>
+            <th scope="col" className="px-6 py-3 ">Goal Name</th>
+            <th scope="col" className="px-6 py-3 ">Time Goal</th>
+            <th scope="col" className="px-6 py-3 ">Time Spend This Week</th>
+            <th scope="col" className="px-6 py-3 ">Time Spend Total</th>
+            <th scope="col" className="px-6 py-3 ">Delete</th>
+            <th scope="col" className="px-6 py-3 ">Choose Goal</th>
           </tr>
         </thead>
         <tbody>
-
-          {settingsAndGoals.goals ?
+ 
+          {nGoals ?
             <>
 
-              {settingsAndGoals.goals.length === 0 ? <li>No Goals</li> : <>
-                {settingsAndGoals.goals.map((project) => (
+              {nGoals.length === 0 ? <li>No Goals</li> : <> 
+ 
+              <>
+                {Object.values(nGoals).map((project) => (
 
 
-<tr
-className="border-b border-gray-200 dark:border-gray-700"
+                  <tr
+                    className="border-b border-gray-200 dark:border-gray-700"
 
->
-<td className="px-6 py-4 ">{project.goal.goalName}</td>
-<td className={`${styles.tdColor} px-6 py-4 `}>{project.goal.timeGoal} min</td>
-<td className="px-6 py-4 ">{project.goal.timeSpendThisWeek} min</td>
-<td className={`${styles.tdColor} px-6 py-4 `}>{project.goal.timeSpendTotal} min</td>
-<td className="px-6 py-4 "></td>
-<td className={`${styles.tdColor} px-6 py-4 `}><Switch checked={checkedOrNot(project.goal.goalName)} label="Pick project" onClick={() => { changeGoal(project.goal.goalName) }} /> </td>
+                  >
+                    <td className="px-6 py-4 ">{project.goal.goalName}</td>
+                    <td className={`${styles.tdColor} px-6 py-4 `}>{project.goal.timeGoal} min</td>
+                    <td className="px-6 py-4 ">{project.goal.timeSpendThisWeek} min</td>
+                    <td className={`${styles.tdColor} px-6 py-4 `}>{project.goal.timeSpendTotal} min</td>
+                    <td className="px-6 py-4 "></td>
+                    <td className={`${styles.tdColor} px-6 py-4 `}><Switch checked={project.checked} label="Pick project" onClick={() => { changeGoal(project.goal.goalName) }} /> </td>
 
                   </tr>
 
                 ))}
-
-
+</>
+             
 
               </>}
 
             </>
+            
 
             : null
           }

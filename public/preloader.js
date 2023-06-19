@@ -1,7 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 window.ipcRenderer = require('electron').ipcRenderer;
 
-console.log('Preloader script loaded');
+('Preloader script loaded');
 
 contextBridge.exposeInMainWorld('electronAPI', {
   store: {

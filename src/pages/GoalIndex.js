@@ -14,6 +14,7 @@ const GoalIndex = () => {
         getSettings().then((tempSettings) => {
         
           
+           
             setSettings(tempSettings.settings);
          
          
@@ -25,6 +26,13 @@ const GoalIndex = () => {
     useEffect(() => {
         getGoals().then((tempGoals) => 
         {
+          if(tempGoals != null){
+            tempGoals.forEach(element => {
+          
+              element.checked = false;
+            });
+          }
+           
             
             setGoals(tempGoals);
         })

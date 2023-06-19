@@ -3,13 +3,9 @@ const Store = require('electron-store');
 
 const { app, BrowserWindow, ipcMain } = require('electron');
 
-
-
 // projectName: '',
 // timeSpendTotal: '',
 // timeSpendThisWeek: '',
-
-
 
 
 const sessionsSchema = {
@@ -33,6 +29,9 @@ const sessionsSchema = {
           type: "string"
         },
         timerProjectName: {
+          type: "string"
+        },
+        timerGoalName: {
           type: "string"
         }
 
@@ -114,129 +113,209 @@ const store = new Store({ sessionsSchema, projectsSchema, goalsSchema, settingsS
 
 
 
-
 function handleStoreGet(event, { key }) {
- 
+
+
+
 
   const value = store.get(key);
 
+  let sessions = store.get('sessions') || [];
 
-  event.returnValue = value ;
+  if (key === 'goals') {
+ 
+
+
+    sessions.forEach(element => {
+
+      let differenceDays = getTimeInDays(element.timeStart);
+
+      if (differenceDays < 7 && value != null) {
+        let tempProject = value.filter(goal => goal.goal.goalName === element.goalName);
+        if(tempProject[0] != null){
+          tempProject[0].goal.timeSpendThisWeek = tempProject[0].goal.timeSpendThisWeek + element.timeDuration.m;
+        }
+    
+
+      }
+
+
+
+    });
+
+
+
+  }
+
+  else if (key === 'projects') {
+ 
+
+    sessions.forEach(element => {
+
+      if (element.timerProjectName != 'none') {
+
+        let differenceDays = getTimeInDays(element.timeStart);
+
+        if (differenceDays < 7) {
+          let tempProject = value.filter(project => project.project.projectName === element.timerProjectName);
+          if(tempProject[0] != null){
+
+          tempProject[0].project.timeSpendThisWeek = tempProject[0].project.timeSpendThisWeek + element.timeDuration.m;
+          }
+        }
+
+      }
+    });
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+  event.returnValue = value;
 
 
 }
 
-function setNewProject (event, project) {
-  const projects = store.get('projects') || []; 
- 
+
+function getTimeInDays(date) {
+  const oneDay = 24 * 60 * 60 * 1000;
+
+  let currentDate = new Date();
+  let dateStarted = new Date(date);
+
+
+
+
+  let differenceDays = Math.round(Math.abs((currentDate - dateStarted) / oneDay));
+  (differenceDays)
+  return differenceDays;
+
+}
+
+function setNewProject(event, project) {
+  const projects = store.get('projects') || [];
+
 
   let find = projects.find(item => item.project.projectName === project.project.projectName);
-  if(find) {
-    console.log('project already exists')
+  if (find) {
+    ('project already exists')
     return;
   }
 
-  projects.push(project); 
+  projects.push(project);
 
   store.set('projects', projects);
 }
 
-function setNewGoal (event, goal) {
+function setNewGoal(event, goal) {
   const goals = store.get('goals') || [];
-  goals.push(goal);
+
+  let find = goals.find(item => item.goal.goalName === goal.goal.goalName);
+  if (find) {
+    ('goal already exists')
+    return;
+  }
   
+  goals.push(goal);
+
   store.set('goals', goals);
 
 }
 
-function updateSettings (event, settings, whichSetting) {
+function updateSettings(event, settings, whichSetting) {
 
   store.set('settings', settings);
 }
 
 
-
-
-
 function handleDeleteSession(event, sessionValues) {
-  
+
   let session = sessionValues.sessionValues;
   let sessions = store.get('sessions');
 
-  console.log(sessions);
-  
-  let newSessions = sessions.filter(item => 
+  (sessions);
+
+  let newSessions = sessions.filter(item =>
     item.timeDuration.ms != session.timeDuration.ms ||
     item.timeStart != session.timeStart ||
-     item.timeEnd != session.timeEnd 
-    
+    item.timeEnd != session.timeEnd
+
 
   );
 
-  console.log('theSession', session)
+  ('theSession', session)
 
-  console.log("new Sessions", newSessions)
+  ("new Sessions", newSessions)
   store.set('sessions', newSessions);
-  
-  
+
+
 
 
 }
 
 
 function handleStoreSet(event, { key, value }) {
-  
-  const sessions = store.get('sessions') || []; 
+
+  const sessions = store.get('sessions') || [];
 
 
-  
-  sessions.push(value); 
+
+  sessions.push(value);
 
   store.set('sessions', sessions);
 }
-function handleSetTitle (event, title) {
+function handleSetTitle(event, title) {
   const webContents = event.sender
   const win = BrowserWindow.fromWebContents(webContents)
   win.setTitle(title)
 }
 
-function hoursToMinutes (hours) {
+function hoursToMinutes(hours) {
   return hours * 60;
 
 }
-function updateProject (event, project, session) {
+function updateProject(event, project, session) {
 
 
   const projects = store.get('projects') || [];
   let find = projects.find(item => item.project.projectName === project.project.timerProjectName);
-  if(find) {
+  if (find) {
     find.project.timeSpendTotal = find.project.timeSpendTotal + (hoursToMinutes(project.project.timeDuration.h)) + project.project.timeDuration.m;
-  
+
   }
 
-  
+
   store.set('projects', projects);
 
-  
-  
+
+
 
 
 }
 
-function updateGoal (event, goal, session) {
+function updateGoal(event, goal, session) {
 
   const goals = store.get('goals') || [];
 
 
   let find = goals.find(item => item.goal.goalName === goal.goal.timerProjectName);
-  console.log('find', find)
-  if(find) {
+  ('find', find)
+  if (find) {
     find.goal.timeSpendTotal = find.goal.timeSpendTotal + (hoursToMinutes(goal.goal.timeDuration.h)) + goal.goal.timeDuration.m;
     find.goal.timeGoal = find.goal.timeGoal - (hoursToMinutes(goal.goal.timeDuration.h)) - goal.goal.timeDuration.m;
 
-  
+
   }
-  console.log('find2', find)
+  ('find2', find)
 
   store.set('goals', goals);
 
@@ -247,12 +326,12 @@ function updateStatus(event, status) {
   const settings = store.get('settings') || [];
 
 
- 
-  if(status.goalOrProject === 'project'){
-    console.log('abc')
-    settings.settings.defaultProject.workingOn  = !settings.settings.defaultProject.workingOn;
+
+  if (status.goalOrProject === 'project') {
+    ('abc')
+    settings.settings.defaultProject.workingOn = !settings.settings.defaultProject.workingOn;
   }
-  else if (status.goalOrProject === 'goal'){
+  else if (status.goalOrProject === 'goal') {
     settings.settings.defaultGoal.workingOn = !settings.settings.defaultGoal.workingOn;
   }
 
@@ -274,9 +353,9 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-        enableRemoteModule: true,
-        nodeIntegration: true,
-        preload: path.join(__dirname, './preloader.js'), 
+      enableRemoteModule: true,
+      nodeIntegration: true,
+      preload: path.join(__dirname, './preloader.js'),
     },
   });
 
@@ -284,19 +363,31 @@ function createWindow() {
   // win.loadFile("index.html");
   win.loadURL('http://localhost:3000')
 
-    
+
 
 
   // Open the DevTools.
 
-    win.webContents.openDevTools({ mode: 'detach' });
-  
+  win.webContents.openDevTools({ mode: 'detach' });
+
+}
+
+function createMiniWindow() {
+  const miniWin = new BrowserWindow({
+    width: 200,
+    height: 200,
+    webPreferences: {
+      enableRemoteModule: true,
+      nodeIntegration: true,
+      preload: path.join(__dirname, './preloader.js'),
+    },
+  });
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(( ) => {
+app.whenReady().then(() => {
   ipcMain.on('store-set', handleStoreSet)
   ipcMain.on('store-get', handleStoreGet);
   ipcMain.on('set-title', handleSetTitle);
@@ -311,10 +402,11 @@ app.whenReady().then(( ) => {
 
 
 
- 
 
 
-createWindow();
+
+  createWindow();
+  // createMiniWindow();
 
 });
 

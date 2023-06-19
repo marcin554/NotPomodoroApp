@@ -61,12 +61,12 @@ export const getGoals = () => {
 
 export const _setNewProject = (project) => {
   window.electronAPI.store.setNewProject(project);
-  console.log('added project to store')
+
 
 
 }
 
-export const setNewGoal = (goal) => {
+export const _setNewGoal = (goal) => {
   window.electronAPI.store.setNewGoal(goal);
 
 }
