@@ -1,6 +1,6 @@
 
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
 import Index from './pages/Index';
 import SessionIndex from './pages/SessionIndex';
 
@@ -22,7 +22,7 @@ import GoalIndex from './pages/GoalIndex';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className='container'>
         <div className="navigationMenu" >
           <NavigationMenu />
@@ -40,7 +40,7 @@ function App() {
           </Routes>
         </div>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

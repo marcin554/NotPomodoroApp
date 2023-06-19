@@ -359,16 +359,18 @@ function createWindow() {
     },
   });
 
-  // and load the index.html of the app.
-  // win.loadFile("index.html");
-  win.loadURL('http://localhost:3000')
+
+
+  if (app.isPackaged) {
+    win.loadFile(path.join(__dirname, "../build/index.html"));
+  } else {
+    win.loadURL("http://localhost:3000"); // dev
+    win.webContents.openDevTools({ mode: 'detach' });
+  }
 
 
 
 
-  // Open the DevTools.
-
-  win.webContents.openDevTools({ mode: 'detach' });
 
 }
 
