@@ -172,7 +172,7 @@ const interval = 500;
 
     };
 
-    (currentType);
+
       if (currentType === typeArray.normalTimer) {
 
         if (typeTimer === typeTimerGoal.project || typeTimer === typeTimerGoal.goal) {
@@ -304,7 +304,7 @@ const interval = 500;
 
 
     if (!timer.isStarted() && !timer.isRunning()) {
-      ('started!')
+
       clearInterval();
       currentDateTime = new Date();
       timer.start();
@@ -331,7 +331,7 @@ const interval = 500;
     }
     else if (timer.isPaused()) {
       setPause(false);
-      ('abc')
+
 
       timer.resume();
 
@@ -387,13 +387,7 @@ const interval = 500;
     }
   }
 
-  function checkStatus() {
-    ("Is paused?", timer.isPaused());
-    ("Is running?", timer.isRunning());
-    ("Is started?", timer.isStarted());
-    ("Current session list", sessionRecords);
-    (stateTime);
-  }
+
 
   return (
     <>

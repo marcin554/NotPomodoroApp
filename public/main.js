@@ -207,7 +207,7 @@ function setNewProject(event, project) {
 
   let find = projects.find(item => item.project.projectName === project.project.projectName);
   if (find) {
-    ('project already exists')
+
     return;
   }
 
@@ -221,7 +221,7 @@ function setNewGoal(event, goal) {
 
   let find = goals.find(item => item.goal.goalName === goal.goal.goalName);
   if (find) {
-    ('goal already exists')
+
     return;
   }
   
@@ -252,9 +252,9 @@ function handleDeleteSession(event, sessionValues) {
 
   );
 
-  ('theSession', session)
 
-  ("new Sessions", newSessions)
+
+
   store.set('sessions', newSessions);
 
 
@@ -308,14 +308,14 @@ function updateGoal(event, goal, session) {
 
 
   let find = goals.find(item => item.goal.goalName === goal.goal.timerProjectName);
-  ('find', find)
+
   if (find) {
     find.goal.timeSpendTotal = find.goal.timeSpendTotal + (hoursToMinutes(goal.goal.timeDuration.h)) + goal.goal.timeDuration.m;
     find.goal.timeGoal = find.goal.timeGoal - (hoursToMinutes(goal.goal.timeDuration.h)) - goal.goal.timeDuration.m;
 
 
   }
-  ('find2', find)
+
 
   store.set('goals', goals);
 
@@ -328,7 +328,7 @@ function updateStatus(event, status) {
 
 
   if (status.goalOrProject === 'project') {
-    ('abc')
+
     settings.settings.defaultProject.workingOn = !settings.settings.defaultProject.workingOn;
   }
   else if (status.goalOrProject === 'goal') {

@@ -18,7 +18,7 @@ const SessionTable = (sessionObject) => {
 
   const deleteSession = (timeStart) => {
     window.electronAPI.store.delete(timeStart);
-    ('deleted')
+
 
     
 
