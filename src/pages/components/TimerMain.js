@@ -34,10 +34,7 @@ const typeArray = {
   normalTimer: "normalTimer",
 };
 
-const getSettings_ = async () => {
-  const settings = await getSettings();
-  return settings.settings;
-};
+
 
 
 const typeTimerGoal = {
@@ -54,7 +51,7 @@ const TimerMain = (settings) => {
 
   const dispatch = useDispatch();
   dispatch(setSettings(settings.settings));
-  let rSettings = useSelector((state) => state.settingsStore.settings.settings);
+  let rSettings = useSelector((state) => state.settingsStore.settings);
   console.log(rSettings)
 
   let [isPaused, setPause] = useState(false);

@@ -12,12 +12,12 @@ const GoalComponent = (settingsAndGoals) => {
   const dispatch = useDispatch();
   dispatch(setSettings(settingsAndGoals.settings))
 
-  let rSettings = useSelector((state) => state.settingsStore.settings.settings);
+  let rSettings = useSelector((state) => state.settingsStore.settings);
 
   const [nGoals, setNewGoals] = useState(settingsAndGoals.goals);
 
   function checkedOrNot(project) {
-
+    console.log(rSettings)
     if (project === rSettings.defaultGoal.goalName && rSettings.defaultGoal.workingOn === true) {
       return true
     }
@@ -50,7 +50,7 @@ const GoalComponent = (settingsAndGoals) => {
 
   async function changeGoal(goalName) {
     let tempSettings = await getSettings();
-    let settings = tempSettings.settings;
+    let settings = tempSettings;
 
     let nCopyGoals = {...nGoals}
     Object.values(nCopyGoals).map((project) => {
@@ -66,7 +66,7 @@ const GoalComponent = (settingsAndGoals) => {
     })
 
     setNewGoals(nCopyGoals);
-
+    console.log('asd',settings)
     if (settings.defaultGoal.goalName === goalName) {
 
       if (settings.defaultGoal.workingOn === true) {

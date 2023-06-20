@@ -27,7 +27,7 @@ const PickGoalOrProject = () => {
 
     useEffect(() => {
         getSettings().then((tempSettings) => {
-            setImportSettings(tempSettings.settings);
+            setImportSettings(tempSettings);
           
 
         })

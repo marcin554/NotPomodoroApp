@@ -215,15 +215,17 @@ function setNewGoal(event, goal) {
   store.set("goals", goals);
 }
 
-function updateSettings(event, settings, whichSetting) {
-  store.set("settings", settings);
+function updateSettings(event, settings) {
+
+ 
+  store.set("settings", settings.settings);
 }
 
 function handleDeleteSession(event, sessionValues) {
   let session = sessionValues.sessionValues;
   let sessions = store.get("sessions");
 
-  sessions;
+
 
   let newSessions = sessions.filter(
     (item) =>
