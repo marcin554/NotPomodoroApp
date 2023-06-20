@@ -14,7 +14,7 @@ const ProjectComponent = (projects) => {
   const dispatch = useDispatch();
   dispatch(setSettings(projects.settings))
 
-  let rSettings = useSelector((state) => state.settingsStore.settings);
+  let rSettings = useSelector((state) => state.settingsStore.settings.settings);
 
   const [nProjects, setNewProjects] = useState(projects);
 
@@ -30,6 +30,7 @@ const ProjectComponent = (projects) => {
 
 
   }
+  console.log(nProjects)
 
   function setCheckedInOnLoad() {
     let nProjectCopy = {...nProjects}
@@ -45,12 +46,13 @@ const ProjectComponent = (projects) => {
 
   async function changeProject(projectName) {
     let tempSettings = await getSettings();
-    let settings = tempSettings.settings;
+    let settings = tempSettings;
 
-
+    
     let nProjectCopy = {...nProjects}
+    console.log('abc', nProjectCopy)
     nProjectCopy.projects.map((project) => {
-
+      console.log(project)
       if (project.project.projectName === projectName) {
         project.checked = !project.checked;
  
@@ -111,7 +113,7 @@ const ProjectComponent = (projects) => {
           {nProjects.projects ?
             <>
 
-              {nProjects.projects.length === 0 ? <li>No projects</li> : <>
+              {nProjects.projects[0] === 0 ? <li>No projects</li> : <>
                 {nProjects.projects.map((project) => (
                  
                   <tr

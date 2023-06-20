@@ -150,7 +150,7 @@ const PickGoalOrProject = () => {
                                         <FolderIcon />
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary="Current Project: " secondary={importSettings.defaultProject.projectName}></ListItemText>
+                                <ListItemText primary="Current Project: " secondary={importSettings.defaultProject ? importSettings.defaultProject.projectName : "None"}></ListItemText>
                             </ListItem>
                             <Divider />
                             <ListItem>
@@ -159,7 +159,7 @@ const PickGoalOrProject = () => {
                                         <FlagIcon />
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary="Current Goal: " secondary={importSettings.defaultGoal.goalName}></ListItemText>
+                                <ListItemText primary="Current Goal: " secondary={importSettings.defaultGoal ? importSettings.defaultGoal.goalName : "None"}></ListItemText>
                             </ListItem>
                             <Divider />
                             <ListItem>
@@ -191,9 +191,9 @@ const PickGoalOrProject = () => {
                                 <Box>
                                 
                                     <ListItem secondaryAction={<Button variant="contained" edge="end" onClick={() => {
-                                        addProject(document.getElementById('ProjectName').innerText)
+                                        addProject(document.getElementById('ProjectName').value)
                                     }}> Create Project</Button>}>
-                                        <TextField variant="filled" label="Project name" id="ProjectName"></TextField>
+                                        <TextField variant="filled" required label="Project name" id="ProjectName"></TextField>
 
                                     </ListItem>
                                     <Divider />
@@ -203,21 +203,21 @@ const PickGoalOrProject = () => {
                                             addGoal(document.getElementById('GoalName').value, document.getElementById('TimeGoal').value)
                                         }}> Create Goal </Button>
                                     }>
-                                       <TextField variant="filled" label="Goal name" id="GoalName"></TextField>
-                                        <TextField variant="filled" label="Time Goal" id="TimeGoal"></TextField>
+                                       <TextField variant="filled" required label="Goal name" id="GoalName"></TextField>
+                                        <TextField variant="filled" required type="number" label="Time Goal" id="TimeGoal"></TextField>
 
 
                                     </ListItem>
                                     <Divider />
-                                    {importProjects ?
+                                    {importProjects[0] ?
                                     <ListItem secondaryAction={<Button variant="contained" onClick={() => {
                                         changeSettings(document.getElementById('projects').innerText, 'project')
                                     }
                                     }
                                     >Change Project</Button>}>
-                                      
+                                 
                                         <TextField select helperText="Pick the project you want to run." defaultValue={importProjects[0].project.projectName} id="projects" label="Select Project" >
-
+                                
                                             {importProjects.map((project) => {
                                                 return <MenuItem key={project.project.projectName} value={project.project.projectName}>{project.project.projectName}</MenuItem>
                                             })}
@@ -226,7 +226,7 @@ const PickGoalOrProject = () => {
                                     </ListItem>
                                     : null}
                                     <Divider />
-                                    {importGoals ?
+                                    {importGoals[0] ?
                                     <ListItem secondaryAction={
                                         <Button variant="contained" onClick={() => {
                                             changeSettings(document.getElementById('goals').innerText, 'goal')

@@ -13,7 +13,7 @@ const SettingsPage = () => {
     useEffect(() => {
         getSettings().then((tempSettings) => {
       
-            setSettings(tempSettings.settings);
+            setSettings(tempSettings);
          
         })
     }, [])

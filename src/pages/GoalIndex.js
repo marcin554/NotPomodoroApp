@@ -15,7 +15,7 @@ const GoalIndex = () => {
         
           
            
-            setSettings(tempSettings.settings);
+            setSettings(tempSettings);
          
          
         })

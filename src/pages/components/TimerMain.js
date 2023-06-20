@@ -54,8 +54,8 @@ const TimerMain = (settings) => {
 
   const dispatch = useDispatch();
   dispatch(setSettings(settings.settings));
-  let rSettings = useSelector((state) => state.settingsStore.settings);
-
+  let rSettings = useSelector((state) => state.settingsStore.settings.settings);
+  console.log(rSettings)
 
   let [isPaused, setPause] = useState(false);
   let [isStarted, setStarted] = useState(false);
@@ -138,7 +138,7 @@ const interval = 500;
     let typeTimer;
     let projectName;
     let goalName; 
-
+    console.log(settings)
     if (settings.settings.defaultProject.workingOn === true || settings.settings.defaultGoal.workingOn === true) {
       if(settings.settings.defaultProject.workingOn === true) {
         typeTimer = typeTimerGoal.project
@@ -452,12 +452,14 @@ const interval = 500;
             <SwapHoriz fontSize="inherit"/>
           </button>
 
+            {rSettings.defaultGoal.goalName.length > 1 && rSettings.defaultProject?
           <div  className={`${styles.buttonTimerSwitch} `} >
             <FormControlLabel control ={<Switch checked={workingProject}color="warning" onClick={() => {updateCheck('project') }}/>} label={rSettings.defaultProject.projectName + "  Project"}> </FormControlLabel>
             
             <FormControlLabel control ={<Switch checked={workingGoal} onClick={() => {updateCheck('goal')}} />} label={rSettings.defaultGoal.goalName + "  Goal"} > </FormControlLabel>
         
           </div>
+           : null}
         </div>
       </div>
       
