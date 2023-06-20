@@ -17,8 +17,8 @@ const Index = () => {
 
   useEffect(() => {
       getSettings().then((tempSettings) => {
-      
-          setSettings(tempSettings.settings);
+    
+          setSettings(tempSettings);
        
       })
   }, [])
@@ -36,12 +36,13 @@ const Index = () => {
 
 
     <div className={styles.container}>
-  
+    {console.log(settings)}
     <_Container ComponentPage={settings ? <TimerMain settings={settings} /> : null}>
   
 </_Container>
 
     </div>
+
     </>
   )
 }

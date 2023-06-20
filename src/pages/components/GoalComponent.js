@@ -12,7 +12,7 @@ const GoalComponent = (settingsAndGoals) => {
   const dispatch = useDispatch();
   dispatch(setSettings(settingsAndGoals.settings))
 
-  let rSettings = useSelector((state) => state.settingsStore.settings);
+  let rSettings = useSelector((state) => state.settingsStore.settings.settings);
 
   const [nGoals, setNewGoals] = useState(settingsAndGoals.goals);
 
