@@ -14,7 +14,7 @@ const ProjectComponent = (projects) => {
   const dispatch = useDispatch();
   dispatch(setSettings(projects.settings))
 
-  let rSettings = useSelector((state) => state.settingsStore.settings.settings);
+  let rSettings = useSelector((state) => state.settingsStore.settings);
 
   const [nProjects, setNewProjects] = useState(projects);
 
@@ -84,6 +84,7 @@ const ProjectComponent = (projects) => {
 
 
     }
+
 
     dispatch(setSettings(settings))
     await window.electronAPI.store.updateSettings(settings);
