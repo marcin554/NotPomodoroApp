@@ -41,6 +41,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     updateStatus: (goalOrProject) => {
       window.ipcRenderer.send('update-status', {goalOrProject})
+    },
+    closeApp: () => {
+      window.ipcRenderer.send('app-close')
     }
     
 

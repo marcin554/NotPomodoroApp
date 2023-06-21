@@ -100,6 +100,10 @@ export const _updateGoal = (goal,session) => {
   window.electronAPI.store.updateGoal(goal, session);
 }
 
+export const closeApp = () => {
+  window.electronAPI.store.closeApp();
+}
+
 export const _updateProject = (project, session) => {
   window.electronAPI.store.updateProject(project, session);
 }
