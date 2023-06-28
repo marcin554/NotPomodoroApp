@@ -2,6 +2,13 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
 
+  currentType: '',
+  timer:{
+    isStarted: false,
+    isRunning: false,
+    isPaused: false,
+
+  },
   value:
    {
     h: '00',
@@ -31,6 +38,19 @@ export const timerSlice = createSlice({
 
       state.value = action.payload;
     },
+    updateIsStarted: (state, action) => {
+      state.timer.isStarted = action.payload;
+    },
+    updateIsRunning: (state, action) => {
+      state.timer.isRunning = action.payload;
+    },
+    updateIsPaused: (state, action) => {
+      state.timer.isPaused = action.payload;
+    },
+    setType(state, action) {
+      state.currentType = action.payload;
+    },
+
     resetTimer: (state) => {
         state = initialState;
     }
@@ -38,6 +58,6 @@ export const timerSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { updateTime,resetTimer } = timerSlice.actions
+export const { updateTime,resetTimer, updateIsStarted, updateIsRunning, updateIsPaused, setType } = timerSlice.actions
 
 export default timerSlice.reducer

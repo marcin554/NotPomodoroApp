@@ -12,7 +12,7 @@ const _Container = ({ComponentPage}) => {
 
       <div className={styles.item}>
         {ComponentPage}
-        
+
         </div>        
       
      </Container>

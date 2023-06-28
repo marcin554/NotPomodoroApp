@@ -2,6 +2,7 @@ const path = require("path");
 const Store = require("electron-store");
 
 const { app, BrowserWindow, ipcMain } = require("electron");
+const { default: useCountDown } = require("react-countdown-hook");
 
 
 
@@ -331,17 +332,7 @@ function createWindow() {
   win.webContents.openDevTools({ mode: "detach" });
 }
 
-function createMiniWindow() {
-  const miniWin = new BrowserWindow({
-    width: 200,
-    height: 200,
-    webPreferences: {
-      enableRemoteModule: true,
-      nodeIntegration: true,
-      preload: path.join(__dirname, "./preloader.js"),
-    },
-  });
-}
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -358,6 +349,7 @@ app.whenReady().then(() => {
   ipcMain.on("update-goal", updateGoal);
   ipcMain.on("update-status", updateStatus);
   ipcMain.on("app-close", appClose);
+
   createWindow();
   // createMiniWindow();
 });
