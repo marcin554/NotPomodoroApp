@@ -11,6 +11,9 @@ import styles from './SessionTable.module.css'
 
 const ProjectComponent = (projects) => {
 
+  
+
+
   const dispatch = useDispatch();
   dispatch(setSettings(projects.settings))
 
@@ -91,8 +94,7 @@ const ProjectComponent = (projects) => {
 
 
 
-
-
+   
   }
 
 

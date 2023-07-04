@@ -10,57 +10,44 @@ import SettingsPage from './pages/SettingsPage';
 import GoalIndex from './pages/GoalIndex';
 import TimerMainMini from './pages/components/TimerMainMini';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { createContext, useEffect } from 'react';
 import { getSettings } from './utils/utils';
 import { setType, updateTime } from './slices/timerSlice';
 import { setSettings } from './slices/settingsSlice';
 import useCountDown from 'react-countdown-hook';
 import TimerUtils from './utils/timer';
 import { Timer, Time, TimerOptions } from "timer-node";
+import TimerMain from './pages/components/TimerMain';
 
-const normalTimer = new Timer({ label: "normalTimer" });
 
 
-function TheTimer() {
-  const dispatch = useDispatch();
-  
-  const [timeLeft, { start, pause, resume, reset, }] = useCountDown(
-    600000, 
-    500
-  );
-  //Get Settings from state.
-  let settings = useSelector((state) => state.settingsStore.settings);
-  
-  
-   const timer = TimerUtils(settings, { timeLeft, start, pause, resume, reset }, normalTimer );
-  
-  
-   useEffect(() => {
-    dispatch(updateTime(timer.pomodoro.getTime()));
-  }, [timeLeft]);
 
-  return timer;
-  
-}
+
 
 function App() {
-  console.log('rendering App')
-  const timer = TheTimer();
+
   return (
     
     <BrowserRouter>
-      <AppContent timer={timer} />
+      <AppContent />
     </BrowserRouter>
   );
 }
 
 
 
-function AppContent({timer}) {
+
+function AppContent() {
  
-
-
+ 
   const location = useLocation();
+  const dispatch = useDispatch();
+  const settings = useSelector((state) => state.settingsStore.settings);
+
+
+  
+  const currentType = useSelector((state) => state.timer.currentType);
+
 
 
   const isMiniPath = location.pathname === '/mini';
@@ -74,20 +61,19 @@ function AppContent({timer}) {
         </div>
       )}
 
- {timer ?
- 
-      
+
+     
         <Routes>
-          <Route path="/" element={<Index _timer={timer} />} />
+          <Route path="/" element={<Index />} />
           <Route path="/sessions" element={<SessionIndex  />} />
           <Route path="/projects" element={<ProjectsIndex />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/goals" element={<GoalIndex />} />
-          <Route path="/mini" element={<TimerMainMini _timer={timer} />} />
+          <Route path="/mini" element={<TimerMainMini />} />
         </Routes>
-        
+
       
-       : <div>Waiting...</div>} 
+    
     </div>
  
     </>

@@ -10,183 +10,68 @@ import PauseIcon from '@mui/icons-material/Pause';
 import { SwapHoriz } from "@mui/icons-material";
 import { current } from '@reduxjs/toolkit';
 import _Container from './Container';
+import { getSettings } from '../../utils/utils';
+import { setSettings } from '../../slices/settingsSlice';
 
 
 
 
-const typeArray = {
-  pomodoro: "pomodoro",
-  normalTimer: "normalTimer",
-};
 
-const typeTimerGoal = {
-  none: "none",
-  project: "project",
-  goal: "goal",
-}
 
-let intervalId;
 
-const TimerMain = (_timer) => {
-
-  let timer = _timer._timer;
-  const dispatch = useDispatch();
-  
+const TimerMain = (typeAr) => {
 
   const settings = useSelector((state) => state.settingsStore.settings);
+
+
+  const typeArray = typeAr.typeAr
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    if(!settings){
+      console.log('getting settings to State')
+      getSettings().then((tempSettings) => {    
+        dispatch(setSettings(tempSettings));
+        dispatch(setType(tempSettings.defaultTimerType))
+      })
+    }
+  
+    }, [])
+  
+   
+
   const timeState = useSelector((state) => state.timer.value);
   const timerState = useSelector((state) => state.timer.timer);
   const currentType = useSelector((state) => state.timer.currentType);
   
- 
 
 
 
-
-
-  function startTimer() {
-    if(currentType === typeArray.pomodoro) {
-      startPomodoroTimer();
-    }
-    else{
-      startNormalTimer();
-
-    }
-
-
-  }
-  function startNormalTimer() {
-
-    if(currentType === typeArray.normalTimer) {
+  const startEvent = () => {
     
-    if(!timerState.isStarted){
-      timer.normalTimer.start();
-      dispatch(updateIsStarted(true));
-      dispatch(updateIsRunning(true));
-
-    }
-
-    if(timerState.isRunning) {
-      timer.normalTimer.pause();
-      dispatch(updateIsPaused(true));
-      dispatch(updateIsRunning(false));
-    } 
-
-    if(timerState.isPaused) {
-      timer.normalTimer.resume();
-      dispatch(updateIsPaused(false));
-      dispatch(updateIsRunning(true));
-    }
-
+    window.postMessage('start', '*')
   }
- 
 
-    if(!intervalId) {
-     
-      intervalId = setInterval(() => {
-        console.log('abc')
-        console.log('normalTimer', timer.normalTimer.getTime());
-        dispatch(updateTime(timer.normalTimer.getTime()));
-      }, 1000);
+  const stopEvent = () => {
+    window.postMessage('stop', '*')
+  }
 
-    
-    }
-
-
-   
-   
+  const switchEvent = () => {
+    window.postMessage('switch', '*')
   }
 
 
 
 
-  function startPomodoroTimer() {
-
-    
-    if(!timerState.isStarted){
-      timer.pomodoro.start();
-      dispatch(updateIsStarted(true));
-      dispatch(updateIsRunning(true));
-    }
-
-    if(timerState.isRunning) {
-      timer.pomodoro.pause();
-      dispatch(updateIsPaused(true));
-      dispatch(updateIsRunning(false));
-    }
-
-    if(timerState.isPaused) {
-      timer.pomodoro.resume();
-      dispatch(updateIsPaused(false));
-      dispatch(updateIsRunning(true));
-    }
-
-    // if(!intervalId) {
-    // intervalId = setInterval(() => {
-    
-    //   dispatch(updateTime(timer.pomodoro.getTime()));
-    // }, 1000);
-  // }
-  }
-
-  function stopButton() {
-
-    if(currentType === typeArray.normalTimer) {
-    if(timerState.isStarted) {
-      timer.normalTimer.stop();
-      dispatch(updateIsRunning(false));
-      dispatch(updateIsStarted(false));
-      dispatch(updateIsPaused(false));
-
-     
-      setTimeout(() => {
-        clearInterval(intervalId);
-        intervalId = null;
-      }, 1000);
-    }
-
-
-    }
-    else{
-      if(timerState.isStarted) {
-        timer.pomodoro.stop();
-        dispatch(updateIsRunning(false));
-        dispatch(updateIsStarted(false));
-        dispatch(updateIsPaused(false));
-  
-  
-        setTimeout(() => {
-          clearInterval(intervalId);
-          intervalId = null;
-        }, 1000);
-      }
-    }
-  }
-
-  function changeType() {
-    
-    if (!timerState.isStarted && !timerState.isPaused) {
-    if(currentType === typeArray.normalTimer){
-      dispatch(setType(typeArray.pomodoro));
-    }
-    else{
-      dispatch(setType(typeArray.normalTimer));
-    }
-  }
-  else{
-    alert("Please stop the timer before changing the type");
-  }
-
-   
-    
-  }
 
 
   return (
     <>
+    {settings ? 
       <div className={styles.container}>
       <div className={styles.timerDiv}>
        
+ 
             <div
               className={`${styles.timerCircle} ${currentType === typeArray.normalTimer
                 ? ""
@@ -214,22 +99,22 @@ const TimerMain = (_timer) => {
         <button
             className={`${styles.buttonTimer} `}
             onClick={() => {
-              startTimer();
+              startEvent();
             }}
           >
-            {(!timerState.isRunning || timer.isPaused)
+            {(!timerState.isRunning || timerState.isPaused)
               ? "Start " && <PlayArrowIcon fontSize="inherit"/> 
               : "Stop" && <PauseIcon fontSize="inherit"> </PauseIcon>}
           </button>
 
           <button className={`${styles.buttonTimer} `} onClick={() => {
-            stopButton()}}>
+            stopEvent()}}>
             <StopIcon fontSize="inherit"></StopIcon>
           </button>
 
           <button
             onClick={() => {
-              changeType();
+              switchEvent();
             }}
             className={styles.buttonTimer}
           >
@@ -242,7 +127,7 @@ const TimerMain = (_timer) => {
 
 
       </div>
-
+: <div>waiting...</div>}
     </>
   )
 }

@@ -42,13 +42,19 @@ export const timerSlice = createSlice({
       state.timer.isStarted = action.payload;
     },
     updateIsRunning: (state, action) => {
+      console.log(action.payload);
+
       state.timer.isRunning = action.payload;
+      console.log(state.timer.isRunning)
     },
     updateIsPaused: (state, action) => {
       state.timer.isPaused = action.payload;
+      
     },
     setType(state, action) {
+    
       state.currentType = action.payload;
+      
     },
 
     resetTimer: (state) => {

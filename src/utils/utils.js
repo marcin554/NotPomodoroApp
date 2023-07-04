@@ -31,6 +31,7 @@ export const getProjects = async () => {
 export const getSettings = () => {
   return window.electronAPI.store.get('settings')
     .then(currentSettings => {
+      console.log(currentSettings)
       let mySettings = currentSettings;
       return mySettings;
     })
@@ -40,6 +41,21 @@ export const getSettings = () => {
     });
 };
 
+export const getSettingsFromLastWindow = () => {
+  return window.opener.electronAPI.store.get('settings')
+    .then(currentSettings => {
+      console.log(currentSettings)
+      let mySettings = currentSettings;
+      return mySettings;
+    })
+    .catch(error => {
+      console.error(error);
+      throw error; // Optionally re-throw the error
+    });
+};
+  
+
+    
 export const test = async () => {
   try {
     const currentSettings = await getSettings();

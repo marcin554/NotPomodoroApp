@@ -17,8 +17,7 @@ export const settingsSlice =  createSlice({
             state.settings.defaultProject.workingOn = action.payload;
         },
         setSettings: (state, action) => {
-            console.log(action)
-            console.log('abasaas')
+           
             state.settings = action.payload;
         },
     
