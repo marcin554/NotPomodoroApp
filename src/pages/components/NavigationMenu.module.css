@@ -10,17 +10,17 @@
 .menuChoice {
  
   
-color: #E8F6EF;
+color:  #6b6b6b;
   width: 15vw;
 margin-top: 10%;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  
 
   
-  font-size: 1.5vw;
+  font-size: 2vw;
   transform: scale(1);
   transform-origin: center center;
   text-rendering: auto;
@@ -29,12 +29,12 @@ margin-top: 10%;
 }
 
 .menuChoice {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 
 .menuChoice:hover {
 
-  background-color: #1b9C85;
+  background-color: #49f3bb;
   transform: scale(0.9)
 }

@@ -25,14 +25,15 @@ export const timerSlice = createSlice({
   
     updateTime: (state, action) => {
    
-
-      if(action.payload.h < 10){
+    
+      if(action.payload.h.toString().length <= 1){
+   
         action.payload.h = '0' + action.payload.h;
       }
-      if(action.payload.m < 10){
+      if(action.payload.m.toString().length <= 1){
         action.payload.m = '0' + action.payload.m;
       }
-      if(action.payload.s < 10){
+      if(action.payload.s.toString().length <= 1){
         action.payload.s = '0' + action.payload.s;
       }
 

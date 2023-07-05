@@ -1,17 +1,17 @@
-html,body {
-    width: 0px;
-    height: 0px;
-   }
+
    
    .container{
-       width: 300px;
+       width: 100vw;
        max-width: 100vw;
        height: 80px;
        display: grid;
        grid-template-columns: 1fr 1fr 1fr 1.5fr;
        grid-template-rows: 1fr;
+       
  
    }
+
+  
    
    .gridItem{
        display: flex; 
@@ -24,18 +24,76 @@ html,body {
         width: 100%;
        display: flex;
        align-items: center;
-       background-color: red;
+       background-color: #ffffff;
        justify-content: center; 
+       
        
 
    }
+
+.buttons:hover{
+    background-color: #49f3bb;
+}
+
+.buttonsPomodoro{
+    height: 100%;
+    width: 100%;
+   display: flex;
+   align-items: center;
+   background-color: #ffffff;
+   justify-content: center; 
+   
+    
+}
+
+.buttonsPomodoro:hover{
+    background-color: #f35449;
+}
+
+
+ 
    
    .timer{
        height: 100%;
        width: 100%;
        display: flex;
        align-items: center;
-       background-color: blue;
+       background-color: #f2f2f2;
        justify-content: center; 
        -webkit-app-region: drag;
+       padding: 10%;
+       position:relative;
+        
+       
    }
+
+   .animation {
+    position: absolute;
+    top: 90%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #49f3bb;
+    transform: translateY(50%);
+    animation: progressBarAnimation 2s linear reverse infinite;
+  }
+
+  .animationPomodoro{
+    position: absolute;
+    top: 90%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #f35449;
+    transform: translateY(50%);
+    animation: progressBarAnimation 2s linear infinite;
+  }
+  
+  @keyframes progressBarAnimation {
+    0% {
+      width: 100%;
+    }
+    100% {
+      width: 0%;
+    }
+  }

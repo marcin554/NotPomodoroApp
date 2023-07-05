@@ -3,14 +3,14 @@ import styles from "./TimerMain.module.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateIsStarted, updateIsPaused, updateIsRunning, updateTime, setType } from '../../slices/timerSlice';
 import TimerUtils from '../../utils/timer';
-import { Container, FormControlLabel, Switch } from "@mui/material";
+import { Button, Container, FormControlLabel, Switch } from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import PauseIcon from '@mui/icons-material/Pause';
 import { SwapHoriz } from "@mui/icons-material";
 import { current } from '@reduxjs/toolkit';
 import _Container from './Container';
-import { getSettings } from '../../utils/utils';
+import { _updateStatus, getSettings } from '../../utils/utils';
 import { setSettings } from '../../slices/settingsSlice';
 
 
@@ -23,27 +23,40 @@ const TimerMain = (typeAr) => {
 
   const settings = useSelector((state) => state.settingsStore.settings);
 
+  
 
   const typeArray = typeAr.typeAr
   const dispatch = useDispatch();
-  
+  let [workingProject, setWorkingProject] = useState();
+  let [workingGoal, setWorkingGoal] = useState();
+
+
   useEffect(() => {
     if(!settings){
       console.log('getting settings to State')
       getSettings().then((tempSettings) => {    
         dispatch(setSettings(tempSettings));
         dispatch(setType(tempSettings.defaultTimerType))
+        
       })
     }
   
     }, [])
   
-   
+    useEffect(() => {
+      if(settings){
+        setWorkingProject(settings.defaultProject.workingOn);
+        setWorkingGoal(settings.defaultGoal.workingOn);
+      }
+      
+    }, [settings])
+
+
 
   const timeState = useSelector((state) => state.timer.value);
   const timerState = useSelector((state) => state.timer.timer);
   const currentType = useSelector((state) => state.timer.currentType);
-  
+
 
 
 
@@ -60,6 +73,21 @@ const TimerMain = (typeAr) => {
     window.postMessage('switch', '*')
   }
 
+  function updateCheck (projectOrGoal) {
+    if(projectOrGoal === "project") {
+     
+  
+
+      setWorkingProject(!workingProject);
+    }
+    else if(projectOrGoal === "goal") {
+
+
+      setWorkingGoal(!workingGoal);
+    }
+    
+    _updateStatus(projectOrGoal);
+  }
 
 
 
@@ -69,26 +97,38 @@ const TimerMain = (typeAr) => {
     <>
     {settings ? 
       <div className={styles.container}>
+
       <div className={styles.timerDiv}>
        
  
             <div
-              className={`${styles.timerCircle} ${currentType === typeArray.normalTimer
+              className={`${styles.timerCircle} ${currentType === typeArray.normalTimer && !timerState.isPaused
                 ? ""
-                : styles.timerCirclePomodoro
+                : currentType === typeArray.pomodoro && !timerState.isPaused
+                  ? styles.timerCirclePomodoro
+                  : timerState.isPaused
+                    ? styles.timerCirclePaused 
+                    : ""
                 }`}
             >
               <div
                 className={`${currentType === typeArray.normalTimer
                   ? styles.progressBar
                   : styles.progressBarPomodoro
-                  } ${timerState.isStarted && !timerState.isPaused
+                  } ${timerState.isStarted && !timerState.isPaused && currentType === typeArray.normalTimer
                     ? styles.progressBarAnimation
-                    : null
+                    : timerState.isStarted && !timerState.isPaused && currentType === typeArray.pomodoro
+                    ? styles.progressBarAnimationPomodoro
+                    : ""
+                      
                   }`}
               ></div>
               <div className={styles.timerText}>
+                {!timerState.isPaused ?
+                <>
                 {timeState.h} : {timeState.m} : {timeState.s}
+                </>
+                : <><div><PauseIcon  style={{ margin: 'auto', fontSize: '10vh' }}></PauseIcon> </div>  <div style={{fontSize: '2vh'}}>{timeState.h} : {timeState.m} : {timeState.s}</div>  </>}
               </div>
             </div>
        
@@ -97,7 +137,11 @@ const TimerMain = (typeAr) => {
 
         <div className={styles.buttonsDiv}>
         <button
-            className={`${styles.buttonTimer} `}
+            className={`${ currentType === typeArray.normalTimer 
+              ? styles.buttonTimer 
+              : styles.buttonTimerPomodoro
+
+            } `}
             onClick={() => {
               startEvent();
             }}
@@ -107,7 +151,11 @@ const TimerMain = (typeAr) => {
               : "Stop" && <PauseIcon fontSize="inherit"> </PauseIcon>}
           </button>
 
-          <button className={`${styles.buttonTimer} `} onClick={() => {
+          <button  className={`${ currentType === typeArray.normalTimer 
+              ? styles.buttonTimer 
+              : styles.buttonTimerPomodoro
+
+            } `} onClick={() => {
             stopEvent()}}>
             <StopIcon fontSize="inherit"></StopIcon>
           </button>
@@ -116,16 +164,41 @@ const TimerMain = (typeAr) => {
             onClick={() => {
               switchEvent();
             }}
-            className={styles.buttonTimer}
+            className={`${ currentType === typeArray.normalTimer 
+              ? styles.buttonTimer 
+              : styles.buttonTimerPomodoro
+
+            } `}
           >
             <SwapHoriz fontSize="inherit"/>
           </button>
 
+          {settings.defaultGoal.goalName.length > 1 && settings.defaultProject?
+          <div  className={`${styles.buttonTimerSwitch} `} >
+            <FormControlLabel control ={<Switch checked={workingProject}color="warning" onClick={() => {updateCheck('project') }}/>} label={ "PROJECT:   " + settings.defaultProject.projectName}> </FormControlLabel>
+            
+            <FormControlLabel control ={<Switch checked={workingGoal} onClick={() => {updateCheck('goal')}} />} label={ "GOAL:   " + settings.defaultGoal.goalName } > </FormControlLabel>
+        
+            <Button onClick={() =>{
+  window.open('/mini', '_blank', 'top=500,left=200, width=300,height=80, frame= false, nodeIntegration=true,  alwaysOnTop=yes')
 
+  //This Timeout is to force update on state in the new Window. 
+                setTimeout(() => {
+                  dispatch(setType(currentType))
+                  dispatch(updateIsRunning(timerState.isRunning));
+                }
+                , 500);
+            }
+        
+        
+
+        } >Mini Timer</Button>
+          </div>
+           : null}
           
           </div>
 
-
+          
       </div>
 : <div>waiting...</div>}
     </>

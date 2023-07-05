@@ -1,8 +1,11 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from "./TimerMainMini.module.css";
-
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
+import PauseIcon from '@mui/icons-material/Pause';
+import { SwapHoriz } from "@mui/icons-material";
 
 const typeArray = {
   pomodoro: "pomodoro",
@@ -15,10 +18,12 @@ const typeTimerGoal = {
   goal: "goal",
 }
 
-let intervalId;
+
 
 const TimerMainMini = () => {
   const timeState = useSelector((state) => state.timer.value);
+  const timerState = useSelector((state) => state.timer.timer);
+  const currentType = useSelector((state) => state.timer.currentType);
   const startEvent = () => {
     
     window.opener.postMessage('start', '*')
@@ -32,38 +37,50 @@ const TimerMainMini = () => {
     window.opener.postMessage('switch', '*')
   }
 
-  
+
+
+ 
  
 
 
   return (
+ <>
 
     <div className={styles.container} >
 
       <div className={styles.gridItem}>
-        <button className={styles.buttons} onClick={() => startEvent()}>Start </button>
+        <button className={currentType === typeArray.normalTimer ? styles.buttons : styles.buttonsPomodoro} onClick={() => startEvent()}> {timerState.isRunning ? <PauseIcon /> : <PlayArrowIcon />}
+        
+    </button>
       </div>
 
        
       <div className={styles.gridItem}>
-        <button className={styles.buttons } onClick={() => stopEvent()}>Stop </button>
+        <button className={currentType === typeArray.normalTimer ? styles.buttons : styles.buttonsPomodoro} onClick={() => stopEvent()}><StopIcon /> </button>
 
       </div>
       
       <div className={styles.gridItem}>
-        <button className={styles.buttons} onClick={() => switchEvent()} >Switch </button>
+        <button className={currentType === typeArray.normalTimer ? styles.buttons : styles.buttonsPomodoro} onClick={() => switchEvent()} ><SwapHoriz /> </button>
 
       </div>
 
-      <div className={styles.gridItem}>
       <div className={styles.timer}>
-        {timeState.h} : {timeState.m} : {timeState.s}
+        <div >
+          {timeState.h} : {timeState.m} : {timeState.s}
+          <div className={
+      timerState.isRunning && currentType === typeArray.normalTimer ? styles.animation :
+      timerState.isRunning && currentType === typeArray.pomodoro ? styles.animationPomodoro :
+      ''
+    }></div>
+
+        </div>
       </div>
-     </div>
       
 
     </div>
 
+    </>
   )
 }
 

@@ -9,9 +9,11 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import TuneIcon from '@mui/icons-material/Tune';
 import {closeApp} from '../../utils/utils';
 
+
 const NavigationMenu = () => {
   return (
     <>
+    
       <div className={styles.container}>
       <Link to="/">
         <div className={styles.menuChoice}>

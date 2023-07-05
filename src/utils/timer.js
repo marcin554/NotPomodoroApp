@@ -1,6 +1,8 @@
 import { Timer, Time, TimerOptions } from "timer-node";
 import useCountDown from "react-countdown-hook";
 
+let currentDateTime;
+let finishDate;
 
 
 //Sorting two different libraries into one function, so it is easier to use in project. 
@@ -12,9 +14,7 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
 
     const settings = _settings;
 
-    let currentDateTime;
-    let finishDate;
-
+ 
     const initialTime =  600000;
  
 
@@ -33,9 +33,39 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
             resume: () => countDownTimer.resume(),
             stop: () => {
                 countDownTimer.reset();
+          
+                const finishedDate = timer.pomodoro.getFinishedFormatedDate();
+                const _currentDateTime = timer.pomodoro.getCurrentFormatedDate();
+                console.log(_currentDateTime)
+                return {finishedDate, _currentDateTime};
+            },
+            getFinishedFormatedDate : () => {
                 finishDate = new Date();
-
-                return finishDate;
+                
+                const options = {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                };
+                
+                let formattedDate = finishDate.toLocaleString("en-US", options);
+            
+                return formattedDate;
+            },
+            getCurrentFormatedDate: () => {
+                const options = {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  };
+              
+                  let formattedDate = currentDateTime.toLocaleString("en-US", options);
+              
+                  return formattedDate;
             },
           
             changeFormatOfTime: () => {
@@ -61,14 +91,15 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
                 const time = timer.pomodoro.changeFormatOfTime();
                 return time;
             },
-            timeFromPomodoro: () => {
+            timeFromPomodoro: (defaultTime) => {
                 let newTime = timer.pomodoro.changeFormatOfTime();
     
-                newTime.m = settings.settings.defaultPomodoroTimerDuration - newTime.m - 1;
+                newTime.m = defaultTime - newTime.m - 1;
                 newTime.s = 60 - newTime.s;
                 return newTime;
     
             },
+            
 
         },
         normalTimer: {
@@ -82,10 +113,14 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
             stop: () => {
                 normalTimer.stop();
                 normalTimer.clear()
-                finishDate = new Date();
-                return finishDate;
+              
+                
+                const finishedDate = timer.pomodoro.getFinishedFormatedDate();
+                const _currentDateTime = timer.pomodoro.getCurrentFormatedDate();
+                return {finishedDate, _currentDateTime};
             },
             getTime: () => {
+                
                 return normalTimer.time();
             },
             

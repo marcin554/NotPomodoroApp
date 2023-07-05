@@ -128,7 +128,7 @@ const initialSettings = {
 
 function handleStoreGet(event, { key }) {
 
-
+  
  
   const value = store.get(key) || [];
   if (value.length === 0) {
@@ -294,11 +294,11 @@ function updateStatus(event, status) {
   const settings = store.get("settings") || [];
 
   if (status.goalOrProject === "project") {
-    settings.settings.defaultProject.workingOn =
-      !settings.settings.defaultProject.workingOn;
+    settings.defaultProject.workingOn =
+      !settings.defaultProject.workingOn;
   } else if (status.goalOrProject === "goal") {
-    settings.settings.defaultGoal.workingOn =
-      !settings.settings.defaultGoal.workingOn;
+    settings.defaultGoal.workingOn =
+      !settings.defaultGoal.workingOn;
   }
 
   store.set("settings", settings);
@@ -314,12 +314,14 @@ function updateStatus(event, status) {
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 700,
+    frame: false,
     webPreferences: {
       enableRemoteModule: true,
       nodeIntegration: true,
       preload: path.join(__dirname, "./preloader.js"),
+      backgroundThrottling: false,
     },
   });
 
@@ -372,3 +374,6 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+
+

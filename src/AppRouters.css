@@ -1,23 +1,23 @@
-
-.container{
-height: 100%;
+.container {
+  height: 100%;
   display: grid;
 
-  gap: 1rem;
   grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: repeat(1, 1fr);
+  grid-template-rows: auto 1fr; 
+  
+}
 
- 
+.navbarFrame {
+  grid-column: 1 / -1;
+  position: fixed;
+  top: 0;
+  left: 0; 
+  right: 0; 
 }
 
 .navigationMenu {
   margin-right: 50%;
-  grid-column: 1 / span 1; /* Combines grid-column-start and grid-column-end */
-  grid-row: 1 / 2; /* Combines grid-row-start and grid-row-end */
+  grid-column: 1 / span 1;
+  grid-row: 1 / 2;
 }
 
-.routerContent {
-  align-items: start;
-  grid-column: 3 / span 7; /* Combines grid-column-start and grid-column-end */
-  grid-row: 1 / 2; /* Combines grid-row-start and grid-row-end */
-}
