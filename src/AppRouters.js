@@ -26,11 +26,12 @@ import NavbarFrame from './pages/components/NavbarFrame';
 
 
 function App() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const settings = useSelector((state) => state.settingsStore.settings);
-
+  const isMiniPath = location.pathname === '/mini';
   useEffect(() => {
-    if(!settings){
+    if(!settings && !isMiniPath){
       console.log('getting settings to State')
       getSettings().then((tempSettings) => {    
         dispatch(setSettings(tempSettings));
