@@ -26,22 +26,26 @@ import NavbarFrame from './pages/components/NavbarFrame';
 
 
 function App() {
-  const location = useLocation();
+
+
   const dispatch = useDispatch();
   const settings = useSelector((state) => state.settingsStore.settings);
-  const isMiniPath = location.pathname === '/mini';
+ 
   useEffect(() => {
-    if(!settings && !isMiniPath){
+
+    if(!settings ){
       console.log('getting settings to State')
       getSettings().then((tempSettings) => {    
         dispatch(setSettings(tempSettings));
         dispatch(setType(tempSettings.defaultTimerType))
-        
+       
       })
     }
   
     }, [])
 
+
+ 
   return (
     
     <BrowserRouter>

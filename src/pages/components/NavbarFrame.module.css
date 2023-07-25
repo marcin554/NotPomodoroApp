@@ -10,9 +10,14 @@
 
 .flexItem{
     -webkit-app-region: no-drag;
+    opacity: 0.4;
  
     
     
  
 
+}
+
+.flexItem :hover{
+    color: red;
 }

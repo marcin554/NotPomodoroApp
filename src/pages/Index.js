@@ -7,7 +7,7 @@ import { _GetSettings, _updateGoal, _updateProject } from '../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { _getSettings, setSettings } from '../slices/settingsSlice'
 import { getSettings } from '../utils/utils'
-import { setType, updateIsPaused, updateIsRunning, updateIsStarted, updateTime } from '../slices/timerSlice'
+import { setCommandBoolean, setType, updateIsPaused, updateIsRunning, updateIsStarted, updateTime } from '../slices/timerSlice'
 import TimerUtils, { _getTime } from '../utils/timer'
 import useCountDown from 'react-countdown-hook'
 import TimerMainMini from './components/TimerMainMini'
@@ -16,7 +16,7 @@ import { Button } from '@mui/base'
 
 
 import { Timer } from 'timer-node'
-import { ConstructionOutlined } from '@mui/icons-material'
+
 const typeArray = {
   pomodoro: "pomodoro",
   normalTimer: "normalTimer",
@@ -29,7 +29,7 @@ const typeTimerGoal = {
 }
 
 let intervalId;
-
+let booleanIntervalId;
 
 export function TheTimer(pomodoroDefaultTime) {
   
@@ -66,7 +66,8 @@ export function TheTimer(pomodoroDefaultTime) {
 let timerState2;
 let currentType2;
 let _settings;
-
+let _booleanCommand;
+let _commandToRun;
 let _timeState;
 const Index = ({timer}) => {
 
@@ -86,13 +87,18 @@ const Index = ({timer}) => {
   const currentType = useSelector((state) => state.timer.currentType);
   const settings = useSelector((state) => state.settingsStore.settings);
   const timeState = useSelector((state) => state.timer.value)
+  const booleanCommand = useSelector((state) => state.timer.command.toRun)
+  const commandToRun = useSelector((state) => state.timer.command.commandToRun)
 
-
+ 
+  //Please forgive me for this.
   useEffect(() => {
     timerState2 = timerState;
     currentType2 = currentType;
     _settings = settings;
     _timeState = timeState;
+    _booleanCommand = booleanCommand;
+    _commandToRun = commandToRun;
   }, [])
 
 
@@ -101,7 +107,9 @@ const Index = ({timer}) => {
     currentType2 = currentType;
     _settings = settings;
     _timeState = timeState;
-  }, [timerState, currentType, settings, timeState])
+    _booleanCommand = booleanCommand;
+    _commandToRun = commandToRun;
+  }, [timerState, currentType, settings, timeState, booleanCommand, commandToRun])
 
   const handleStoreSet = (session) => {
     // console.log(session)
@@ -115,7 +123,7 @@ const Index = ({timer}) => {
 
 
 
-    switch (event.data) {
+    switch (event) {
       case 'start':
         {
 
@@ -132,6 +140,8 @@ const Index = ({timer}) => {
         switchTimer();
         break
       }
+      default:
+        break;
     }
 
 
@@ -357,14 +367,37 @@ const Index = ({timer}) => {
   }
 
 
-  useEffect(() => {
-    window.addEventListener('message', handleTimer);
+  function listenerHandleTimer(event) {
+  
+    // setTimeout(() => {
+    //  const message =  window.electronAPI.store.getMessage();
 
-    return () => {
-      window.removeEventListener('message', handleTimer);
-    }
-  }, [])
+    //   handleTimer(message)
+    // }, 1000)
 
+  }
+ 
+  // const booleanCommand = useSelector((state) => state.timer.command.toRun)
+  // const commandToRun = useSelector((state) => state.timer.command.commandToRun)
+
+  function updateCommandState() {
+    console.log(_booleanCommand)
+    if(_booleanCommand === true) {
+      console.log('didRunCommand')
+      handleTimer(_commandToRun)
+      dispatch(setCommandBoolean(false))
+    } 
+  }
+
+  if (!booleanIntervalId) {
+
+    booleanIntervalId = setInterval(() => {
+
+      updateCommandState()
+    }, 500);
+
+
+  }
 
 
 

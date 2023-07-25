@@ -1,10 +1,10 @@
 const path = require("path");
 const Store = require("electron-store");
 
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, MessageChannelMain } = require("electron");
 const { default: useCountDown } = require("react-countdown-hook");
 
-
+let message = "";
 
 const sessionsSchema = {
   sessions: {
@@ -311,6 +311,13 @@ function updateStatus(event, status) {
 //   window.ipcRenderer.send('update-goal', {goal, session})
 // }
 
+function setMessage(_message){
+  message = _message
+}
+
+const { port1, port2 } = new MessageChannelMain()
+
+
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -325,6 +332,10 @@ function createWindow() {
     },
   });
 
+  win.once('ready-to-show', () => {
+    win.webContents.postMessage('port', null, [port1])
+  })
+
   // and load the index.html of the app.
   // win.loadFile("index.html");
   win.loadURL("http://localhost:3000");
@@ -334,6 +345,25 @@ function createWindow() {
   win.webContents.openDevTools({ mode: "detach" });
 }
 
+function createMiniWindow() {
+  const miniWin = new BrowserWindow({
+    width: 300,
+    height: 80,
+    title: 'Mini-Timer',
+    frame: false,
+    alwaysOnTop: true,
+    webPreferences: {
+      preload: path.join(__dirname, "./preloader.js"),
+    },
+  })
+
+  miniWin.once('ready-to-show', () => {
+    miniWin.webContents.postMessage('port', null, [port2])
+
+  })
+
+  miniWin.loadURL("http://localhost:3000/mini")
+}
 
 
 // This method will be called when Electron has finished
@@ -351,11 +381,12 @@ app.whenReady().then(() => {
   ipcMain.on("update-goal", updateGoal);
   ipcMain.on("update-status", updateStatus);
   ipcMain.on("app-close", appClose);
+  ipcMain.on("create-mini-window", createMiniWindow);
+  ipcMain.on("send-message", setMessage)
 
   createWindow();
   // createMiniWindow();
 });
-
 
 function appClose(){
   app.quit();

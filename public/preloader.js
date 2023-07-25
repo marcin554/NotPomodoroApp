@@ -1,7 +1,16 @@
 const { contextBridge, ipcRenderer } = require('electron');
 window.ipcRenderer = require('electron').ipcRenderer;
 
-('Preloader script loaded');
+ipcRenderer.on('port', e => {
+  // port received, make it globally available.
+  window.electronMessagePort = e.ports[0]
+
+  console.log('asdaessdasdadasasddas')
+  window.electronMessagePort.onmessage = messageEvent => {
+    console.log(messageEvent)
+    // handle message
+  }
+})
 
 contextBridge.exposeInMainWorld('electronAPI', {
   store: {
@@ -45,7 +54,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
     closeApp: () => {
       window.ipcRenderer.send('app-close')
     },
- 
+    openMiniWindow: () => {
+      window.ipcRenderer.send('create-mini-window')
+    },
+    sendMessage: (message) => {
+      window.ipcRenderer.send('set-message', message)
+    }
+
     
 
 

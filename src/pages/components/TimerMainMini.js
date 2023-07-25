@@ -6,6 +6,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import PauseIcon from '@mui/icons-material/Pause';
 import { SwapHoriz } from "@mui/icons-material";
+import { setCommandBoolean, setCommandToRun } from '../../slices/timerSlice';
+
 
 const typeArray = {
   pomodoro: "pomodoro",
@@ -21,20 +23,26 @@ const typeTimerGoal = {
 
 
 const TimerMainMini = () => {
+
+  const dispatch = useDispatch();
   const timeState = useSelector((state) => state.timer.value);
   const timerState = useSelector((state) => state.timer.timer);
   const currentType = useSelector((state) => state.timer.currentType);
+
   const startEvent = () => {
-    
-    window.opener.postMessage('start', '*')
+    dispatch(setCommandToRun('start'))
+    dispatch(setCommandBoolean(true))
+
   }
 
   const stopEvent = () => {
-    window.opener.postMessage('stop', '*')
+    dispatch(setCommandToRun('stop'))
+    dispatch(setCommandBoolean(true))
   }
 
   const switchEvent = () => {
-    window.opener.postMessage('switch', '*')
+    dispatch(setCommandToRun('switch'))
+    dispatch(setCommandBoolean(true))
   }
 
 

@@ -180,7 +180,7 @@ const TimerMain = (typeAr) => {
             <FormControlLabel control ={<Switch checked={workingGoal} onClick={() => {updateCheck('goal')}} />} label={ "GOAL:   " + settings.defaultGoal.goalName } > </FormControlLabel>
         
             <Button onClick={() =>{
-  window.open('/mini', '_blank', 'top=500,left=200, width=300,height=80, frame= false, nodeIntegration=true,  alwaysOnTop=yes')
+          window.electronAPI.store.openMiniWindow();
 
   //This Timeout is to force update on state in the new Window. 
                 setTimeout(() => {
