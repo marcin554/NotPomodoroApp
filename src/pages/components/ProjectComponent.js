@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import PickGoalOrProject from './PickGoalOrProject'
+import Settings from './Settings'
 import { Switch } from '@mui/material'
 import { getSettings } from '../../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
@@ -97,10 +97,20 @@ const ProjectComponent = (projects) => {
    
   }
 
+  const deleteFunction = (projectName) => {
+    let object = {
+      type: 'projects',
+      name: projectName
+    }
+
+    window.electronAPI.store.deleteType(object);
+
+      window.location.reload();
+  }
 
   return (
     <div className={`${styles.container} shadow-md sm:rounded-lg`}>
-      {/* <PickGoalOrProject /> */}
+
       <table className="rounded table-auto ">
         <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
           <tr>
@@ -126,7 +136,7 @@ const ProjectComponent = (projects) => {
                      <td className="px-6 py-4 ">{project.project.projectName}</td>
                     <td className={`${styles.tdColor} px-6 py-4 `}>{project.project.timeSpendTotal} min</td>
                     <td className="px-6 py-4 ">{project.project.timeSpendThisWeek} min</td>
-                     <td className={`${styles.tdColor} px-6 py-4 `}></td>
+                    <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteFunction(project.project.projectName)}}>Delete</td>
                      <td className="px-6 py-4 "><Switch checked={project.checked} label="Pick project" onClick={() => { changeProject(project.project.projectName)  }} /> </td>
 
                   </tr>

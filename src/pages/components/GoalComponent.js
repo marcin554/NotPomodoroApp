@@ -30,6 +30,17 @@ const GoalComponent = (settingsAndGoals) => {
 
   }
 
+  const deleteFunction = (goalName) => {
+    let object = {
+      type: 'goals',
+      name: goalName
+    }
+
+    window.electronAPI.store.deleteType(object);
+
+      window.location.reload();
+  }
+
   function setCheckedInOnLoad() {
   
     let _nGoals = {...nGoals}
@@ -125,7 +136,7 @@ const GoalComponent = (settingsAndGoals) => {
                     <td className={`${styles.tdColor} px-6 py-4 `}>{project.goal.timeGoal} min</td>
                     <td className="px-6 py-4 ">{project.goal.timeSpendThisWeek} min</td>
                     <td className={`${styles.tdColor} px-6 py-4 `}>{project.goal.timeSpendTotal} min</td>
-                    <td className="px-6 py-4 "></td>
+                    <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteFunction(project.goal.goalName)}}>Delete</td>
                     <td className={`${styles.tdColor} px-6 py-4 `}><Switch checked={project.checked} label="Pick project" onClick={() => { changeGoal(project.goal.goalName) }} /> </td>
 
                   </tr>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getSettings } from '../utils/utils'
 import _Container from './components/Container';
-import PickGoalOrProject from './components/PickGoalOrProject';
+import Settings from './components/Settings';
 
 
 
@@ -33,7 +33,7 @@ const SettingsPage = () => {
             {/* <h1>Current Project: {_settings.defaultProject.projectName}</h1>
             <h1>DefaultPomodoroTimerDuration: {_settings.defaultPomodoroTimerDuration} min</h1>
             <h1>DefaultTimerType: {_settings.defaultTimerType}</h1> */}
-            <PickGoalOrProject settings={_settings} />
+            <Settings settings={_settings} />
           </div>
         )}
     </div>} />

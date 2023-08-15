@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from "./TimerMain.module.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { updateIsStarted, updateIsPaused, updateIsRunning, updateTime, setType } from '../../slices/timerSlice';
+import { updateIsStarted, updateIsPaused, updateIsRunning, updateTime, setType, setCommandBoolean, setCommandToRun } from '../../slices/timerSlice';
 import TimerUtils from '../../utils/timer';
 import { Button, Container, FormControlLabel, Switch } from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -62,15 +62,21 @@ const TimerMain = (typeAr) => {
 
   const startEvent = () => {
     
-    window.postMessage('start', '*')
+    dispatch(setCommandToRun('start'))
+    dispatch(setCommandBoolean(true))
+
   }
 
   const stopEvent = () => {
-    window.postMessage('stop', '*')
+    dispatch(setCommandToRun('stop'))
+    dispatch(setCommandBoolean(true))
+
   }
 
   const switchEvent = () => {
-    window.postMessage('switch', '*')
+    dispatch(setCommandToRun('switch'))
+    dispatch(setCommandBoolean(true))
+
   }
 
   function updateCheck (projectOrGoal) {

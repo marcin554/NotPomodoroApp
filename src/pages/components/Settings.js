@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from './PickGoalOrProject.module.css'
+import styles from './Settings.module.css'
 import { getSettings, getGoals, getProjects, _setNewProject, _setNewGoal, createSettings } from '../../utils/utils';
 import { Avatar, Box, Button, Collapse, Divider, InputLabel, List, ListItem, ListItemAvatar, ListItemText, Menu, MenuItem, Select, TextField } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -15,7 +15,7 @@ import TuneIcon from '@mui/icons-material/Tune';
 
 
 
-const PickGoalOrProject = () => {
+const Settings = () => {
 
     const [isToggled, setToggle] = useState(false);
     const [importSettings, setImportSettings] = useState();
@@ -124,7 +124,8 @@ const PickGoalOrProject = () => {
 
     const style = {
         width: '100%',
-        bgcolor: '#1B9C85',
+        bgcolor: '#f2f2f2;',
+        color: 'black',
 
     };
 
@@ -135,12 +136,7 @@ const PickGoalOrProject = () => {
             {importSettings ?
                 <div className={styles.container}>
 
-                    {/* import AccessTimeIcon from '@mui/icons-material/AccessTime';
-            import BarChartIcon from '@mui/icons-material/BarChart';
-            import FlagIcon from '@mui/icons-material/Flag';
-            import FolderIcon from '@mui/icons-material/Folder';
-            import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-            import TuneIcon from '@mui/icons-material/Tune'; */}
+                
 
                     <div>
                         <List sx={style} component="nav" aria-label="mailbox folders" className="rounded table-auto ">
@@ -190,7 +186,7 @@ const PickGoalOrProject = () => {
 
                                 <Box>
                                 
-                                    <ListItem secondaryAction={<Button variant="contained" edge="end" onClick={() => {
+                                    <ListItem secondaryAction={<Button variant="outlined" edge="end" onClick={() => {
                                         addProject(document.getElementById('ProjectName').value)
                                     }}> Create Project</Button>}>
                                         <TextField variant="filled" required label="Project name" id="ProjectName"></TextField>
@@ -199,7 +195,7 @@ const PickGoalOrProject = () => {
                                     <Divider />
 
                                     <ListItem secondaryAction={
-                                        <Button variant="contained" onClick={() => {
+                                        <Button variant="outlined" onClick={() => {
                                             addGoal(document.getElementById('GoalName').value, document.getElementById('TimeGoal').value)
                                         }}> Create Goal </Button>
                                     }>
@@ -210,7 +206,7 @@ const PickGoalOrProject = () => {
                                     </ListItem>
                                     <Divider />
                                     {importProjects[0] ?
-                                    <ListItem secondaryAction={<Button variant="contained" onClick={() => {
+                                    <ListItem secondaryAction={<Button variant="outlined" onClick={() => {
                                         changeSettings(document.getElementById('projects').innerText, 'project')
                                     }
                                     }
@@ -228,7 +224,7 @@ const PickGoalOrProject = () => {
                                     <Divider />
                                     {importGoals[0] ?
                                     <ListItem secondaryAction={
-                                        <Button variant="contained" onClick={() => {
+                                        <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('goals').innerText, 'goal')
                                         }
                                         }
@@ -247,7 +243,7 @@ const PickGoalOrProject = () => {
                                        : <></>}
                                     <Divider />
                                     <ListItem secondaryAction={
-                                        <Button variant="contained" onClick={() => {
+                                        <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('timers').innerText, 'timer')
                                         }
                                         }
@@ -268,7 +264,7 @@ const PickGoalOrProject = () => {
                                     </ListItem>
                                     <Divider />
                                     <ListItem secondaryAction={
-                                        <Button variant="contained" onClick={() => {
+                                        <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('pomodoroTimerDuration').value, 'pomodoroTimerDuration')
 
                                         }
@@ -308,4 +304,4 @@ const PickGoalOrProject = () => {
 
 }
 
-export default PickGoalOrProject
+export default Settings

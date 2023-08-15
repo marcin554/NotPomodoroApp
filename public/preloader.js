@@ -59,6 +59,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     sendMessage: (message) => {
       window.ipcRenderer.send('set-message', message)
+    },
+    deleteType: (nameAndType) => {
+      window.ipcRenderer.send('delete-type', nameAndType)
     }
 
     

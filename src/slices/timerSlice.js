@@ -5,7 +5,7 @@ const initialState = {
     toRun: false,
     commandToRun: ''
   },
-  
+  timeStart:'',
   currentType: '',
   timer:{
     isStarted: false,
@@ -70,11 +70,14 @@ export const timerSlice = createSlice({
     },
     setCommandToRun: (state, action) => {
       state.command.commandToRun = action.payload;
+    },
+    setTimeStart: (state, action) => {
+      state.timeStart = action.payload;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { updateTime,resetTimer, updateIsStarted, updateIsRunning, updateIsPaused, setType, setCommandBoolean, setCommandToRun } = timerSlice.actions
+export const { updateTime,resetTimer, updateIsStarted, updateIsRunning, updateIsPaused, setType, setCommandBoolean, setCommandToRun, setTimeStart } = timerSlice.actions
 
 export default timerSlice.reducer

@@ -12,16 +12,6 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
 
     const normalTimer = _normalTimer;
 
-    const settings = _settings;
-
- 
-    const initialTime =  600000;
- 
-
-
-    const interval = 500;
-    
-
 
     let timer = {
         pomodoro: {
@@ -31,12 +21,12 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
             },
             pause: () => countDownTimer.pause(),
             resume: () => countDownTimer.resume(),
-            stop: () => {
+            stop: (dateStart) => {
                 countDownTimer.reset();
           
                 const finishedDate = timer.pomodoro.getFinishedFormatedDate();
-                const _currentDateTime = timer.pomodoro.getCurrentFormatedDate();
-                console.log(_currentDateTime)
+                const _currentDateTime = timer.pomodoro.getStartDate(dateStart);
+                
                 return {finishedDate, _currentDateTime};
             },
             getFinishedFormatedDate : () => {
@@ -67,6 +57,21 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
               
                   return formattedDate;
             },
+            getCurrentFormatedDate2: (date2) => {
+
+                const date = new Date(date2);
+                const options = {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  };
+              
+                  let formattedDate = date.toLocaleString("en-US", options);
+                  console.log('formatedDate', formattedDate)
+                  return formattedDate;
+            },
           
             changeFormatOfTime: () => {
                
@@ -91,14 +96,27 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
                 const time = timer.pomodoro.changeFormatOfTime();
                 return time;
             },
-            timeFromPomodoro: (defaultTime) => {
-                let newTime = timer.pomodoro.changeFormatOfTime();
-    
-                newTime.m = defaultTime - newTime.m - 1;
-                newTime.s = 60 - newTime.s;
+            timeFromPomodoro: (defaultTime, timeFromState) => {
+                
+                let newTime = {...timeFromState._timeState};
+                let _defaultTime = defaultTime;
+                
+        
+
+            
+             
+                newTime.m = _defaultTime - newTime.m - 1;
+                if(newTime.s != null )
+                {
+                    newTime.s = 60 - newTime.s
+                }
                 return newTime;
     
             },
+            getStartDate: (dateOfStart) => {
+                let date = timer.pomodoro.getCurrentFormatedDate2(dateOfStart);
+                return date;
+            }
             
 
         },

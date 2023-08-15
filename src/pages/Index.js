@@ -7,7 +7,7 @@ import { _GetSettings, _updateGoal, _updateProject } from '../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { _getSettings, setSettings } from '../slices/settingsSlice'
 import { getSettings } from '../utils/utils'
-import { setCommandBoolean, setType, updateIsPaused, updateIsRunning, updateIsStarted, updateTime } from '../slices/timerSlice'
+import { setCommandBoolean, setTimeStart, setType, updateIsPaused, updateIsRunning, updateIsStarted, updateTime } from '../slices/timerSlice'
 import TimerUtils, { _getTime } from '../utils/timer'
 import useCountDown from 'react-countdown-hook'
 import TimerMainMini from './components/TimerMainMini'
@@ -69,6 +69,7 @@ let _settings;
 let _booleanCommand;
 let _commandToRun;
 let _timeState;
+let _dateOfStart;
 const Index = ({timer}) => {
 
  
@@ -89,7 +90,7 @@ const Index = ({timer}) => {
   const timeState = useSelector((state) => state.timer.value)
   const booleanCommand = useSelector((state) => state.timer.command.toRun)
   const commandToRun = useSelector((state) => state.timer.command.commandToRun)
-
+ const  dateOfStart = useSelector((state) => state.timer.timeStart)
  
   //Please forgive me for this.
   useEffect(() => {
@@ -99,6 +100,7 @@ const Index = ({timer}) => {
     _timeState = timeState;
     _booleanCommand = booleanCommand;
     _commandToRun = commandToRun;
+    _dateOfStart = dateOfStart;
   }, [])
 
 
@@ -109,6 +111,7 @@ const Index = ({timer}) => {
     _timeState = timeState;
     _booleanCommand = booleanCommand;
     _commandToRun = commandToRun;
+    _dateOfStart = dateOfStart;
   }, [timerState, currentType, settings, timeState, booleanCommand, commandToRun])
 
   const handleStoreSet = (session) => {
@@ -222,8 +225,12 @@ const Index = ({timer}) => {
       }
       else {
         if (timerState2.isStarted) {
-          let sessionInfo = timer.pomodoro.stop();
-          createSession(sessionInfo.currentDateTime, sessionInfo.finishedDate,  timer.pomodoro.timeFromPomodoro());
+          
+          console.log(_dateOfStart)
+          let sessionInfo = timer.pomodoro.stop(_dateOfStart);
+         
+          createSession(sessionInfo._currentDateTime, sessionInfo.finishedDate,  timer.pomodoro.timeFromPomodoro(_settings.defaultPomodoroTimerDuration, {_timeState}));
+          
           dispatch(updateIsRunning(false));
           dispatch(updateIsStarted(false));
           dispatch(updateIsPaused(false));
@@ -232,7 +239,7 @@ const Index = ({timer}) => {
           setTimeout(() => {
             clearInterval(intervalId);
             intervalId = null;
-          }, 1000);
+          }, 1000); 
         }
       }
     }
@@ -246,6 +253,7 @@ const Index = ({timer}) => {
       if (!timerState2.isStarted) {
 
         timer.pomodoro.start();
+        dispatch(setTimeStart(Date.now()))
         dispatch(updateIsStarted(true));
         dispatch(updateIsRunning(true));
       }
@@ -280,7 +288,7 @@ const Index = ({timer}) => {
         }
       }
       else {
-        alert("Please stop the timer before changing the type");
+        alert("Please stop the timer before changing the type.");
       }
 
 
@@ -289,13 +297,15 @@ const Index = ({timer}) => {
   }
 
   function createSession(tStart, tEnd, duration) {
+
+ 
     let typeTimer;
     let projectName;
     let goalName;
 
   
     if (_settings) {
-      
+  
       if (_settings.defaultProject.workingOn === true || _settings.defaultGoal.workingOn === true) {
         if (_settings.defaultProject.workingOn === true) {
           typeTimer = typeTimerGoal.project
@@ -308,6 +318,7 @@ const Index = ({timer}) => {
 
         if (_settings.defaultGoal.workingOn === true) {
           typeTimer = typeTimerGoal.goal
+
           goalName = _settings.defaultGoal.goalName
         }
         else {
@@ -322,7 +333,8 @@ const Index = ({timer}) => {
 
     }
    
-      console.log(duration)
+    console.log(tStart)
+    
     let session = {
       timerType: currentType2,
       timeStart: tStart,
@@ -349,7 +361,7 @@ const Index = ({timer}) => {
 
     }
     else if (currentType2 === typeArray.pomodoro) {
-      session.timeDuration = timer.pomodoro.getTime();
+
 
       if (typeTimer === typeTimerGoal.project || typeTimer === typeTimerGoal.goal) {
         if (typeTimer === typeTimerGoal.project) {
@@ -381,7 +393,7 @@ const Index = ({timer}) => {
   // const commandToRun = useSelector((state) => state.timer.command.commandToRun)
 
   function updateCommandState() {
-    console.log(_booleanCommand)
+
     if(_booleanCommand === true) {
       console.log('didRunCommand')
       handleTimer(_commandToRun)

@@ -15,7 +15,7 @@ const SessionTable = (sessionObject) => {
   const originalArray = sessionObject.sessionObject.sessionStore; // Assuming sessionStore is an array
   const reversedArray = [...originalArray].reverse();
 
-
+  {console.log(reversedArray)}
   const deleteSession = (timeStart) => {
     window.electronAPI.store.delete(timeStart);
 
@@ -29,7 +29,7 @@ const SessionTable = (sessionObject) => {
     
   }
   return (
-    <div className={`${styles.container} shadow-md sm:rounded-lg`}>
+    <div className={`${styles.container} shadow-md sm:rounded-lg 	backdrop-blur-xl`}>
       <table className="rounded table-auto ">
         <thead className="text-xs text-gray-700 uppercase dark:text-gray-400">
           <tr>
@@ -63,10 +63,13 @@ const SessionTable = (sessionObject) => {
         
           {sessionObject.sessionObject.sessionStore &&
             reversedArray.map((element, index) => (
+              
               <tr
                 className="border-b border-gray-200 dark:border-gray-700"
                 key={index}
               >
+              
+
                 <td scope="row" className="px-6 py-4 whitespace-nowrap ">
                   {!element.timerType || element.timerType === "normalTimer" ? <QueryBuilderIcon fontSize="large" /> : <HourglassBottomIcon fontSize="large"/>
                   
@@ -82,7 +85,8 @@ const SessionTable = (sessionObject) => {
                   {element.timeEnd}
                 </td>
                 <td className="px-6 py-4 ">
-                  {!element.timerGoalName ? "none" : element.timerGoal}
+            
+                  {!element.timerGoalName ? "none" : element.timerGoalName}
                
                 </td>
                 <td className={`${styles.tdColor} px-6 py-4 `}>

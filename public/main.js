@@ -128,15 +128,13 @@ const initialSettings = {
 
 function handleStoreGet(event, { key }) {
 
-  
- 
+
   const value = store.get(key) || [];
   if (value.length === 0) {
     if (key === "settings") {
       store.set("settings", initialSettings);
     }
   }
-  
 
   let sessions = store.get("sessions") || [];
   if (key === "goals") {
@@ -184,7 +182,7 @@ function getTimeInDays(date) {
   let differenceDays = Math.round(
     Math.abs((currentDate - dateStarted) / oneDay)
   );
-  differenceDays;
+
   return differenceDays;
 }
 
@@ -217,16 +215,12 @@ function setNewGoal(event, goal) {
 }
 
 function updateSettings(event, settings) {
-
- 
   store.set("settings", settings.settings);
 }
 
 function handleDeleteSession(event, sessionValues) {
   let session = sessionValues.sessionValues;
   let sessions = store.get("sessions");
-
-
 
   let newSessions = sessions.filter(
     (item) =>
@@ -238,6 +232,34 @@ function handleDeleteSession(event, sessionValues) {
   store.set("sessions", newSessions);
 }
 
+function deleteType(event, nameNdType) {
+  console.log(nameNdType.name);
+  let storeArray = store.get(nameNdType.type);
+
+  switch (nameNdType.type) {
+    case "goals": {
+      let newArray = storeArray.filter(
+        (item) => item.goal.goalName !== nameNdType.name
+      );
+      store.set(nameNdType.type, newArray);
+      break;
+    }
+    case "projects": {
+      console.log(storeArray)
+      let newArray = storeArray.filter(
+        (item) => item.project.projectName !== nameNdType.name
+      );
+
+      store.set(nameNdType.type, newArray);
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
+}
+
 function handleStoreSet(event, { key, value }) {
   const sessions = store.get("sessions") || [];
 
@@ -245,15 +267,18 @@ function handleStoreSet(event, { key, value }) {
 
   store.set("sessions", sessions);
 }
+
 function handleSetTitle(event, title) {
   const webContents = event.sender;
   const win = BrowserWindow.fromWebContents(webContents);
   win.setTitle(title);
 }
 
+
 function hoursToMinutes(hours) {
   return hours * 60;
 }
+
 function updateProject(event, project, session) {
   const projects = store.get("projects") || [];
   let find = projects.find(
@@ -294,11 +319,9 @@ function updateStatus(event, status) {
   const settings = store.get("settings") || [];
 
   if (status.goalOrProject === "project") {
-    settings.defaultProject.workingOn =
-      !settings.defaultProject.workingOn;
+    settings.defaultProject.workingOn = !settings.defaultProject.workingOn;
   } else if (status.goalOrProject === "goal") {
-    settings.defaultGoal.workingOn =
-      !settings.defaultGoal.workingOn;
+    settings.defaultGoal.workingOn = !settings.defaultGoal.workingOn;
   }
 
   store.set("settings", settings);
@@ -311,18 +334,19 @@ function updateStatus(event, status) {
 //   window.ipcRenderer.send('update-goal', {goal, session})
 // }
 
-function setMessage(_message){
-  message = _message
+function setMessage(_message) {
+  message = _message;
 }
 
-const { port1, port2 } = new MessageChannelMain()
-
+const { port1, port2 } = new MessageChannelMain();
 
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 1000,
+    minWidth: 600,
     height: 700,
+    minHeight: 600,
     frame: false,
     webPreferences: {
       enableRemoteModule: true,
@@ -332,16 +356,15 @@ function createWindow() {
     },
   });
 
-  win.once('ready-to-show', () => {
-    win.webContents.postMessage('port', null, [port1])
-  })
+  win.once("ready-to-show", () => {
+    win.webContents.postMessage("port", null, [port1]);
+  });
 
   // and load the index.html of the app.
   // win.loadFile("index.html");
   win.loadURL("http://localhost:3000");
 
   // Open the DevTools.
-
   win.webContents.openDevTools({ mode: "detach" });
 }
 
@@ -349,22 +372,20 @@ function createMiniWindow() {
   const miniWin = new BrowserWindow({
     width: 300,
     height: 80,
-    title: 'Mini-Timer',
+    title: "Mini-Timer",
     frame: false,
     alwaysOnTop: true,
     webPreferences: {
       preload: path.join(__dirname, "./preloader.js"),
     },
-  })
+  });
 
-  miniWin.once('ready-to-show', () => {
-    miniWin.webContents.postMessage('port', null, [port2])
+  miniWin.once("ready-to-show", () => {
+    miniWin.webContents.postMessage("port", null, [port2]);
+  });
 
-  })
-
-  miniWin.loadURL("http://localhost:3000/mini")
+  miniWin.loadURL("http://localhost:3000/mini");
 }
-
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -382,13 +403,14 @@ app.whenReady().then(() => {
   ipcMain.on("update-status", updateStatus);
   ipcMain.on("app-close", appClose);
   ipcMain.on("create-mini-window", createMiniWindow);
-  ipcMain.on("send-message", setMessage)
+  ipcMain.on("send-message", setMessage);
+  ipcMain.on("delete-type", deleteType);
 
   createWindow();
   // createMiniWindow();
 });
 
-function appClose(){
+function appClose() {
   app.quit();
 }
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -405,6 +427,3 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
-
-
