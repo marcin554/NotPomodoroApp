@@ -17,7 +17,7 @@ const GoalComponent = (settingsAndGoals) => {
   const [nGoals, setNewGoals] = useState(settingsAndGoals.goals);
 
   function checkedOrNot(project) {
-    console.log(rSettings)
+
     if (project === rSettings.defaultGoal.goalName && rSettings.defaultGoal.workingOn === true) {
       return true
     }
@@ -77,7 +77,7 @@ const GoalComponent = (settingsAndGoals) => {
     })
 
     setNewGoals(nCopyGoals);
-    console.log('asd',settings)
+
     if (settings.defaultGoal.goalName === goalName) {
 
       if (settings.defaultGoal.workingOn === true) {

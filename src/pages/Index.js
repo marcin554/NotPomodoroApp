@@ -115,7 +115,7 @@ const Index = ({timer}) => {
   }, [timerState, currentType, settings, timeState, booleanCommand, commandToRun])
 
   const handleStoreSet = (session) => {
-    // console.log(session)
+ 
     window.electronAPI.store.set("session", session);
   };
 
@@ -226,7 +226,7 @@ const Index = ({timer}) => {
       else {
         if (timerState2.isStarted) {
           
-          console.log(_dateOfStart)
+         
           let sessionInfo = timer.pomodoro.stop(_dateOfStart);
          
           createSession(sessionInfo._currentDateTime, sessionInfo.finishedDate,  timer.pomodoro.timeFromPomodoro(_settings.defaultPomodoroTimerDuration, {_timeState}));
@@ -333,7 +333,7 @@ const Index = ({timer}) => {
 
     }
    
-    console.log(tStart)
+
     
     let session = {
       timerType: currentType2,
@@ -395,7 +395,6 @@ const Index = ({timer}) => {
   function updateCommandState() {
 
     if(_booleanCommand === true) {
-      console.log('didRunCommand')
       handleTimer(_commandToRun)
       dispatch(setCommandBoolean(false))
     } 

@@ -5,7 +5,7 @@ ipcRenderer.on('port', e => {
   window.electronMessagePort = e.ports[0]
 
   window.electronMessagePort.onmessage = messageEvent => {
-    console.log(messageEvent)
+
   }
 })
 

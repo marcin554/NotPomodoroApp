@@ -69,7 +69,7 @@ export default function TimerUtils(_settings, countDownTimer, _normalTimer) {
                   };
               
                   let formattedDate = date.toLocaleString("en-US", options);
-                  console.log('formatedDate', formattedDate)
+           
                   return formattedDate;
             },
           

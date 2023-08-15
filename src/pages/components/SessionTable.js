@@ -15,7 +15,7 @@ const SessionTable = (sessionObject) => {
   const originalArray = sessionObject.sessionObject.sessionStore; // Assuming sessionStore is an array
   const reversedArray = [...originalArray].reverse();
 
-  {console.log(reversedArray)}
+
   const deleteSession = (timeStart) => {
     window.electronAPI.store.delete(timeStart);
 

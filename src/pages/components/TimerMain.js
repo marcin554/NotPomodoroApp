@@ -179,12 +179,14 @@ const TimerMain = (typeAr) => {
             <SwapHoriz fontSize="inherit"/>
           </button>
 
-          {settings.defaultGoal.goalName.length > 1 && settings.defaultProject?
+          
           <div  className={`${styles.buttonTimerSwitch} `} >
+          {settings.defaultGoal.goalName && settings.defaultProject.projectName?
+          <>
             <FormControlLabel control ={<Switch checked={workingProject}color="warning" onClick={() => {updateCheck('project') }}/>} label={ "PROJECT:   " + settings.defaultProject.projectName}> </FormControlLabel>
             
             <FormControlLabel control ={<Switch checked={workingGoal} onClick={() => {updateCheck('goal')}} />} label={ "GOAL:   " + settings.defaultGoal.goalName } > </FormControlLabel>
-        
+            </> : null}
             <Button onClick={() =>{
           window.electronAPI.store.openMiniWindow();
 
@@ -200,7 +202,7 @@ const TimerMain = (typeAr) => {
 
         } >Mini Timer</Button>
           </div>
-           : null}
+        
           
           </div>
 

@@ -233,7 +233,7 @@ function handleDeleteSession(event, sessionValues) {
 }
 
 function deleteType(event, nameNdType) {
-  console.log(nameNdType.name);
+
   let storeArray = store.get(nameNdType.type);
 
   switch (nameNdType.type) {
@@ -245,7 +245,6 @@ function deleteType(event, nameNdType) {
       break;
     }
     case "projects": {
-      console.log(storeArray)
       let newArray = storeArray.filter(
         (item) => item.project.projectName !== nameNdType.name
       );
@@ -327,18 +326,10 @@ function updateStatus(event, status) {
   store.set("settings", settings);
 }
 
-// updateProject: (project, session) => {
-//   window.ipcRenderer.send('update-project', {project, session})
-// },
-// updateGoal: (goal, session) => {
-//   window.ipcRenderer.send('update-goal', {goal, session})
-// }
 
-function setMessage(_message) {
-  message = _message;
-}
 
-const { port1, port2 } = new MessageChannelMain();
+
+
 
 function createWindow() {
   // Create the browser window.
@@ -356,9 +347,7 @@ function createWindow() {
     },
   });
 
-  win.once("ready-to-show", () => {
-    win.webContents.postMessage("port", null, [port1]);
-  });
+
 
   // and load the index.html of the app.
   // win.loadFile("index.html");
@@ -380,9 +369,7 @@ function createMiniWindow() {
     },
   });
 
-  miniWin.once("ready-to-show", () => {
-    miniWin.webContents.postMessage("port", null, [port2]);
-  });
+
 
   miniWin.loadURL("http://localhost:3000/mini");
 }
@@ -403,7 +390,6 @@ app.whenReady().then(() => {
   ipcMain.on("update-status", updateStatus);
   ipcMain.on("app-close", appClose);
   ipcMain.on("create-mini-window", createMiniWindow);
-  ipcMain.on("send-message", setMessage);
   ipcMain.on("delete-type", deleteType);
 
   createWindow();

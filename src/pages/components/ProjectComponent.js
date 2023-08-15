@@ -33,7 +33,7 @@ const ProjectComponent = (projects) => {
 
 
   }
-  console.log(nProjects)
+
 
   function setCheckedInOnLoad() {
     let nProjectCopy = {...nProjects}
@@ -53,9 +53,9 @@ const ProjectComponent = (projects) => {
 
     
     let nProjectCopy = {...nProjects}
-    console.log('abc', nProjectCopy)
+  
     nProjectCopy.projects.map((project) => {
-      console.log(project)
+
       if (project.project.projectName === projectName) {
         project.checked = !project.checked;
  
