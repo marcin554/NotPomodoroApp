@@ -14,10 +14,10 @@
    * Tailwind
 
 
-   ### Success 
+   ### Good
    - 
      I learned a lot doing this project mainly Electron because it was my first time touching it. The whole process also make me understand the main - renderer processed much more. And generally the pyramid of how things run in the 'queue'. I put a bit more time into design of the frontend this time, i might still upgrade it a bit in the future i also spend a bit more time to make it responsive. 
-     </>
+     
 
    ### Critique
    -
