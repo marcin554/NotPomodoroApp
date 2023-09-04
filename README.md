@@ -16,7 +16,8 @@
 
    ### Good
    - 
-     I learned a lot doing this project mainly Electron because it was my first time touching it. The whole process also make me understand the main - renderer processed much more. And generally the pyramid of how things run in the 'queue'. I put a bit more time into design of the frontend this time, i might still upgrade it a bit in the future i also spend a bit more time to make it responsive. 
+      As this is my first time using Electron i learned a lot about it. The whole process made me understand main - render processes and the quque much more. Put some more time into designing and making it responsive and used some new UI libraries for first time.
+     
      
 
    ### Critique
@@ -28,6 +29,4 @@
 
 ![](https://github.com/marcin554/NotPomodoroApp/blob/dev/Timer.gif)
 ![](https://github.com/marcin554/NotPomodoroApp/blob/dev/Options.gif)
-
-Overlay
 ![](https://github.com/marcin554/NotPomodoroApp/blob/dev/Overlay.png)

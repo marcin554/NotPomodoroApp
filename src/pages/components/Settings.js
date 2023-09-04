@@ -84,12 +84,12 @@ const Settings = () => {
 
         // createSettings();
         let tempSettings = await getSettings();
-        let settings = tempSettings.settings;
+        let settings = tempSettings;
 
 
 
 
-
+        console.log(settings)
 
 
         if (changeWhat === 'project') {
