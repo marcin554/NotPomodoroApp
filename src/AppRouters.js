@@ -1,7 +1,5 @@
-
-
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Index from './pages/Index';
+import { BrowserRouter,HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import Index, { TheTimer } from './pages/Index';
 import SessionIndex from './pages/SessionIndex';
 
 import NavigationMenu from './pages/components/NavigationMenu';
@@ -49,9 +47,41 @@ function App() {
 
  
   return (
-    <BrowserRouter>
-      <div className='container'>
-        <div className="navigationMenu" >
+    
+    <HashRouter>
+      {settings? <AppContent /> : <div>loading...</div>}
+    </HashRouter>
+  );
+}
+
+
+
+
+function AppContent() {
+ 
+ 
+  const location = useLocation();
+
+
+  const timer = useRef(TheTimer());
+
+ 
+  
+
+  const isMiniPath = location.pathname === '/mini';
+
+  return (
+    <>
+    
+    <div className='container'>
+   
+      {!isMiniPath && (
+        <>
+        
+         <div className='navbarFrame'>
+         <NavbarFrame />
+       </div>
+        <div className="navigationMenu">
           <NavigationMenu />
         </div>
         </>
@@ -59,18 +89,20 @@ function App() {
 
 
      
-        <div className="routerContent">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/sessions" element={<SessionIndex />} />
-            <Route path="/projects" element={<ProjectsIndex />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/goals" element={<GoalIndex />}></Route>
+        <Routes>
+          <Route path="/" element={<Index timer={timer.current}/>} />
+          <Route path="/sessions" element={<SessionIndex  />} />
+          <Route path="/projects" element={<ProjectsIndex />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/goals" element={<GoalIndex />} />
+          <Route path="/mini" element={<TimerMainMini />} />
+        </Routes>
 
-          </Routes>
-        </div>
-      </div>
-    </BrowserRouter>
+      
+    
+    </div>
+ 
+    </>
   );
 }
 

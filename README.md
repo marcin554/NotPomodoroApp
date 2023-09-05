@@ -16,7 +16,7 @@
 
    ### Good
    - 
-      As this is my first time using Electron i learned a lot about it. The whole process made me understand main - render processes and the quque much more. Put some more time into designing and making it responsive and used some new UI libraries for first time.
+      As this is my first time using Electron i learned a lot about it. The whole process made me understand main - render processes and the queue much more. Put some more time into designing and making it responsive and used some new UI libraries for first time.
      
      
 
