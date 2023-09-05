@@ -7,12 +7,12 @@ const _Container = ({ComponentPage}) => {
 
 
   return (
-<Container maxWidth="xl">
+<Container maxWidth="xl" >
 
 
       <div className={styles.item}>
         {ComponentPage}
-        
+
         </div>        
       
      </Container>

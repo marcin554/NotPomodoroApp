@@ -20,6 +20,9 @@ export const sessionStoreSlice = createSlice({
     state.sessionStore = action.payload;
   
 
+    },
+    setState: (state, action) => {
+      state = action.payload;
     }
   },
 })
@@ -28,6 +31,6 @@ export const sessionStoreSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { addEntryToSessionList, resetSessionList, swapList} = sessionStoreSlice.actions
+export const { addEntryToSessionList, resetSessionList, swapList, setState} = sessionStoreSlice.actions
 
 export default sessionStoreSlice.reducer

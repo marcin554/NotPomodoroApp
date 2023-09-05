@@ -17,6 +17,7 @@ export const settingsSlice =  createSlice({
             state.settings.defaultProject.workingOn = action.payload;
         },
         setSettings: (state, action) => {
+           
             state.settings = action.payload;
         },
     

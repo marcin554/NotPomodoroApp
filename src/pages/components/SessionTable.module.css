@@ -2,11 +2,8 @@
     display: grid;
     max-height: 90vh;
     width: 60vw;
-    overflow-y: scroll;
-    overflow-x: clip;
-    scrollbar-width: none;  /* Firefox */
-    -ms-overflow-style: none;
-   ;
+
+ 
 }
 
 .container::-webkit-scrollbar {
@@ -15,12 +12,12 @@
 
 .deleteButton
 {
-    background-color: #f0c467;
+    background-color: #ff9f9f;
 }
 
 .deleteButton:hover
 {
-    background-color: #f74a2b;
+    background-color: #ff8484;
     cursor: pointer;
 }
 td{
@@ -29,7 +26,7 @@ td{
 
 
 tr{
-    background-color: #1B9C85;
+    background-color: #dbdbdb
    
 }
 
@@ -40,7 +37,7 @@ table{
    
  
     gap: 0.5rem;
-    color: white;
+    color: #4d4b4b;
 
     
     font-size: 1vw;
@@ -48,16 +45,16 @@ table{
 
 th{
    
-    background-color: #E8F6EF;
+    background-color: #f2f2f2;
 }
 
 
 .thColor{
-    color: #4C4C6D;
+
     background-color: #E8F6EF;
 }
 .tdColor{
 
-    background-color: #1B9C85;
+    background-color: #f2f2f2;
 }
 

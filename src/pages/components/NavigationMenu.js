@@ -7,10 +7,13 @@ import FlagIcon from '@mui/icons-material/Flag';
 import FolderIcon from '@mui/icons-material/Folder';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import TuneIcon from '@mui/icons-material/Tune';
+import {closeApp} from '../../utils/utils';
+
 
 const NavigationMenu = () => {
   return (
     <>
+    
       <div className={styles.container}>
       <Link to="/">
         <div className={styles.menuChoice}>
@@ -38,7 +41,7 @@ const NavigationMenu = () => {
         </div>
         </Link>
         <Link to="/sessions">
-        <div className={styles.menuChoice}>
+        <div className={styles.menuChoice} onClick={closeApp}>
           <PowerSettingsNewIcon fontSize='large'></PowerSettingsNewIcon> 
         </div>
         </Link>

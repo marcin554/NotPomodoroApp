@@ -1,0 +1,23 @@
+.container{
+    max-height: 10%;
+    display: flex;
+    
+    width: 100vw;
+    justify-content: flex-end;
+    -webkit-app-region: drag;
+  
+    }
+
+.flexItem{
+    -webkit-app-region: no-drag;
+    opacity: 0.4;
+ 
+    
+    
+ 
+
+}
+
+.flexItem :hover{
+    color: red;
+}

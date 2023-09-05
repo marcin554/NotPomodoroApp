@@ -1,9 +1,10 @@
 const path = require("path");
 const Store = require("electron-store");
 
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, MessageChannelMain } = require("electron");
+const { default: useCountDown } = require("react-countdown-hook");
 
-
+let message = "";
 
 const sessionsSchema = {
   sessions: {
@@ -128,14 +129,12 @@ const initialSettings = {
 function handleStoreGet(event, { key }) {
 
 
- 
   const value = store.get(key) || [];
   if (value.length === 0) {
     if (key === "settings") {
       store.set("settings", initialSettings);
     }
   }
-  
 
   let sessions = store.get("sessions") || [];
   if (key === "goals") {
@@ -183,7 +182,7 @@ function getTimeInDays(date) {
   let differenceDays = Math.round(
     Math.abs((currentDate - dateStarted) / oneDay)
   );
-  differenceDays;
+
   return differenceDays;
 }
 
@@ -216,16 +215,12 @@ function setNewGoal(event, goal) {
 }
 
 function updateSettings(event, settings) {
-
- 
   store.set("settings", settings.settings);
 }
 
 function handleDeleteSession(event, sessionValues) {
   let session = sessionValues.sessionValues;
   let sessions = store.get("sessions");
-
-
 
   let newSessions = sessions.filter(
     (item) =>
@@ -237,6 +232,33 @@ function handleDeleteSession(event, sessionValues) {
   store.set("sessions", newSessions);
 }
 
+function deleteType(event, nameNdType) {
+
+  let storeArray = store.get(nameNdType.type);
+
+  switch (nameNdType.type) {
+    case "goals": {
+      let newArray = storeArray.filter(
+        (item) => item.goal.goalName !== nameNdType.name
+      );
+      store.set(nameNdType.type, newArray);
+      break;
+    }
+    case "projects": {
+      let newArray = storeArray.filter(
+        (item) => item.project.projectName !== nameNdType.name
+      );
+
+      store.set(nameNdType.type, newArray);
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
+}
+
 function handleStoreSet(event, { key, value }) {
   const sessions = store.get("sessions") || [];
 
@@ -244,15 +266,18 @@ function handleStoreSet(event, { key, value }) {
 
   store.set("sessions", sessions);
 }
+
 function handleSetTitle(event, title) {
   const webContents = event.sender;
   const win = BrowserWindow.fromWebContents(webContents);
   win.setTitle(title);
 }
 
+
 function hoursToMinutes(hours) {
   return hours * 60;
 }
+
 function updateProject(event, project, session) {
   const projects = store.get("projects") || [];
   let find = projects.find(
@@ -293,34 +318,36 @@ function updateStatus(event, status) {
   const settings = store.get("settings") || [];
 
   if (status.goalOrProject === "project") {
-    settings.settings.defaultProject.workingOn =
-      !settings.settings.defaultProject.workingOn;
+    settings.defaultProject.workingOn = !settings.defaultProject.workingOn;
   } else if (status.goalOrProject === "goal") {
-    settings.settings.defaultGoal.workingOn =
-      !settings.settings.defaultGoal.workingOn;
+    settings.defaultGoal.workingOn = !settings.defaultGoal.workingOn;
   }
 
   store.set("settings", settings);
 }
 
-// updateProject: (project, session) => {
-//   window.ipcRenderer.send('update-project', {project, session})
-// },
-// updateGoal: (goal, session) => {
-//   window.ipcRenderer.send('update-goal', {goal, session})
-// }
+
+
+
+
 
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    minWidth: 600,
+    height: 700,
+    minHeight: 600,
+    frame: false,
     webPreferences: {
       enableRemoteModule: true,
       nodeIntegration: true,
       preload: path.join(__dirname, "./preloader.js"),
+      backgroundThrottling: false,
     },
   });
+
+
 
 
 
@@ -339,14 +366,19 @@ function createWindow() {
 
 function createMiniWindow() {
   const miniWin = new BrowserWindow({
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 80,
+    title: "Mini-Timer",
+    frame: false,
+    alwaysOnTop: true,
     webPreferences: {
-      enableRemoteModule: true,
-      nodeIntegration: true,
       preload: path.join(__dirname, "./preloader.js"),
     },
   });
+
+
+
+  miniWin.loadURL("http://localhost:3000/mini");
 }
 
 // This method will be called when Electron has finished
@@ -363,11 +395,17 @@ app.whenReady().then(() => {
   ipcMain.on("update-project", updateProject);
   ipcMain.on("update-goal", updateGoal);
   ipcMain.on("update-status", updateStatus);
+  ipcMain.on("app-close", appClose);
+  ipcMain.on("create-mini-window", createMiniWindow);
+  ipcMain.on("delete-type", deleteType);
 
   createWindow();
   // createMiniWindow();
 });
 
+function appClose() {
+  app.quit();
+}
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.

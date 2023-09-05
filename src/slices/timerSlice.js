@@ -1,7 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
+  command:{
+    toRun: false,
+    commandToRun: ''
+  },
+  timeStart:'',
+  currentType: '',
+  timer:{
+    isStarted: false,
+    isRunning: false,
+    isPaused: false,
 
+  },
   value:
    {
     h: '00',
@@ -18,26 +29,55 @@ export const timerSlice = createSlice({
   
     updateTime: (state, action) => {
    
-
-      if(action.payload.h < 10){
+    
+      if(action.payload.h.toString().length <= 1){
+   
         action.payload.h = '0' + action.payload.h;
       }
-      if(action.payload.m < 10){
+      if(action.payload.m.toString().length <= 1){
         action.payload.m = '0' + action.payload.m;
       }
-      if(action.payload.s < 10){
+      if(action.payload.s.toString().length <= 1){
         action.payload.s = '0' + action.payload.s;
       }
 
       state.value = action.payload;
     },
+    updateIsStarted: (state, action) => {
+      state.timer.isStarted = action.payload;
+    },
+    updateIsRunning: (state, action) => {
+   
+
+      state.timer.isRunning = action.payload;
+ 
+    },
+    updateIsPaused: (state, action) => {
+      state.timer.isPaused = action.payload;
+      
+    },
+    setType(state, action) {
+    
+      state.currentType = action.payload;
+      
+    },
+
     resetTimer: (state) => {
         state = initialState;
+    },
+    setCommandBoolean: (state, action) => {
+      state.command.toRun = action.payload;    
+    },
+    setCommandToRun: (state, action) => {
+      state.command.commandToRun = action.payload;
+    },
+    setTimeStart: (state, action) => {
+      state.timeStart = action.payload;
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { updateTime,resetTimer } = timerSlice.actions
+export const { updateTime,resetTimer, updateIsStarted, updateIsRunning, updateIsPaused, setType, setCommandBoolean, setCommandToRun, setTimeStart } = timerSlice.actions
 
 export default timerSlice.reducer

@@ -14,14 +14,18 @@ body, html {
 
   font-family: 'Roboto', sans-serif;
 
-  background-color: #4C4C6D;
-
+  background-color: #FFFFFF;
+  
 
   height: 100%;
   
 
 }
 
+html{
+  -webkit-app-region: no-drag;
+ 
+}
 table{
   text-align: center;
 }
