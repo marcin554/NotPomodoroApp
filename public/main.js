@@ -1,109 +1,21 @@
+const {
+  sessionsSchema,
+  projectsSchema,
+  goalsSchema,
+  settingsSchema,
+  initialSettings,
+} = require("./extra/storageSchemas");
 const path = require("path");
 const Store = require("electron-store");
-
 const { app, BrowserWindow, ipcMain, MessageChannelMain } = require("electron");
-const { default: useCountDown } = require("react-countdown-hook");
 
-let message = "";
 
-const sessionsSchema = {
-  sessions: {
-    type: "array",
-    default: [],
-    items: {
-      type: "object",
-      properties: {
-        timeStart: {
-          type: "string",
-        },
-        timeEnd: {
-          type: "string",
-        },
-        timeDuration: {},
-        timerType: {
-          type: "string",
-        },
-        timerGoal: {
-          type: "string",
-        },
-        timerProjectName: {
-          type: "string",
-        },
-        timerGoalName: {
-          type: "string",
-        },
-      },
-    },
-  },
-};
-
-const projectsSchema = {
-  projects: {
-    type: "array",
-    default: [],
-    items: {
-      type: "object",
-      properties: {
-        projectName: {
-          type: "string",
-        },
-        timeSpendTotal: {},
-        timeSpendThisWeek: {},
-      },
-    },
-  },
-};
-
-const goalsSchema = {
-  goals: {
-    type: "array",
-    default: [],
-    items: {
-      type: "object",
-      properties: {
-        goalName: {
-          type: "string",
-        },
-        timeGoal: {},
-        timeSpendTotal: {},
-        timeSpendThisWeek: {},
-      },
-    },
-  },
-};
-
-const settingsSchema = {
-  settings: {
-    type: "array",
-    default: [],
-    items: {
-      type: "object",
-      properties: {
-        defaultTimerType: {
-          type: "string",
-          default: "normalTimer",
-        },
-        defaultPomodoroTimerDuration: {
-          type: "number",
-          default: 25,
-        },
-        defaultProject: {
-          type: "string",
-          workingOn: {
-            type: "boolean",
-          },
-        },
-        defaultGoal: {
-          type: "string",
-          workingOn: {
-            type: "boolean",
-          },
-        },
-      },
-    },
-    default: {},
-  },
-};
+const {
+  getLastSevenDaysGoals,
+  getLastSevenDaysProjects,
+  updateProjectFunction,
+  updateGoalsFunction,
+} = require("./extra/electronStoreFunctions");
 
 const store = new Store({
   name: "data",
@@ -113,22 +25,7 @@ const store = new Store({
   settingsSchema,
 });
 
-const initialSettings = {
-  defaultTimerType: "normalTimer",
-  defaultPomodoroTimerDuration: 25,
-  defaultProject: {
-    projectName: "",
-    workingOn: false,
-  },
-  defaultGoal: {
-    goalName: "",
-    workingOn: false,
-  },
-};
-
 function handleStoreGet(event, { key }) {
-
-
   const value = store.get(key) || [];
   if (value.length === 0) {
     if (key === "settings") {
@@ -137,53 +34,14 @@ function handleStoreGet(event, { key }) {
   }
 
   let sessions = store.get("sessions") || [];
+
   if (key === "goals") {
-    sessions.forEach((element) => {
-      let differenceDays = getTimeInDays(element.timeStart);
-
-      if (differenceDays < 7 && value != null) {
-        let tempProject = value.filter(
-          (goal) => goal.goal.goalName === element.goalName
-        );
-        if (tempProject[0] != null) {
-          tempProject[0].goal.timeSpendThisWeek =
-            tempProject[0].goal.timeSpendThisWeek + element.timeDuration.m;
-        }
-      }
-    });
+    getLastSevenDaysGoals(sessions, value);
   } else if (key === "projects") {
-    sessions.forEach((element) => {
-      if (element.timerProjectName != "none") {
-        let differenceDays = getTimeInDays(element.timeStart);
-
-        if (differenceDays < 7) {
-          let tempProject = value.filter(
-            (project) =>
-              project.project.projectName === element.timerProjectName
-          );
-          if (tempProject[0] != null) {
-            tempProject[0].project.timeSpendThisWeek =
-              tempProject[0].project.timeSpendThisWeek + element.timeDuration.m;
-          }
-        }
-      }
-    });
+    getLastSevenDaysProjects(sessions, value);
   }
 
   event.returnValue = value;
-}
-
-function getTimeInDays(date) {
-  const oneDay = 24 * 60 * 60 * 1000;
-
-  let currentDate = new Date();
-  let dateStarted = new Date(date);
-
-  let differenceDays = Math.round(
-    Math.abs((currentDate - dateStarted) / oneDay)
-  );
-
-  return differenceDays;
 }
 
 function setNewProject(event, project) {
@@ -233,7 +91,6 @@ function handleDeleteSession(event, sessionValues) {
 }
 
 function deleteType(event, nameNdType) {
-
   let storeArray = store.get(nameNdType.type);
 
   switch (nameNdType.type) {
@@ -267,51 +124,18 @@ function handleStoreSet(event, { key, value }) {
   store.set("sessions", sessions);
 }
 
-function handleSetTitle(event, title) {
-  const webContents = event.sender;
-  const win = BrowserWindow.fromWebContents(webContents);
-  win.setTitle(title);
-}
-
-
-function hoursToMinutes(hours) {
-  return hours * 60;
-}
-
 function updateProject(event, project, session) {
   const projects = store.get("projects") || [];
-  let find = projects.find(
-    (item) => item.project.projectName === project.project.timerProjectName
-  );
-  if (find) {
-    find.project.timeSpendTotal =
-      find.project.timeSpendTotal +
-      hoursToMinutes(project.project.timeDuration.h) +
-      project.project.timeDuration.m;
-  }
+  const result = updateProjectFunction(project, projects);
 
-  store.set("projects", projects);
+  store.set("projects", result);
 }
 
-function updateGoal(event, goal, session) {
+function updateGoal(event, goal) {
   const goals = store.get("goals") || [];
+  const result = updateGoalsFunction(goal, goals);
 
-  let find = goals.find(
-    (item) => item.goal.goalName === goal.goal.timerProjectName
-  );
-
-  if (find) {
-    find.goal.timeSpendTotal =
-      find.goal.timeSpendTotal +
-      hoursToMinutes(goal.goal.timeDuration.h) +
-      goal.goal.timeDuration.m;
-    find.goal.timeGoal =
-      find.goal.timeGoal -
-      hoursToMinutes(goal.goal.timeDuration.h) -
-      goal.goal.timeDuration.m;
-  }
-
-  store.set("goals", goals);
+  store.set("goals", result);
 }
 
 function updateStatus(event, status) {
@@ -325,11 +149,6 @@ function updateStatus(event, status) {
 
   store.set("settings", settings);
 }
-
-
-
-
-
 
 function createWindow() {
   // Create the browser window.
@@ -346,8 +165,6 @@ function createWindow() {
       backgroundThrottling: false,
     },
   });
-
-
 
   // and load the index.html of the app.
   // win.loadFile("index.html");
@@ -369,8 +186,6 @@ function createMiniWindow() {
     },
   });
 
-
-
   miniWin.loadURL("http://localhost:3000/mini");
 }
 
@@ -380,7 +195,6 @@ function createMiniWindow() {
 app.whenReady().then(() => {
   ipcMain.on("store-set", handleStoreSet);
   ipcMain.on("store-get", handleStoreGet);
-  ipcMain.on("set-title", handleSetTitle);
   ipcMain.on("delete-session", handleDeleteSession);
   ipcMain.on("set-new-project", setNewProject);
   ipcMain.on("set-new-goal", setNewGoal);

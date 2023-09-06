@@ -125,7 +125,7 @@ const ProjectComponent = (projects) => {
 
           {nProjects.projects ?
             <>
-
+                {console.log(nProjects.projects)}
               {nProjects.projects[0] === 0 ? <li>No projects</li> : <>
                 {nProjects.projects.map((project) => (
                  

@@ -24,7 +24,7 @@
    -
       At this point i would probably do this application differently learning from the experience doing it this time. For example i would most probably create my own libraries handling countdown/timer, here i used two different libraries to handle it, in the end both of them handle timer in different ways which slowed me a bit and made some of the code harder to create at first. Additional things:
         - I would use localStorage or LiteSQL to handle data storage. localStorage would make me able to host it on web. 
-        
+        - I would use the Date/Time objects in js instead of saving it in simple ints. 
       
 
 ![](https://github.com/marcin554/NotPomodoroApp/blob/dev/Timer.gif)
