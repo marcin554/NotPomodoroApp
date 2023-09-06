@@ -1,17 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect} from 'react'
 import TimerMain from './components/TimerMain'
 import _Container from './components/Container'
 
 import styles from './Index.module.css'
-import { _GetSettings, _updateGoal, _updateProject } from '../utils/utils'
+import {  _updateGoal, _updateProject } from '../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { _getSettings, setSettings } from '../slices/settingsSlice'
-import { getSettings } from '../utils/utils'
+
 import { setCommandBoolean, setTimeStart, setType, updateIsPaused, updateIsRunning, updateIsStarted, updateTime } from '../slices/timerSlice'
-import TimerUtils, { _getTime } from '../utils/timer'
+import TimerUtils from '../utils/timer'
 import useCountDown from 'react-countdown-hook'
-import TimerMainMini from './components/TimerMainMini'
-import { Button } from '@mui/base'
 
 
 
@@ -26,6 +23,7 @@ const typeTimerGoal = {
   none: "none",
   project: "project",
   goal: "goal",
+  both: "both",
 }
 
 let intervalId;
@@ -92,7 +90,7 @@ const Index = ({timer}) => {
   const commandToRun = useSelector((state) => state.timer.command.commandToRun)
  const  dateOfStart = useSelector((state) => state.timer.timeStart)
  
-  //Please forgive me for this.
+  //Please forgive me for this. Should go over it again, but its really annoying to fix so im leaving it to be for now. Its hitting optimalization really hard so its going to be needed fixed at some point.
   useEffect(() => {
     timerState2 = timerState;
     currentType2 = currentType;
@@ -307,24 +305,28 @@ const Index = ({timer}) => {
     if (_settings) {
   
       if (_settings.defaultProject.workingOn === true || _settings.defaultGoal.workingOn === true) {
-        if (_settings.defaultProject.workingOn === true) {
+
+        if(_settings.defaultProject.workingOn === true && _settings.defaultGoal.workingOn === true){
+          typeTimer = typeTimerGoal.both;
+          projectName = _settings.defaultProject.projectName
+          goalName = _settings.defaultGoal.goalName
+        }
+        else if(_settings.defaultProject.workingOn === true ){
           typeTimer = typeTimerGoal.project
           projectName = _settings.defaultProject.projectName
         }
-        else {
-          projectName = "none";
-          typeTimer = typeTimerGoal.none
-        }
-
-        if (_settings.defaultGoal.workingOn === true) {
+        else if(_settings.defaultGoal.workingOn === true){
           typeTimer = typeTimerGoal.goal
 
           goalName = _settings.defaultGoal.goalName
         }
-        else {
+        else{
           goalName = "none";
           typeTimer = typeTimerGoal.none
         }
+
+        
+    
 
 
       }
@@ -349,11 +351,15 @@ const Index = ({timer}) => {
 
     if (currentType2 === typeArray.normalTimer) {
 
-      if (typeTimer === typeTimerGoal.project || typeTimer === typeTimerGoal.goal) {
-        if (typeTimer === typeTimerGoal.project) {
+      if (typeTimer !== typeTimerGoal.none) {
+        if (typeTimer === typeTimerGoal.both){
+          _updateProject(session);
+          _updateGoal(session);
+        }
+        else if (typeTimer === typeTimerGoal.project) {
           _updateProject(session);
         }
-        if (typeTimer === typeTimerGoal.goal) {
+        else if (typeTimer === typeTimerGoal.goal) {
           _updateGoal(session);
         }
       }
@@ -363,11 +369,15 @@ const Index = ({timer}) => {
     else if (currentType2 === typeArray.pomodoro) {
 
 
-      if (typeTimer === typeTimerGoal.project || typeTimer === typeTimerGoal.goal) {
-        if (typeTimer === typeTimerGoal.project) {
+      if (typeTimer !== typeTimerGoal.none) {
+        if (typeTimer === typeTimerGoal.both){
+          _updateProject(session);
+          _updateGoal(session);
+        }
+        else if (typeTimer === typeTimerGoal.project) {
           _updateProject(session);
         }
-        if (typeTimer === typeTimerGoal.goal) {
+        else if (typeTimer === typeTimerGoal.goal) {
           _updateGoal(session);
         }
       }
@@ -379,16 +389,7 @@ const Index = ({timer}) => {
   }
 
 
-  function listenerHandleTimer(event) {
-  
-    // setTimeout(() => {
-    //  const message =  window.electronAPI.store.getMessage();
 
-    //   handleTimer(message)
-    // }, 1000)
-
-  }
- 
   // const booleanCommand = useSelector((state) => state.timer.command.toRun)
   // const commandToRun = useSelector((state) => state.timer.command.commandToRun)
 

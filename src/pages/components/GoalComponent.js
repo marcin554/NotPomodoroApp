@@ -111,7 +111,7 @@ const GoalComponent = (settingsAndGoals) => {
           <tr>
             <th scope="col" className="px-6 py-3 ">Goal Name</th>
             <th scope="col" className="px-6 py-3 ">Time Goal</th>
-            <th scope="col" className="px-6 py-3 ">Time Spend This Week</th>
+            <th scope="col" className="px-6 py-3 ">Time Spend In Last 7 Days</th>
             <th scope="col" className="px-6 py-3 ">Time Spend Total</th>
             <th scope="col" className="px-6 py-3 ">Delete</th>
             <th scope="col" className="px-6 py-3 ">Choose Goal</th>

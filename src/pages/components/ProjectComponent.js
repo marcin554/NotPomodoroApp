@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Settings from './Settings'
 import { Switch } from '@mui/material'
 import { getSettings } from '../../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
@@ -125,7 +124,7 @@ const ProjectComponent = (projects) => {
 
           {nProjects.projects ?
             <>
-
+                {console.log(nProjects.projects)}
               {nProjects.projects[0] === 0 ? <li>No projects</li> : <>
                 {nProjects.projects.map((project) => (
                  
