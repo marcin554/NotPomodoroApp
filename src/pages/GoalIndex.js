@@ -26,7 +26,7 @@ const GoalIndex = () => {
     useEffect(() => {
         getGoals().then((tempGoals) => 
         {
-          if(tempGoals != null){
+          if(tempGoals !== null){
             tempGoals.forEach(element => {
           
               element.checked = false;

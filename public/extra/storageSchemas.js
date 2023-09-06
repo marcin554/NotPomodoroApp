@@ -75,7 +75,6 @@ const goalsSchema = {
  const settingsSchema = {
     settings: {
       type: "array",
-      default: [],
       items: {
         type: "object",
         properties: {

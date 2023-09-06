@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Settings from './Settings'
 import { Switch } from '@mui/material'
 import { getSettings } from '../../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'

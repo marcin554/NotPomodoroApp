@@ -1,5 +1,3 @@
-import { Timer, Time, TimerOptions } from "timer-node";
-import useCountDown from "react-countdown-hook";
 
 let currentDateTime;
 let finishDate;

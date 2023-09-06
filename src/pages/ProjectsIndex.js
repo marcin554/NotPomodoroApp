@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import ProjectComponent from './components/ProjectComponent';
 import _Container from './components/Container';
 import { getProjects, getSettings } from '../utils/utils';
-import useCountDown from 'react-countdown-hook';
 
 
 

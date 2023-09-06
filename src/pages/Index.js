@@ -1,17 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect} from 'react'
 import TimerMain from './components/TimerMain'
 import _Container from './components/Container'
 
 import styles from './Index.module.css'
-import { _GetSettings, _updateGoal, _updateProject } from '../utils/utils'
+import {  _updateGoal, _updateProject } from '../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { _getSettings, setSettings } from '../slices/settingsSlice'
-import { getSettings } from '../utils/utils'
+
 import { setCommandBoolean, setTimeStart, setType, updateIsPaused, updateIsRunning, updateIsStarted, updateTime } from '../slices/timerSlice'
-import TimerUtils, { _getTime } from '../utils/timer'
+import TimerUtils from '../utils/timer'
 import useCountDown from 'react-countdown-hook'
-import TimerMainMini from './components/TimerMainMini'
-import { Button } from '@mui/base'
 
 
 
@@ -354,7 +351,7 @@ const Index = ({timer}) => {
 
     if (currentType2 === typeArray.normalTimer) {
 
-      if (typeTimer != typeTimerGoal.none) {
+      if (typeTimer !== typeTimerGoal.none) {
         if (typeTimer === typeTimerGoal.both){
           _updateProject(session);
           _updateGoal(session);
@@ -372,7 +369,7 @@ const Index = ({timer}) => {
     else if (currentType2 === typeArray.pomodoro) {
 
 
-      if (typeTimer != typeTimerGoal.none) {
+      if (typeTimer !== typeTimerGoal.none) {
         if (typeTimer === typeTimerGoal.both){
           _updateProject(session);
           _updateGoal(session);

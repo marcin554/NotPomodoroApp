@@ -1,5 +1,4 @@
 
-import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from "./TimerMainMini.module.css";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -14,11 +13,7 @@ const typeArray = {
   normalTimer: "normalTimer",
 };
 
-const typeTimerGoal = {
-  none: "none",
-  project: "project",
-  goal: "goal",
-}
+
 
 
 

@@ -7,7 +7,7 @@ const {
 } = require("./extra/storageSchemas");
 const path = require("path");
 const Store = require("electron-store");
-const { app, BrowserWindow, ipcMain, MessageChannelMain } = require("electron");
+const { app, BrowserWindow, ipcMain} = require("electron");
 
 
 const {
@@ -82,9 +82,9 @@ function handleDeleteSession(event, sessionValues) {
 
   let newSessions = sessions.filter(
     (item) =>
-      item.timeDuration.ms != session.timeDuration.ms ||
-      item.timeStart != session.timeStart ||
-      item.timeEnd != session.timeEnd
+      item.timeDuration.ms !== session.timeDuration.ms ||
+      item.timeStart !== session.timeStart ||
+      item.timeEnd !== session.timeEnd
   );
 
   store.set("sessions", newSessions);
