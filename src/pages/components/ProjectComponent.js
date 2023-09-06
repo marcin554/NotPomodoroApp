@@ -4,6 +4,7 @@ import { getSettings } from '../../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSettings } from '../../slices/settingsSlice'
 import styles from './SessionTable.module.css'
+import { setMessage } from '../../slices/applicationSlice'
 
 
 
@@ -135,7 +136,7 @@ const ProjectComponent = (projects) => {
                      <td className="px-6 py-4 ">{project.project.projectName}</td>
                     <td className={`${styles.tdColor} px-6 py-4 `}>{project.project.timeSpendTotal} min</td>
                     <td className="px-6 py-4 ">{project.project.timeSpendThisWeek} min</td>
-                    <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteFunction(project.project.projectName)}}>Delete</td>
+                    <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteFunction(project.project.projectName, setMessage('Project Deleted.'))}}>Delete</td>
                      <td className="px-6 py-4 "><Switch checked={project.checked} label="Pick project" onClick={() => { changeProject(project.project.projectName)  }} /> </td>
 
                   </tr>

@@ -13,6 +13,7 @@ import useCountDown from 'react-countdown-hook'
 
 
 import { Timer } from 'timer-node'
+import { setMessage } from '../slices/applicationSlice'
 
 const typeArray = {
   pomodoro: "pomodoro",
@@ -286,7 +287,7 @@ const Index = ({timer}) => {
         }
       }
       else {
-        alert("Please stop the timer before changing the type.");
+        dispatch(setMessage('You need first to stop the current Timer.'))
       }
 
 

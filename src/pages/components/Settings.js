@@ -8,6 +8,8 @@ import FlagIcon from '@mui/icons-material/Flag';
 import FolderIcon from '@mui/icons-material/Folder';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import TuneIcon from '@mui/icons-material/Tune';
+import { useDispatch } from 'react-redux';
+import { setMessage } from '../../slices/applicationSlice';
 
 
 
@@ -21,6 +23,8 @@ const Settings = () => {
     const [importSettings, setImportSettings] = useState();
     const [importGoals, setImportGoals] = useState();
     const [importProjects, setImportProjects] = useState();
+
+    const dispatch = useDispatch();
 
 
     const toggle = () => setToggle(!isToggled);
@@ -208,6 +212,7 @@ const Settings = () => {
                                     {importProjects[0] ?
                                     <ListItem secondaryAction={<Button variant="outlined" onClick={() => {
                                         changeSettings(document.getElementById('projects').innerText, 'project')
+                                        dispatch(setMessage('Project changed.'))
                                     }
                                     }
                                     >Change Project</Button>}>
@@ -226,6 +231,7 @@ const Settings = () => {
                                     <ListItem secondaryAction={
                                         <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('goals').innerText, 'goal')
+                                            dispatch(setMessage('Goal changed.'))
                                         }
                                         }
                                         >Change Goal</Button>
@@ -245,6 +251,7 @@ const Settings = () => {
                                     <ListItem secondaryAction={
                                         <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('timers').innerText, 'timer')
+                                            dispatch(setMessage('Type changed.'))
                                         }
                                         }
                                         >Change Timer</Button>
@@ -266,7 +273,7 @@ const Settings = () => {
                                     <ListItem secondaryAction={
                                         <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('pomodoroTimerDuration').value, 'pomodoroTimerDuration')
-
+                                            dispatch(setMessage('Time changed.'))
                                         }
                                         }
                                         >Change Pomodoro Time</Button>

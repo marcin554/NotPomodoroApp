@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./SessionTable.module.css";
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import { setMessage } from "../../slices/applicationSlice";
 
 
 const SessionTable = (sessionObject) => {
@@ -92,7 +93,11 @@ const SessionTable = (sessionObject) => {
                 <td className={`${styles.tdColor} px-6 py-4 `}>
                   {!element.timerProjectName ? "No Name" : element.timerProjectName}
                   </td>
-                <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteSession(element)}}>Delete</td>
+                <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {
+                  deleteSession(element) 
+                  setMessage('Session Deleted.')
+                }
+                  }>Delete</td>
               </tr>
             ))}
         </tbody>
