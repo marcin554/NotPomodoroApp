@@ -1,6 +1,7 @@
 const {getTimeInDays, hoursToMinutes} = require("./utils")
 
 function getLastSevenDaysGoals(sessions, goals){
+  if(sessions && goals){
     sessions.forEach((element) => {
         let differenceDays = getTimeInDays(element.timeStart);
         
@@ -9,18 +10,23 @@ function getLastSevenDaysGoals(sessions, goals){
           let tempProject = goals.filter(
             (goal) => goal.goal.goalName === element.timerGoalName 
           );
-          if (tempProject[0] !== null) {
+          if (tempProject.length > 0) {
             
             tempProject[0].goal.timeSpendThisWeek =
                 parseInt(tempProject[0].goal.timeSpendThisWeek) + parseInt(element.timeDuration.m);
           }
         }
+    
 });
+  }
 }
 
 function getLastSevenDaysProjects(sessions, projects){
+  if(sessions && projects){
+
+    
     sessions.forEach((element) => {
-        if (element.timerProjectName !=== "none") {
+        if (element.timerProjectName !== "none") {
           let differenceDays = getTimeInDays(element.timeStart);
   
           if (differenceDays < 7) {
@@ -28,13 +34,15 @@ function getLastSevenDaysProjects(sessions, projects){
               (project) =>
                 project.project.projectName === element.timerProjectName
             );
-            if (tempProject[0] !=== null) {
+            console.log(tempProject)
+            if (tempProject.length > 0) {
               tempProject[0].project.timeSpendThisWeek =
                 parseInt(tempProject[0].project.timeSpendThisWeek) + parseInt(element.timeDuration.m);
             }
           }
         }
       });
+    }
 }
 
 function updateProjectFunction(project, projects){

@@ -19,7 +19,7 @@ import TimerUtils from './utils/timer';
 import { Timer, Time, TimerOptions } from "timer-node";
 import TimerMain from './pages/components/TimerMain';
 import NavbarFrame from './pages/components/NavbarFrame';
-
+import MessageComponent from './pages/components/MessageComponent';
 
 
 
@@ -61,6 +61,7 @@ function AppContent() {
  
  
   const location = useLocation();
+  const message = useSelector((state) => state.applicationSlice.message)
 
 
   const timer = useRef(TheTimer());
@@ -77,13 +78,20 @@ function AppContent() {
    
       {!isMiniPath && (
         <>
-        
+           {message && message.length > 2 ?
+    
+        <div className="messageComponent">
+          <MessageComponent className='messageComponent'></MessageComponent>
+        </div>
+        :null}
          <div className='navbarFrame'>
          <NavbarFrame />
        </div>
         <div className="navigationMenu">
           <NavigationMenu />
         </div>
+        
+      
         </>
       )}
 

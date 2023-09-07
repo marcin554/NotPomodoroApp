@@ -4,6 +4,7 @@ import { setSettings } from '../../slices/settingsSlice';
 import { Switch } from '@mui/material';
 import { getSettings } from '../../utils/utils';
 import styles from './SessionTable.module.css';
+import { setMessage } from '../../slices/applicationSlice';
 
 
 
@@ -136,7 +137,7 @@ const GoalComponent = (settingsAndGoals) => {
                     <td className={`${styles.tdColor} px-6 py-4 `}>{project.goal.timeGoal} min</td>
                     <td className="px-6 py-4 ">{project.goal.timeSpendThisWeek} min</td>
                     <td className={`${styles.tdColor} px-6 py-4 `}>{project.goal.timeSpendTotal} min</td>
-                    <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteFunction(project.goal.goalName)}}>Delete</td>
+                    <td className={`${styles.deleteButton} px-6 py-4 `} onClick={() => {deleteFunction(project.goal.goalName); setMessage('Goal deleted.')}}>Delete</td>
                     <td className={`${styles.tdColor} px-6 py-4 `}><Switch checked={project.checked} label="Pick project" onClick={() => { changeGoal(project.goal.goalName) }} /> </td>
 
                   </tr>
