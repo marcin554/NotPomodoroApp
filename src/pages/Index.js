@@ -13,7 +13,7 @@ import useCountDown from 'react-countdown-hook'
 
 
 import { Timer } from 'timer-node'
-import { setMessage } from '../slices/applicationSlice'
+import { setBool, setMessage } from '../slices/applicationSlice'
 
 const typeArray = {
   pomodoro: "pomodoro",
@@ -287,7 +287,9 @@ const Index = ({timer}) => {
         }
       }
       else {
+        dispatch(setBool(false)); 
         dispatch(setMessage('You need first to stop the current Timer.'))
+      
       }
 
 

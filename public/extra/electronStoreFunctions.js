@@ -10,7 +10,7 @@ function getLastSevenDaysGoals(sessions, goals){
           let tempProject = goals.filter(
             (goal) => goal.goal.goalName === element.timerGoalName 
           );
-          if (tempProject[0] !== null) {
+          if (tempProject.length > 0) {
             
             tempProject[0].goal.timeSpendThisWeek =
                 parseInt(tempProject[0].goal.timeSpendThisWeek) + parseInt(element.timeDuration.m);
@@ -23,6 +23,8 @@ function getLastSevenDaysGoals(sessions, goals){
 
 function getLastSevenDaysProjects(sessions, projects){
   if(sessions && projects){
+
+    
     sessions.forEach((element) => {
         if (element.timerProjectName !== "none") {
           let differenceDays = getTimeInDays(element.timeStart);
@@ -32,7 +34,8 @@ function getLastSevenDaysProjects(sessions, projects){
               (project) =>
                 project.project.projectName === element.timerProjectName
             );
-            if (tempProject[0] !== null) {
+            console.log(tempProject)
+            if (tempProject.length > 0) {
               tempProject[0].project.timeSpendThisWeek =
                 parseInt(tempProject[0].project.timeSpendThisWeek) + parseInt(element.timeDuration.m);
             }

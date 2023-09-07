@@ -9,11 +9,12 @@ const MessageComponent = () => {
 
     const dispatch = useDispatch();
     const message = useSelector((state) => state.applicationSlice.message)
+    const bool = useSelector((state) => state.applicationSlice.bool)
     
   return (
     <>
-    
-    <div className={styles.container}>
+    {console.log(bool)}
+    <div style={{ backgroundColor: bool === true ?   'greenyellow' : 'lightcoral'   }}>
         <div>{message} </div>
         
         <div className={styles.button}onClick={() =>

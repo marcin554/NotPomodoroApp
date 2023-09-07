@@ -9,7 +9,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import TuneIcon from '@mui/icons-material/Tune';
 import { useDispatch } from 'react-redux';
-import { setMessage } from '../../slices/applicationSlice';
+import { setBool, setMessage } from '../../slices/applicationSlice';
 
 
 
@@ -192,6 +192,8 @@ const Settings = () => {
                                 
                                     <ListItem secondaryAction={<Button variant="outlined" edge="end" onClick={() => {
                                         addProject(document.getElementById('ProjectName').value)
+                                        dispatch(setBool(true))
+                                        dispatch(setMessage('Project added.'))
                                     }}> Create Project</Button>}>
                                         <TextField variant="filled" required label="Project name" id="ProjectName"></TextField>
 
@@ -201,6 +203,8 @@ const Settings = () => {
                                     <ListItem secondaryAction={
                                         <Button variant="outlined" onClick={() => {
                                             addGoal(document.getElementById('GoalName').value, document.getElementById('TimeGoal').value)
+                                            dispatch(setBool(true))
+                                            dispatch(setMessage('Goal added.'))
                                         }}> Create Goal </Button>
                                     }>
                                        <TextField variant="filled" required label="Goal name" id="GoalName"></TextField>
@@ -212,7 +216,9 @@ const Settings = () => {
                                     {importProjects[0] ?
                                     <ListItem secondaryAction={<Button variant="outlined" onClick={() => {
                                         changeSettings(document.getElementById('projects').innerText, 'project')
+                                        dispatch(setBool(true))
                                         dispatch(setMessage('Project changed.'))
+                                     
                                     }
                                     }
                                     >Change Project</Button>}>
@@ -231,6 +237,7 @@ const Settings = () => {
                                     <ListItem secondaryAction={
                                         <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('goals').innerText, 'goal')
+                                            dispatch(setBool(true))
                                             dispatch(setMessage('Goal changed.'))
                                         }
                                         }
@@ -251,6 +258,7 @@ const Settings = () => {
                                     <ListItem secondaryAction={
                                         <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('timers').innerText, 'timer')
+                                            dispatch(setBool(true))
                                             dispatch(setMessage('Type changed.'))
                                         }
                                         }
@@ -273,6 +281,7 @@ const Settings = () => {
                                     <ListItem secondaryAction={
                                         <Button variant="outlined" onClick={() => {
                                             changeSettings(document.getElementById('pomodoroTimerDuration').value, 'pomodoroTimerDuration')
+                                            dispatch(setBool(true))
                                             dispatch(setMessage('Time changed.'))
                                         }
                                         }
