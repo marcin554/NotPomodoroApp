@@ -19,7 +19,7 @@ export const applicationSlice = createSlice({
         state.message = action.payload;
     },
     setBool: (state, action) => {
-      state.message = action.payload;
+      state.bool = action.payload;
   },
     deleteMessage: (state) => {
         console.log(state)
