@@ -73,43 +73,33 @@ function AppContent() {
 
   return (
     <>
-    
-    <div className='container'>
-   
-      {!isMiniPath && (
-        <>
-           {message && message.length > 2 ?
-    
-        <div className="messageComponent">
-          <MessageComponent className='messageComponent'></MessageComponent>
-        </div>
-        :null}
-         <div className='navbarFrame'>
-         <NavbarFrame />
-       </div>
-        <div className="navigationMenu">
-          <NavigationMenu />
-        </div>
-        
-      
-        </>
-      )}
+      <div className="container">
+        {!isMiniPath && (
+          <>
+            {message && message.length > 2 ? (
+              <div className="messageComponent">
+                <MessageComponent className="messageComponent"></MessageComponent>
+              </div>
+            ) : null}
+            <div className="navbarFrame">
+              <NavbarFrame />
+            </div>
+            <div className="navigationMenu">
+              <NavigationMenu />
+            </div>
+          </>
+        )}
 
-
-     
         <Routes>
-          <Route path="/" element={<Index timer={timer.current}/>} />
-          <Route path="/sessions" element={<SessionIndex  />} />
+          <Route path="/mini" element={<TimerMainMini />} />
+
+          <Route path="/" element={<Index timer={timer.current} />} />
+          <Route path="/sessions" element={<SessionIndex />} />
           <Route path="/projects" element={<ProjectsIndex />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/goals" element={<GoalIndex />} />
-          <Route path="/mini" element={<TimerMainMini />} />
         </Routes>
-
-      
-    
-    </div>
- 
+      </div>
     </>
   );
 }

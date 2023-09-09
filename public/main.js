@@ -8,7 +8,7 @@ const {
 const path = require("path");
 const Store = require("electron-store");
 const { app, BrowserWindow, ipcMain} = require("electron");
-
+const url =require('url')
 
 const {
   getLastSevenDaysGoals,
@@ -193,7 +193,19 @@ function createMiniWindow() {
     },
   });
 
-  miniWin.loadURL("http://localhost:3000/mini");
+  let theUrl =
+    url.format({
+      pathname : '../build/index.html',
+      hash: '/mini',
+      protocol: 'file:',
+      slashes: true
+    })
+    
+  if (app.isPackaged) {
+    miniWin.loadFile(path.join(__dirname, "../build/index.html"), {hash: 'mini'});
+  } else {
+    miniWin.loadURL("http://localhost:3000/mini"); // dev
+  }
 }
 
 // This method will be called when Electron has finished
