@@ -58,6 +58,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     deleteType: (nameAndType) => {
       window.ipcRenderer.send('delete-type', nameAndType)
+    },
+    getAllSessionGoal: (goal) => {
+      window.ipcRenderer.send('all-session-goal', goal)
+    },
+    getAllSessionProject: (project) => {
+      window.ipcRenderer.send('all-session-project', project)
     }
 
     

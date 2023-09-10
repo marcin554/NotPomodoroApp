@@ -15,6 +15,8 @@ const {
   getLastSevenDaysProjects,
   updateProjectFunction,
   updateGoalsFunction,
+  getAllSessionsForGoal,
+  getAllSessionsForProject
 } = require("./extra/electronStoreFunctions");
 
 const store = new Store({
@@ -150,6 +152,22 @@ function updateStatus(event, status) {
   store.set("settings", settings);
 }
 
+function getAllSessionGoal(goal){
+  const sessions = store.get("sessions") || [];
+  
+  let sessionGoal = getAllSessionsForGoal(goal, sessions)
+
+  return sessionGoal;
+}
+
+function getAllSessionProject(project){
+  const sessions = store.get("sessions") || [];
+  
+  let sessionProject = getAllSessionsForGoal(project, sessions)
+
+  return sessionProject;
+}
+
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -205,6 +223,8 @@ app.whenReady().then(() => {
   ipcMain.on("app-close", appClose);
   ipcMain.on("create-mini-window", createMiniWindow);
   ipcMain.on("delete-type", deleteType);
+  ipcMain.on("all-session-goal", getAllSessionGoal )
+  ipcMain.on("all-session-project", getAllSessionProject)
 
   createWindow();
   // createMiniWindow();

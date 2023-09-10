@@ -89,9 +89,27 @@ function updateGoalsFunction(goal, goals){
       return goals;
 }
 
+function getAllSessionsForGoal(goal, goals){
+  let sessionsFound = goals.find(
+    (item) => item.timerGoal === goal.goal.timerGoalName
+  );
+
+  return sessionsFound;
+}
+
+function getAllSessionsForProject(project, projects){
+  let sessionsFound = projects.find(
+    (item) => item.timerGoal === project.project.timerProjectName
+  );
+
+  return sessionsFound;
+}
+
 module.exports = {
     getLastSevenDaysGoals,
     getLastSevenDaysProjects,
     updateProjectFunction, 
-    updateGoalsFunction
+    updateGoalsFunction,
+    getAllSessionsForGoal,
+    getAllSessionsForProject
 }
