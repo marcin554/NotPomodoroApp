@@ -408,6 +408,7 @@ const Index = ({timer}) => {
   // const booleanCommand = useSelector((state) => state.timer.command.toRun)
   // const commandToRun = useSelector((state) => state.timer.command.commandToRun)
 
+  // Set interval and do actions if state changed (if_booleanCommand is true, then set it off after the action did run)
   function updateCommandState() {
 
     if(_booleanCommand === true) {
