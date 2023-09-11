@@ -117,7 +117,7 @@ const Index = ({timer}) => {
 
   useEffect(() => {
     console.log(timeState)
-    if(currentType2 === typeArray.pomodoro && parseInt(_timeState.h) <= 0 && parseInt(_timeState.m) <= 0 &&  parseInt(_timeState.s) <= 1){
+    if(currentType2 === typeArray.pomodoro && timerState.isRunning && parseInt(_timeState.h) <= 0 && parseInt(_timeState.m) <= 0 &&  parseInt(_timeState.s) <= 1){
       dispatch(setBool(true)); 
       dispatch(setMessage('You finished your pomodoro round!'))
       dispatch(setCommandToRun('stop'))
