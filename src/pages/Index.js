@@ -6,7 +6,7 @@ import styles from './Index.module.css'
 import {  _updateGoal, _updateProject } from '../utils/utils'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { setCommandBoolean, setTimeStart, setType, updateIsPaused, updateIsRunning, updateIsStarted, updateTime } from '../slices/timerSlice'
+import { setCommandBoolean, setCommandToRun, setTimeStart, setType, updateIsPaused, updateIsRunning, updateIsStarted, updateTime } from '../slices/timerSlice'
 import TimerUtils from '../utils/timer'
 import useCountDown from 'react-countdown-hook'
 
@@ -52,6 +52,8 @@ export function TheTimer(pomodoroDefaultTime) {
 
   useEffect(() => {
     dispatch(updateTime(timer.pomodoro.getTime()));
+
+  
   }, [timeLeft]);
 
 
@@ -91,7 +93,7 @@ const Index = ({timer}) => {
   const commandToRun = useSelector((state) => state.timer.command.commandToRun)
  const  dateOfStart = useSelector((state) => state.timer.timeStart)
  
-  //Please forgive me for this. Should go over it again, but its really annoying to fix so im leaving it to be for now. Its hitting optimalization really hard so its going to be needed fixed at some point.
+  //Please forgive me for this. Should go over it again, but its really annoying to fix so im leaving it to be for now. Its hitting optimalization a bit so its going to be needed fixed at some point.
   useEffect(() => {
     timerState2 = timerState;
     currentType2 = currentType;
@@ -112,6 +114,16 @@ const Index = ({timer}) => {
     _commandToRun = commandToRun;
     _dateOfStart = dateOfStart;
   }, [timerState, currentType, settings, timeState, booleanCommand, commandToRun])
+
+  useEffect(() => {
+    console.log(timeState)
+    if(currentType2 === typeArray.pomodoro && parseInt(_timeState.h) <= 0 && parseInt(_timeState.m) <= 0 &&  parseInt(_timeState.s) <= 1){
+      dispatch(setBool(true)); 
+      dispatch(setMessage('You finished your pomodoro round!'))
+      dispatch(setCommandToRun('stop'))
+      dispatch(setCommandBoolean(true))
+    }
+  }, [_timeState])
 
   const handleStoreSet = (session) => {
  
