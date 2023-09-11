@@ -1,5 +1,6 @@
 const {getTimeInDays, hoursToMinutes} = require("./utils")
 
+// Get time for all sessions that were running with a goal. 
 function getLastSevenDaysGoals(sessions, goals){
   if(sessions && goals){
     sessions.forEach((element) => {
@@ -20,7 +21,7 @@ function getLastSevenDaysGoals(sessions, goals){
 });
   }
 }
-
+// Get time for all sessions that were running with a project.
 function getLastSevenDaysProjects(sessions, projects){
   if(sessions && projects){
 
@@ -45,6 +46,7 @@ function getLastSevenDaysProjects(sessions, projects){
     }
 }
 
+// Update totalTime for project when finishing session.
 function updateProjectFunction(project, projects){
 
     console.log(project)
@@ -62,7 +64,7 @@ function updateProjectFunction(project, projects){
       return projects;
     
 }
-
+// Update totalTime for goal when finishing session.
 function updateGoalsFunction(goal, goals){
     let find = goals.find(
         (item) => item.goal.goalName === goal.goal.timerGoalName
@@ -89,9 +91,27 @@ function updateGoalsFunction(goal, goals){
       return goals;
 }
 
+function getAllSessionsForGoal(goal, goals){
+  let sessionsFound = goals.find(
+    (item) => item.timerGoal === goal.goal.timerGoalName
+  );
+
+  return sessionsFound;
+}
+
+function getAllSessionsForProject(project, projects){
+  let sessionsFound = projects.find(
+    (item) => item.timerGoal === project.project.timerProjectName
+  );
+
+  return sessionsFound;
+}
+
 module.exports = {
     getLastSevenDaysGoals,
     getLastSevenDaysProjects,
     updateProjectFunction, 
-    updateGoalsFunction
+    updateGoalsFunction,
+    getAllSessionsForGoal,
+    getAllSessionsForProject
 }

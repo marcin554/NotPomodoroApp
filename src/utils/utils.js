@@ -50,7 +50,7 @@ export const getSettingsFromLastWindow = () => {
     })
     .catch(error => {
       console.error(error);
-      throw error; // Optionally re-throw the error
+      throw error; 
     });
 };
   

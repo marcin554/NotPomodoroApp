@@ -15,6 +15,7 @@ const {
   getLastSevenDaysProjects,
   updateProjectFunction,
   updateGoalsFunction,
+  getAllSessionsForGoal,
 } = require("./extra/electronStoreFunctions");
 
 const store = new Store({
@@ -90,6 +91,8 @@ function handleDeleteSession(event, sessionValues) {
   store.set("sessions", newSessions);
 }
 
+
+// For deleting goals or projects.
 function deleteType(event, nameNdType) {
   let storeArray = store.get(nameNdType.type);
 
@@ -116,6 +119,7 @@ function deleteType(event, nameNdType) {
   }
 }
 
+// Pushing sessions.
 function handleStoreSet(event, { key, value }) {
   const sessions = store.get("sessions") || [];
 
@@ -124,20 +128,21 @@ function handleStoreSet(event, { key, value }) {
   store.set("sessions", sessions);
 }
 
+// Update totalTime for project when finishing session.
 function updateProject(event, project, session) {
   const projects = store.get("projects") || [];
   const result = updateProjectFunction(project, projects);
 
   store.set("projects", result);
 }
-
+// Update totalTime for goal when finishing session.
 function updateGoal(event, goal) {
   const goals = store.get("goals") || [];
   const result = updateGoalsFunction(goal, goals);
 
   store.set("goals", result);
 }
-
+// Update setting with goal or project. and if the user run them or not.
 function updateStatus(event, status) {
   const settings = store.get("settings") || [];
 
@@ -148,6 +153,22 @@ function updateStatus(event, status) {
   }
 
   store.set("settings", settings);
+}
+
+function getAllSessionGoal(goal){
+  const sessions = store.get("sessions") || [];
+  
+  let sessionGoal = getAllSessionsForGoal(goal, sessions)
+
+  return sessionGoal;
+}
+
+function getAllSessionProject(project){
+  const sessions = store.get("sessions") || [];
+  
+  let sessionProject = getAllSessionsForGoal(project, sessions)
+
+  return sessionProject;
 }
 
 function createWindow() {
@@ -224,6 +245,8 @@ app.whenReady().then(() => {
   ipcMain.on("app-close", appClose);
   ipcMain.on("create-mini-window", createMiniWindow);
   ipcMain.on("delete-type", deleteType);
+  ipcMain.on("all-session-goal", getAllSessionGoal )
+  ipcMain.on("all-session-project", getAllSessionProject)
 
   createWindow();
   // createMiniWindow();
