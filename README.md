@@ -30,10 +30,10 @@
    Instead of relying on two different libraries with varying timer-handling methods, I would consider creating my own libraries to streamline the code and enhance consistency.
    
 
-  * Data Storage:
+  ** Data Storage:
    I would opt for localStorage or LiteSQL to handle data storage. This choice would facilitate web hosting without introducing unnecessary complexity.
    
-   * Date/Time Objects:
+   *** Date/Time Objects:
    In place of storing time information as simple integers, I would leverage JavaScript's Date/Time objects for a more robust and standardized approach.
       
 
